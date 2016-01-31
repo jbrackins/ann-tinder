@@ -550,7 +550,6 @@ p.tagline {
 }
 
 .download-bar a.code {
-  background: transparent url(../images/code.png) no-repeat 0 2px;
   padding-left: 35px;
   margin-top: 8px;
   display: block;
@@ -586,7 +585,6 @@ p.tagline {
 .current-section a {
   float: right;
   text-indent: -10000px;
-  background: transparent url(../images/top.png) no-repeat 0 0;
   width: 20px;
   height: 20px;
   opacity: 0.8;
@@ -609,7 +607,6 @@ p.tagline {
 
 a.zip,
 a.zip span {
-  background: transparent url(../images/zip.png) no-repeat 0 0;
   width: 30px;
   height: 21px;
   display: inline-block;
@@ -622,7 +619,6 @@ a.zip span {
 
 a.tar,
 a.tar span {
-  background: transparent url(../images/tar.png) no-repeat 0 0;
   width: 30px;
   height: 21px;
   display: inline-block;
@@ -634,7 +630,6 @@ a.tar span {
 }
 
 a.code {
-  background: transparent url(../images/code.png) no-repeat 0 2px;
   width: 30px;
   height: 21px;
   display: block;
