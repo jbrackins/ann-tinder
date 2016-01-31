@@ -1,4 +1,4 @@
-# ann-tinder
+# T.I.N.D.E.R.
 C++ Artificial Neural Network T.I.N.D.E.R. TINDER stands for Tree Intelligence Network for Determining Ember Risk and is, to our knowledge, probably the first software program to ever have this name. Any other similarities in name are purely coincidental and are in no relation to the TINDER project and its morals or values.
 
 TINDER stands for **T**ree **I**ntelligence **N**etwork for **D**etermining **E**mber **R**isk and is, to our knowledge, probably the first software program to ever have this name. Any other similarities in name are purely coincidental and are in no relation to the TINDER project and its morals or values.
