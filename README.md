@@ -29,7 +29,7 @@ The following make scripts can be used for compilation:
 
 `./ANNtest <parameterfile>`
 
-`./CrossValidate<parameterfile>`
+`./CrossValidate <parameterfile>`
 
 #Project Developers
 * Julian B.
