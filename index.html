@@ -1,0 +1,116 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/github-dark.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Ann-tinder</title>
+  <meta name="description" content="C++ Artificial Neural Network T.I.N.D.E.R ( Tree Intelligence Network for Determining Ember Risk )">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Ann-tinder</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">C++ Artificial Neural Network T.I.N.D.E.R ( Tree Intelligence Network for Determining Ember Risk )</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/jbrackins/ann-tinder/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/jbrackins/ann-tinder/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/jbrackins/ann-tinder" class="code">View Ann-tinder on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>
+<a id="tinder" class="anchor" href="#tinder" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>T.I.N.D.E.R.</h1>
+
+<p>This is the <strong>README</strong> for T.I.N.D.E.R, a C++ artificial neural network that utilizes a back-propagation network to determine a given year's fire season risk based on PDSI, or <a href="https://climatedataguide.ucar.edu/climate-data/palmer-drought-severity-index-pdsi"><strong>P</strong>almer <strong>D</strong>rought <strong>S</strong>everity <strong>I</strong>ndex</a> data.</p>
+
+<p>TINDER stands for <strong>T</strong>ree <strong>I</strong>ntelligence <strong>N</strong>etwork for <strong>D</strong>etermining <strong>E</strong>mber <strong>R</strong>isk and is, to our knowledge, probably the first software program to ever have this name. Any other similarities in name are purely coincidental and are in no relation to the TINDER project and its morals or values.</p>
+
+<h1>
+<a id="project-wiki" class="anchor" href="#project-wiki" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Project Wiki</h1>
+
+<p>The TINDER Wiki can be found <a href="https://github.com/jbrackins/ann-tinder/wiki">here</a></p>
+
+<h1>
+<a id="repository-access" class="anchor" href="#repository-access" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Repository Access</h1>
+
+<p>TINDER is hosted on a private git repository located at <a href="https://github.com/jbrackins/ann-tinder">https://github.com/jbrackins/ann-tinder</a>. To avoid compromising academic integrity, this project repo will remain private until a given point as per professor's request.</p>
+
+<h1>
+<a id="downloading-tinder" class="anchor" href="#downloading-tinder" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Downloading TINDER</h1>
+
+<p><code>git clone https://github.com/jbrackins/ann-tinder.git</code></p>
+
+<p>should suffice, but if you're stubborn you can always just download the .zip...
+TINDER is not available on iPhone or Android, jeez, stop asking....</p>
+
+<h1>
+<a id="building-tinder" class="anchor" href="#building-tinder" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building TINDER</h1>
+
+<p>The following make scripts can be used for compilation: </p>
+
+<p><code>make</code> will compile all three executables</p>
+
+<p><code>make ANNtrain</code> will compile the ANNtrain executable, the program for training the neural net on a given PDSI data set.</p>
+
+<p><code>make ANNtest</code> will compile the ANNtest executable, the program for testing the neural net to determine fire severity.</p>
+
+<p><code>make CrossValidate</code> will compile the CrossValidate executable, the program for testing the neural net using cross validation.</p>
+
+<h1>
+<a id="running-tinder" class="anchor" href="#running-tinder" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running TINDER</h1>
+
+<p><code>./ANNtrain &lt;parameterfile&gt;</code></p>
+
+<p><code>./ANNtest &lt;parameterfile&gt;</code></p>
+
+<p><code>./CrossValidate &lt;parameterfile&gt;</code></p>
+
+<h1>
+<a id="project-members" class="anchor" href="#project-members" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Project Members</h1>
+
+<ul>
+<li><strong><a href="https://github.com/jbrackins">Julian Brackins</a></strong></li>
+<li><strong><a href="https://github.com/samuelcarroll">Samuel Carroll</a></strong></li>
+<li><strong><a href="https://github.com/xlan59">Alex Nienhueser</a></strong></li>
+</ul>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/jbrackins" class="avatar"><img src="https://avatars0.githubusercontent.com/u/6644067?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/jbrackins">jbrackins</a> maintains <a href="https://github.com/jbrackins/ann-tinder">Ann-tinder</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/jbrackins/ann-tinder/tarball/master" class="tar">tar</a><a href="https://github.com/jbrackins/ann-tinder/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
