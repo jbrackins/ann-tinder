@@ -106,11 +106,28 @@ Prm::~Prm()
  * @author Julian Brackins
  *
  * @par Description:
- * Planet Size.
+ * Read in the parameter file, put everything where it needs to be
  *
  *****************************************************************************/
 int Prm::ReadPrm( string filename )
 {
+  ///Read in the file
+  ifstream infile( filename );
+  if( !infile )
+  {
+    printf("error opening file...\n");
+    return -1;
+  }
 
+  string buffer;
+  while(getline(infile, buffer))
+  {
+    buffer.erase(remove(buffer.begin(), buffer.end(), ' '), buffer.end());
+    printf("%s\n", buffer.c_str()); 
+
+
+  }
+
+  infile.close();
   return 0;
 }

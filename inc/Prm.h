@@ -23,6 +23,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <algorithm>
 
 /*************************************************************************//**
 * @class Prm
@@ -43,7 +45,7 @@ public:
   ~Prm();
   
   int ReadPrm( std::string filename );
-
+  
 private:
   std::string      _filename;  
 
