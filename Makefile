@@ -7,7 +7,7 @@ CFLAGS = -c  -g -O0
 CXXFLAGS = $(CFLAGS) -std=c++11 -Wall
 
 #OBJECT FILES
-OBJS = src/ANNtest.o src/ANNtrain.o src/CrossValidate.o
+OBJS = src/ANNtest.o src/ANNtrain.o src/CrossValidate.o src/Prm.o
 
 #HEADER FILES
 HEAD = inc/main.h
@@ -17,7 +17,7 @@ EXECS = ANNtest ANNtrain CrossValidate
 
 all: ANNtest ANNtrain CrossValidate
 
-ANNtest: src/ANNtest.o
+ANNtest: src/ANNtest.o src/Prm.o
 	$(LINK) -o $@ $^
 ANNtrain: src/ANNtrain.o
 	${LINK} -o $@ $^
