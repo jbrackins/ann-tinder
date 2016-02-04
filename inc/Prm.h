@@ -44,8 +44,23 @@ public:
   // DESTRUCTOR
   ~Prm();
   
+  std::string getFilename();
   int ReadPrm( std::string filename );
   
+  int setWtsFile( std::string input );
+  int setEpochs( std:: string input );
+  int setLearningRate( std:: string input );
+  int setMomentum( std:: string input );
+  int setThreshold( std:: string input );
+  int setLayers( std:: string input );
+  int setNodeCount( std:: string input );
+  int setCsvFile( std:: string input );
+  int setFeatureVector( std:: string input );
+  int setNumClasses( std:: string input );
+  int setFireSeverity( std:: string input );
+
+  void printErrorCode( int err );
+
 private:
   std::string      _filename;  
 
