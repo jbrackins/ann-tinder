@@ -55,12 +55,18 @@ public:
   int setLayers( std:: string input );
   int setNodeCount( std:: string input );
   int setCsvFile( std:: string input );
-  int setFeatureVector( std:: string input );
+  int setYears( std:: string input );
+  int setMonths( std:: string input );
+  int setEndMonth( std:: string input );
   int setNumClasses( std:: string input );
-  int setFireSeverity( std:: string input );
+  int setLowMed( std:: string input );
+  int setMedHigh( std:: string input );
 
   void printErrorCode( int err );
 
+
+  std::string stripComment( std::string input );
+  std::string stripSpaces( std::string input );
 private:
   std::string      _filename;  
 
@@ -75,17 +81,18 @@ private:
 
   ///Training and Testing Data file
   std::string      _csv_file;       /// training and testing data file name
-  std::vector<int> _feature_vector; /// feature vector info:
-                                    /// years of burned acreage, 
-                                    /// months of PDSI data 
-                                    /// end month of current year
+  
+  ///Feature vector info:
+  int              _years;          /// years of burned acreage, 
+  int              _months;         /// months of PDSI data 
+  int              _end_month;      /// end month of current year
 
   ///Output class info
   int              _num_classes;
 
   ///Fire severity parameter
-  std::vector<int> _fire_severity;  /// Corresponds to low/medium/high cutoffs
-
+  int              _low_med;  /// Corresponds to low/medium/high cutoffs
+  int              _med_high;
 public:
 
   

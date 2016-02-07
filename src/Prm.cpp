@@ -199,16 +199,28 @@ int Prm::ReadPrm( string filename )
             i = -107;
           break;
         case 8:
-          if( !setFeatureVector( buffer ) )
+          if( !setYears( buffer ) )
             i = -108;
           break;
         case 9:
-          if( !setNumClasses( buffer ) )
+          if( !setMonths( buffer ) )
             i = -109;
           break;
         case 10:
-          if( !setFireSeverity( buffer ) )
+          if( !setEndMonth( buffer ) )
             i = -110;
+          break;
+        case 11:
+          if( !setNumClasses( buffer ) )
+            i = -111;
+          break;
+        case 12:
+          if( !setLowMed( buffer ) )
+            i = -112;
+          break;
+        case 13:
+          if( !setMedHigh( buffer ) )
+            i = -113;
           break;
       }
       if( i < 0 )
@@ -216,6 +228,7 @@ int Prm::ReadPrm( string filename )
         Prm::printErrorCode(i);
         return -1;
       }
+
       ///Go on to filling the next parameter
       i++;    
     }
@@ -385,7 +398,7 @@ int Prm::setCsvFile( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Feature Vector Parameter
+ * Set Years of Burned Acreage Parameter
  *
  * @param[in] input - input from the .prm file
  *
@@ -393,10 +406,48 @@ int Prm::setCsvFile( string input )
  * @return 1 - Succeeded to read parameter
  *
  *****************************************************************************/
-int Prm::setFeatureVector( string input )
+int Prm::setYears( string input )
 {
 
-  printf("set Feature Vector: %s \n", input.c_str());
+  printf("set Years of Burned Acreage: %s \n", input.c_str());
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Months of PDSI data Parameter
+ *
+ * @param[in] input - input from the .prm file
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setMonths( string input )
+{
+
+  printf("set Months of PDSI data: %s \n", input.c_str());
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set End month of current year Parameter
+ *
+ * @param[in] input - input from the .prm file
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setEndMonth( string input )
+{
+
+  printf("set End month of current year: %s \n", input.c_str());
   return 1;
 }
 
@@ -423,7 +474,7 @@ int Prm::setNumClasses( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Fire Severity Parameter
+ * Set Fire Severity Parameter (low/med)
  *
  * @param[in] input - input from the .prm file
  *
@@ -431,10 +482,29 @@ int Prm::setNumClasses( string input )
  * @return 1 - Succeeded to read parameter
  *
  *****************************************************************************/
-int Prm::setFireSeverity( string input )
+int Prm::setLow( string input )
 {
 
-  printf("set Fire Severity: %s \n", input.c_str());
+  printf("set Fire Severity (low/med): %s \n", input.c_str());
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Fire Severity Parameter (med/high)
+ *
+ * @param[in] input - input from the .prm file
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setMedHigh( string input )
+{
+
+  printf("set Fire Severity (med/high): %s \n", input.c_str());
   return 1;
 }
 
@@ -477,15 +547,59 @@ void Prm::printErrorCode( int err )
       printf("Couldn't extract cvs file name from %s\n", Prm::getFilename().c_str());
       break;
     case 108:
-      printf("Couldn't extract feature vector from %s\n", Prm::getFilename().c_str());
+      printf("Couldn't extract years of burned acreage from %s\n", Prm::getFilename().c_str());
       break;
     case 109:
-      printf("Couldn't extract number of classes from %s\n", Prm::getFilename().c_str());
+      printf("Couldn't extract months of PDSI data from %s\n", Prm::getFilename().c_str());
       break;
     case 110:
-      printf("Couldn't extract fire severity range from %s\n", Prm::getFilename().c_str());
+      printf("Couldn't extract end month of current year from %s\n", Prm::getFilename().c_str());
+      break;
+    case 111:
+      printf("Couldn't extract number of classes from %s\n", Prm::getFilename().c_str());
+      break;
+    case 112:
+      printf("Couldn't extract fire severity range (low/med) from %s\n", Prm::getFilename().c_str());
+      break;
+    case 113:
+      printf("Couldn't extract fire severity range (med/high) from %s\n", Prm::getFilename().c_str());
       break;
     default:
       printf("Couldn't tell ya what happened....\n");
   }  
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Remove the Comment portion of a given string
+ *
+ * @param[in] input - input string
+ *
+ * @return output - string without the comment
+ *
+ *****************************************************************************/
+string  Prm::stripComment( string input )
+{
+  string output = input.substr(0, input.find("#",0));
+  return output;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Remove the spaces of a given string. 
+ *
+ * @param[in] input - input string
+ *
+ * @return output - string without the spaces
+ *
+ *****************************************************************************/
+string  Prm::stripComment( string input )
+{
+  string output = input;
+  output.erase(remove(output.begin(), output.end(), ' '), output.end());
+  return output;
 }
