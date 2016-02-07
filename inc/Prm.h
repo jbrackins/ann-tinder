@@ -48,19 +48,19 @@ public:
   int ReadPrm( std::string filename );
   
   int setWtsFile( std::string input );
-  int setEpochs( std:: string input );
-  int setLearningRate( std:: string input );
-  int setMomentum( std:: string input );
-  int setThreshold( std:: string input );
-  int setLayers( std:: string input );
-  int setNodeCount( std:: string input );
-  int setCsvFile( std:: string input );
-  int setYears( std:: string input );
-  int setMonths( std:: string input );
-  int setEndMonth( std:: string input );
-  int setNumClasses( std:: string input );
-  int setLowMed( std:: string input );
-  int setMedHigh( std:: string input );
+  int setEpochs( std::string input );
+  int setLearningRate( std::string input );
+  int setMomentum( std::string input );
+  int setThreshold( std::string input );
+  int setLayers( std::string input );
+  int setNodeCount( std::string input );
+  int setCsvFile( std::string input );
+  int setYears( std::string input );
+  int setMonths( std::string input );
+  int setEndMonth( std::string input );
+  int setNumClasses( std::string input );
+  int setLowMed( std::string input );
+  int setMedHigh( std::string input );
 
   void printErrorCode( int err );
 

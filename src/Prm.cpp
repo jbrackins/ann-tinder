@@ -253,9 +253,18 @@ int Prm::ReadPrm( string filename )
  *****************************************************************************/
 int Prm::setWtsFile( string input )
 {
+  string wts;
 
-  printf("set Weights: %s \n", input.c_str());
+  ///Remove comment from input
+  wts = stripComment(input);
+  ///Remove spaces just in case
+  wts = stripSpaces(wts); 
+  
+  ///Debugging output...
+  printf("set Weights: %s \n", wts.c_str());
 
+  ///Set value to private variable
+  Prm::_wts_file = wts;
   return 1;
 }
 
@@ -274,8 +283,19 @@ int Prm::setWtsFile( string input )
  *****************************************************************************/
 int Prm::setEpochs( string input )
 {
+  int epoch;
 
-  printf("set Epochs: %s \n", input.c_str());
+  ///Convert param file input to an integer
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  epoch = stoi(buffer, &sz);
+  
+  ///Debugging output...
+  printf("set Epochs: %d \n", epoch);
+  
+  ///Set value to private variable
+  Prm::_epochs = epoch;
   return 1;
 }
 
@@ -293,8 +313,21 @@ int Prm::setEpochs( string input )
  *****************************************************************************/
 int Prm::setLearningRate( string input )
 {
+  double learn;
 
-  printf("set Learning Rate: %s \n", input.c_str());
+  ///Convert param file input to a double
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  learn = stod(buffer, &sz);
+  
+
+
+  ///Debugging output...
+  printf("set Learning Rate: %lf \n", learn);
+  
+  ///Set value to private variable
+  Prm::_learning_rate = learn;
   return 1;
 }
 
@@ -312,8 +345,21 @@ int Prm::setLearningRate( string input )
  *****************************************************************************/
 int Prm::setMomentum( string input )
 {
+  double momentum;
 
-  printf("set Momentum: %s \n", input.c_str());
+  ///Convert param file input to a double
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  momentum = stod(buffer, &sz);
+  
+
+
+  ///Debugging output...
+  printf("set Momentum: %lf \n", momentum);
+  
+  ///Set value to private variable
+  Prm::_momentum = momentum;
   return 1;
 }
 
@@ -332,7 +378,21 @@ int Prm::setMomentum( string input )
 int Prm::setThreshold( string input )
 {
 
-  printf("set Threshold: %s \n", input.c_str());
+  double thresh;
+
+  ///Convert param file input to a double
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  thresh = stod(buffer, &sz);
+  
+
+
+  ///Debugging output...
+  printf("set Threshold: %lf \n", thresh);
+  
+  ///Set value to private variable
+  Prm::_threshold = thresh;
   return 1;
 }
 
@@ -350,8 +410,19 @@ int Prm::setThreshold( string input )
  *****************************************************************************/
 int Prm::setLayers( string input )
 {
+  int layers;
 
-  printf("set Layers: %s \n", input.c_str());
+  ///Convert param file input to an integer
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  layers = stoi(buffer, &sz);
+  
+  ///Debugging output...
+  printf("set Layers: %d \n", layers);
+  
+  ///Set value to private variable
+  Prm::_layers = layers;
   return 1;
 }
 
@@ -369,8 +440,26 @@ int Prm::setLayers( string input )
  *****************************************************************************/
 int Prm::setNodeCount( string input )
 {
+  string buffer = stripComment(input);
 
-  printf("set Node Count: %s \n", input.c_str());
+  istringstream iss(buffer);
+  int val;
+
+  while(iss >> val)
+  {
+      ///Push each node count value into vector
+      Prm::_node_count.push_back(val);
+  }
+
+  printf("set Node Count: ");
+  int sz = Prm::_node_count.size();
+  for(int i = 0; i < sz; i++)
+  {
+    printf("%d ", Prm::_node_count[i]);
+  }
+
+  printf("\n");
+
   return 1;
 }
 
@@ -388,8 +477,18 @@ int Prm::setNodeCount( string input )
  *****************************************************************************/
 int Prm::setCsvFile( string input )
 {
+  string csv;
 
-  printf("set Csv File: %s \n", input.c_str());
+  ///Remove comment from input
+  csv = stripComment(input);
+  ///Remove spaces just in case
+  csv = stripSpaces(csv); 
+  
+  ///Debugging output...
+  printf("set Csv File: %s \n", csv.c_str());
+  
+  ///Set value to private variable
+  Prm::_csv_file = csv;
   return 1;
 }
 
@@ -408,8 +507,19 @@ int Prm::setCsvFile( string input )
  *****************************************************************************/
 int Prm::setYears( string input )
 {
+  int yrs;
 
-  printf("set Years of Burned Acreage: %s \n", input.c_str());
+  ///Convert param file input to an integer
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  yrs = stoi(buffer, &sz);
+  
+  ///Debugging output...
+  printf("set Years of Burned Acreage: %d \n", yrs);
+  
+  ///Set value to private variable
+  Prm::_years = yrs;
   return 1;
 }
 
@@ -427,8 +537,19 @@ int Prm::setYears( string input )
  *****************************************************************************/
 int Prm::setMonths( string input )
 {
+  int months;
 
-  printf("set Months of PDSI data: %s \n", input.c_str());
+  ///Convert param file input to an integer
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  months = stoi(buffer, &sz);
+  
+  ///Debugging output...
+  printf("set Months of PDSI data: %d \n", months);
+  
+  ///Set value to private variable
+  Prm::_months = months;
   return 1;
 }
 
@@ -446,8 +567,19 @@ int Prm::setMonths( string input )
  *****************************************************************************/
 int Prm::setEndMonth( string input )
 {
+  int end;
 
-  printf("set End month of current year: %s \n", input.c_str());
+  ///Convert param file input to an integer
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  end = stoi(buffer, &sz);
+  
+  ///Debugging output...
+  printf("set End month of current year: %d \n", end);
+  
+  ///Set value to private variable
+  Prm::_end_month = end;
   return 1;
 }
 
@@ -465,8 +597,19 @@ int Prm::setEndMonth( string input )
  *****************************************************************************/
 int Prm::setNumClasses( string input )
 {
+  int num;
 
-  printf("set Num Classes: %s \n", input.c_str());
+  ///Convert param file input to an integer
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  num = stoi(buffer, &sz);
+  
+  ///Debugging output...
+  printf("set Num Classes: %d \n", num);
+  
+  ///Set value to private variable
+  Prm::_num_classes = num;
   return 1;
 }
 
@@ -482,10 +625,21 @@ int Prm::setNumClasses( string input )
  * @return 1 - Succeeded to read parameter
  *
  *****************************************************************************/
-int Prm::setLow( string input )
+int Prm::setLowMed( string input )
 {
+  int lowmed;
 
-  printf("set Fire Severity (low/med): %s \n", input.c_str());
+  ///Convert param file input to an integer
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  lowmed = stoi(buffer, &sz);
+  
+  ///Debugging output...
+  printf("set Fire Severity (low/med): %d \n", lowmed);
+  
+  ///Set value to private variable
+  Prm::_low_med = lowmed;
   return 1;
 }
 
@@ -503,8 +657,19 @@ int Prm::setLow( string input )
  *****************************************************************************/
 int Prm::setMedHigh( string input )
 {
+  int medhi;
 
-  printf("set Fire Severity (med/high): %s \n", input.c_str());
+  ///Convert param file input to an integer
+  string buffer = stripComment(input);
+  buffer = stripSpaces(buffer);
+  string::size_type sz;
+  medhi = stoi(buffer, &sz);
+  
+  ///Debugging output...
+  printf("set Fire Severity (med/high): %d \n", medhi);
+  
+  ///Set value to private variable
+  Prm::_med_high = medhi;
   return 1;
 }
 
@@ -597,7 +762,7 @@ string  Prm::stripComment( string input )
  * @return output - string without the spaces
  *
  *****************************************************************************/
-string  Prm::stripComment( string input )
+string  Prm::stripSpaces( string input )
 {
   string output = input;
   output.erase(remove(output.begin(), output.end(), ' '), output.end());
