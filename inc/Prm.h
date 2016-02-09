@@ -110,57 +110,43 @@ public:
   ///Another for the specific data type input
   //File name setter
   int setFilename( std::string input );
-
   //Weights file setter
   int setWtsFile( std::string input );
-  
   //Epochs Setter
   int setEpochs( std::string input );
   int setEpochs( int input );
-
   //Learning Rate Setters
   int setLearningRate( std::string input );
   int setLearningRate( double input );
-
   //Momentum Setters
   int setMomentum( std::string input );
   int setMomentum( double input );
-
   //Threshold Setters
   int setThreshold( std::string input );
   int setThreshold( double input );
-
   //Layers Setters
   int setLayers( std::string input );
   int setLayers( int input );
-
   //NodeCount Setter and 'Pusher'
   int setNodeCount( std::string input );
   int addNodeCount( int input );
-
   //CSV file setter
   int setCsvFile( std::string input );
-
   //Years Setters
   int setYears( std::string input );
   int setYears( int input );
-
   //Months Setters
   int setMonths( std::string input );
   int setMonths( int input );
-
   //End Month Setters
   int setEndMonth( std::string input );
   int setEndMonth( int input );
-
   //Number of Classes Seters
   int setNumClasses( std::string input );
   int setNumClasses( int input );
-
   //Low-Medium Setters
   int setLowMed( std::string input );
   int setLowMed( int input );
-
   //Medium-High Setters
   int setMedHigh( std::string input );
   int setMedHigh( int input );
@@ -195,7 +181,7 @@ private:
   int              _low_med;  /// Corresponds to low/medium/high cutoffs
   int              _med_high;
 
-  FILE * _fp; //File Pointer
+  FILE * file_pointer; //File Pointer
 public:
 
   

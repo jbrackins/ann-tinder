@@ -38,7 +38,7 @@ doxygen:
 dox:
 	doxygen doc/doxy.conf 
 clean:
-	rm -f *.o ${TST} *~ core src/*.o inc/*~ src/*~ $(EXECS) *~
+	rm -f *.o ${TST} *~ core src/*.o inc/*~ src/*~ $(EXECS) *~ prm/testWriter.prm
 realclean:
 	rm -f *.o ANNtest ANNtrain CrossValidate *~ core src/*.o inc/*~ src/*~ $(EXECS) *~ *.swp
 edit:

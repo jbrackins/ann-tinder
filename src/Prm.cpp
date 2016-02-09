@@ -136,18 +136,13 @@ int Prm::readPrm( )
   while(getline(infile, buffer))
   {
     index = buffer.find_first_not_of(" \t");
-    //printf("%c\n", buffer[index]);
+
     first_char = buffer[index];
     //buffer.erase(remove(buffer.begin(), buffer.end(), ' '), buffer.end());
-
     ///we only want the lines that do NOT start with a # and are NOT empty
+
     if( first_char != '#' && first_char != '\0' )
     {
-      //printf("%s\n", buffer.c_str()); 
-      
-
-
-
       ///Set parameter file line to whatever variable is next.
       ///Based on the i iterator and this case statement
 
@@ -224,6 +219,373 @@ int Prm::readPrm( )
   }
 
   infile.close();
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write a new parameter file, put everything where it needs to be. PLEASE 
+ * DON'T BE MAD AT ME FOR USING STDIO FILE WRITING EVEN THOUGH I USED 
+ * FSTREAM FOR READING IN THE FILE......
+ *
+ * @param[in] input - input from the .prm file
+ *
+ * @return 1 - Read Parameter file completely
+ * @return 0 - Failed to open prm file.
+ * @return <0 - Failed to read prm file properly. See printErrorCode() for 
+ *              details
+ *
+ *****************************************************************************/
+int Prm::writePrm( )
+{
+  file_pointer = fopen( Prm::getFilename().c_str(), "w" );
+
+  Prm::writeFilename( );
+  Prm::writeWtsFile( );
+  Prm::writeEpochs(  );
+  Prm::writeLearningRate(  );
+  Prm::writeMomentum(  );
+  Prm::writeThreshold(  );
+  Prm::writeLayers(  );
+  Prm::writeAllNodes();
+  Prm::writeCsvFile(  );
+  Prm::writeYears(  );
+  Prm::writeMonths(  );
+  Prm::writeEndMonth(  );
+  Prm::writeNumClasses(  );
+  Prm::writeLowMed(  );
+  Prm::writeMedHigh(  );
+
+  fclose( file_pointer );
+
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Filename to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeFilename()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%s \n", Prm::getFilename().c_str() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the wts file to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeWtsFile()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%s \n", Prm::getWtsFile().c_str() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Epochs to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeEpochs()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%d \n", Prm::getEpochs() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Learning Rate to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeLearningRate()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%lf \n", Prm::getLearningRate() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Momentum to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeMomentum()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%lf \n", Prm::getMomentum() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Threshold to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeThreshold()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%lf \n", Prm::getThreshold() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Layers to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeLayers()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%d \n", Prm::getLayers() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write all the nodes to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeAllNodes()
+{
+  if( file_pointer )
+  {
+    int sz = Prm::_node_count.size();
+    for(int i = 0; i < sz; i++)
+    {
+      Prm::writeNodeCount( i );
+      fprintf( file_pointer, " " );
+    }
+    fprintf( file_pointer, "\n" );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write individual node count to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeNodeCount( int index )
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%d", Prm::getNodeCount( index ) );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the csv file name to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeCsvFile()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%s \n", Prm::getCsvFile().c_str() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Years to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeYears()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%d \n", Prm::getYears() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Months to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeMonths()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%d \n", Prm::getMonths() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the End Month to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeEndMonth()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%d \n", Prm::getEndMonth() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Number of classes to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeNumClasses()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%d \n", Prm::getNumClasses() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Low/Med to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeLowMed()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%d \n", Prm::getLowMed() );
+    return 1;
+  }
+  return 0;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Write the Med/High to .prm
+ *
+ * @return 1 - successfully written to file
+ * @return 0 - file i/o issue
+ *
+ *****************************************************************************/
+int Prm::writeMedHigh()
+{
+  if( file_pointer )
+  {
+    fprintf(file_pointer, "%d \n", Prm::getMedHigh() );
+    return 1;
+  }
   return 0;
 }
 
