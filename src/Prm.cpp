@@ -87,7 +87,6 @@ Prm::Prm( )
 Prm::Prm( string filename )
 {
   _filename = filename;
-  ReadPrm( filename );
 }
 
 /**************************************************************************//**
@@ -129,8 +128,10 @@ string Prm::getFilename()
  *              details
  *
  *****************************************************************************/
-int Prm::ReadPrm( string filename )
+int Prm::ReadPrm( )
 {
+
+  string filename = Prm::getFilename();
   ///Read in the file
   ifstream infile( filename );
   if( !infile )

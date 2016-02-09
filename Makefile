@@ -44,4 +44,4 @@ realclean:
 edit:
 	gedit inc/*.h src/*.cpp Makefile &
 sublime:
-	sublime inc/*.h src/*.cpp Makefile &
+	sublime-text inc/*.h src/*.cpp Makefile &
