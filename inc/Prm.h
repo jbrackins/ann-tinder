@@ -99,11 +99,17 @@ public:
   void printNumClasses();
   void printLowMed();
   void printMedHigh();
+  //print the whole damn lot
+  void printPrm();
+  //print errors
+  void printErrorCode( int err );
 
   ///SETTERS - Set the values of each variable. Note that
   ///All non-string parameters have two different setters, 
   ///One for ubiquitous std::string types read in from file, 
   ///Another for the specific data type input
+  //File name setter
+  int setFilename( std::string input );
 
   //Weights file setter
   int setWtsFile( std::string input );
@@ -157,9 +163,7 @@ public:
 
   //Medium-High Setters
   int setMedHigh( std::string input );
-  int setMedHight( int input );
-
-  void printErrorCode( int err );
+  int setMedHigh( int input );
 
   ///STRIPPERS - Not that kind ;) .... Removes random junk
   std::string stripComment( std::string input );

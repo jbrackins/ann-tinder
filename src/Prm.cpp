@@ -67,7 +67,7 @@ using namespace std;
  * @author Julian Brackins
  *
  * @par Description:
- * Prm Constructor without a filename specified.
+ * Prm Constructor without a filename specified. pROBABLY A BAD IDEA.
  *
  *****************************************************************************/
 Prm::Prm( )
@@ -86,7 +86,7 @@ Prm::Prm( )
  *****************************************************************************/
 Prm::Prm( string filename )
 {
-  _filename = filename;
+  setFilename( filename );
 }
 
 /**************************************************************************//**
@@ -105,7 +105,7 @@ Prm::~Prm()
  * @author Julian Brackins
  *
  * @par Description:
- * Blah blah blahhh.
+ * Get the Filename
  *
  *****************************************************************************/
 string Prm::getFilename()
@@ -240,6 +240,29 @@ int Prm::ReadPrm( )
   return 0;
 }
 
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set prm Filename Parameter
+ *
+ * @param[in] input - input from the .prm file
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setFilename( string input )
+{
+  if( input.empty() )
+  {
+    return 0;
+  }
+  _filename = input;
+  return 1;
+}
+
 /**************************************************************************//**
  * @author Julian Brackins
  *
@@ -274,7 +297,7 @@ int Prm::setWtsFile( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Epochs Parameter
+ * Set Epochs Parameter (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -296,7 +319,27 @@ int Prm::setEpochs( string input )
   printf("set Epochs: %d \n", epoch);
   
   ///Set value to private variable
-  Prm::_epochs = epoch;
+  Prm::setEpochs( epoch );
+  return 1;
+}
+
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Epochs Parameter (int value)
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to set parameter
+ * @return 1 - Succeeded to set parameter
+ *
+ *****************************************************************************/
+int Prm::setEpochs( int input )
+{
+  ///Set value to private variable
+  Prm::_epochs = input;
   return 1;
 }
 
@@ -304,7 +347,7 @@ int Prm::setEpochs( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Learning Rate Parameter
+ * Set Learning Rate Parameter (read from .prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -328,7 +371,7 @@ int Prm::setLearningRate( string input )
   printf("set Learning Rate: %lf \n", learn);
   
   ///Set value to private variable
-  Prm::_learning_rate = learn;
+  Prm::setLearningRate( learn );
   return 1;
 }
 
@@ -336,7 +379,26 @@ int Prm::setLearningRate( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Momentum Parameter
+ * Set Learning Rate Parameter (double value)
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setLearningRate( double input )
+{
+  ///Set value to private variable
+  Prm::_learning_rate = input;
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Momentum Parameter (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -360,7 +422,7 @@ int Prm::setMomentum( string input )
   printf("set Momentum: %lf \n", momentum);
   
   ///Set value to private variable
-  Prm::_momentum = momentum;
+  Prm::setMomentum( momentum );
   return 1;
 }
 
@@ -368,7 +430,26 @@ int Prm::setMomentum( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Threshold Parameter
+ * Set Momentum Parameter (double value)
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setMomentum( double input )
+{
+  ///Set value to private variable
+  Prm::_momentum = input;
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Threshold Parameter (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -393,7 +474,27 @@ int Prm::setThreshold( string input )
   printf("set Threshold: %lf \n", thresh);
   
   ///Set value to private variable
-  Prm::_threshold = thresh;
+  Prm::setThreshold( thresh );
+  return 1;
+}
+
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Threshold Parameter (double value)
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setThreshold( double input )
+{
+  ///Set value to private variable
+  Prm::_threshold = input;
   return 1;
 }
 
@@ -401,7 +502,7 @@ int Prm::setThreshold( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Layers Parameter
+ * Set Layers Parameter (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -423,7 +524,27 @@ int Prm::setLayers( string input )
   printf("set Layers: %d \n", layers);
   
   ///Set value to private variable
-  Prm::_layers = layers;
+  Prm::setLayers( layers );
+  return 1;
+}
+
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Layers Parameter (int value)
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setLayers( int input )
+{
+  ///Set value to private variable
+  Prm::_layers = input;
   return 1;
 }
 
@@ -449,7 +570,7 @@ int Prm::setNodeCount( string input )
   while(iss >> val)
   {
       ///Push each node count value into vector
-      Prm::_node_count.push_back(val);
+      Prm::addNodeCount( val );
   }
 
   printf("set Node Count: ");
@@ -461,6 +582,25 @@ int Prm::setNodeCount( string input )
 
   printf("\n");
 
+  return 1;
+}
+
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Add individual node count to vector
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::addNodeCount( int input )
+{
+  Prm::_node_count.push_back( input );
   return 1;
 }
 
@@ -493,12 +633,11 @@ int Prm::setCsvFile( string input )
   return 1;
 }
 
-
 /**************************************************************************//**
  * @author Julian Brackins
  *
  * @par Description:
- * Set Years of Burned Acreage Parameter
+ * Set Years of Burned Acreage Parameter (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -520,7 +659,27 @@ int Prm::setYears( string input )
   printf("set Years of Burned Acreage: %d \n", yrs);
   
   ///Set value to private variable
-  Prm::_years = yrs;
+  Prm::setYears( yrs );
+  return 1;
+}
+
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Years of Burned Acreage Parameter ( int value )
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setYears( int input )
+{
+  ///Set value to private variable
+  Prm::_years = input;
   return 1;
 }
 
@@ -528,7 +687,7 @@ int Prm::setYears( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Months of PDSI data Parameter
+ * Set Months of PDSI data Parameter (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -550,7 +709,7 @@ int Prm::setMonths( string input )
   printf("set Months of PDSI data: %d \n", months);
   
   ///Set value to private variable
-  Prm::_months = months;
+  Prm::setMonths( months );
   return 1;
 }
 
@@ -558,7 +717,26 @@ int Prm::setMonths( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set End month of current year Parameter
+ * Set Months of PDSI data Parameter (int value)
+ *
+ * @param[in] input - input from the .prm file
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setMonths( int input )
+{
+  ///Set value to private variable
+  Prm::_months = input;
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set End month of current year Parameter (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -580,7 +758,7 @@ int Prm::setEndMonth( string input )
   printf("set End month of current year: %d \n", end);
   
   ///Set value to private variable
-  Prm::_end_month = end;
+  Prm::setEndMonth( end );
   return 1;
 }
 
@@ -588,7 +766,26 @@ int Prm::setEndMonth( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Num Classes Parameter
+ * Set End month of current year Parameter (int value)
+ *
+ * @param[in] input - input from the .prm file
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setEndMonth( int input )
+{
+  ///Set value to private variable
+  Prm::_end_month = input;
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Num Classes Parameter (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -610,7 +807,7 @@ int Prm::setNumClasses( string input )
   printf("set Num Classes: %d \n", num);
   
   ///Set value to private variable
-  Prm::_num_classes = num;
+  Prm::setNumClasses( num );
   return 1;
 }
 
@@ -618,7 +815,26 @@ int Prm::setNumClasses( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Fire Severity Parameter (low/med)
+ * Set Num Classes Parameter (int value)
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setNumClasses( int input )
+{
+  ///Set value to private variable
+  Prm::_num_classes = input;
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Fire Severity Parameter (low/med) (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -640,7 +856,7 @@ int Prm::setLowMed( string input )
   printf("set Fire Severity (low/med): %d \n", lowmed);
   
   ///Set value to private variable
-  Prm::_low_med = lowmed;
+  Prm::setLowMed( lowmed );
   return 1;
 }
 
@@ -648,7 +864,25 @@ int Prm::setLowMed( string input )
  * @author Julian Brackins
  *
  * @par Description:
- * Set Fire Severity Parameter (med/high)
+ * Set Fire Severity Parameter (low/med) (int value)
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setLowMed( int input )
+{
+  Prm::_low_med = input;
+  return 1;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Set Fire Severity Parameter (med/high) (read from prm)
  *
  * @param[in] input - input from the .prm file
  *
@@ -670,7 +904,7 @@ int Prm::setMedHigh( string input )
   printf("set Fire Severity (med/high): %d \n", medhi);
   
   ///Set value to private variable
-  Prm::_med_high = medhi;
+  Prm::setMedHigh( medhi );
   return 1;
 }
 
@@ -678,7 +912,48 @@ int Prm::setMedHigh( string input )
  * @author Julian Brackins
  *
  * @par Description:
+ * Set Fire Severity Parameter (med/high) (int value)
+ *
+ * @param[in] input - input value
+ *
+ * @return 0 - Failed to read parameter
+ * @return 1 - Succeeded to read parameter
+ *
+ *****************************************************************************/
+int Prm::setMedHigh( int input )
+{
+  ///Set value to private variable
+  Prm::_med_high = input;
+  return 1;
+}
+
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print literally everything ever!
+ *
+ * @param[in] err - error code
+ * 
+ * @returns none
+ *
+ *****************************************************************************/
+void printPrm()
+{
+  
+}
+
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
  * Error Handler that will let you know what you SCREWED UP. Specific to Prm
+ *
+ * @param[in] err - error code
+ * 
+ * @returns none
  *
  *****************************************************************************/
 void Prm::printErrorCode( int err )
