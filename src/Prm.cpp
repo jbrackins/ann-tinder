@@ -233,16 +233,53 @@ int Prm::readPrm( )
  * @param[in] input - input from the .prm file
  *
  * @return 1 - Read Parameter file completely
- * @return 0 - Failed to open prm file.
- * @return <0 - Failed to read prm file properly. See printErrorCode() for 
- *              details
+ * @return 0 - Failed to write prm file.
  *
  *****************************************************************************/
 int Prm::writePrm( )
 {
+  time_t curr_time;
+  char* timestamp;
+
+  ///Get Timestamp
+  curr_time = time(NULL);  
+  timestamp = ctime(&curr_time);
+  if (timestamp == NULL)
+  {
+      printf("error getting the time...\n");
+      return 0;
+  }
+
   file_pointer = fopen( Prm::getFilename().c_str(), "w" );
 
   Prm::writeFilename( );
+  fprintf( file_pointer, "#\n" );
+  fprintf( file_pointer, "# Generated Parameter file for ");
+  fprintf( file_pointer, "ANN TINDER project: \n" );
+  fprintf( file_pointer, "#\n" );
+  fprintf( file_pointer, "# Modify this parameter file as needed.\n" );
+  fprintf( file_pointer, "#\n" );
+  fprintf( file_pointer, "# The order of fields is specified in ");
+  fprintf( file_pointer, "the example below, and cannot be changed.\n" );
+  fprintf( file_pointer, "# Fields are separated by white space.\n" );
+  fprintf( file_pointer, "# Anything following # (or %%) on a line ");
+  fprintf( file_pointer, "is ignored as a comment.\n" );
+  fprintf( file_pointer, "#\n" );
+  fprintf( file_pointer, "# Class:        CSC447/547 ");
+  fprintf( file_pointer, "Artificial Intelligence\n");
+  fprintf( file_pointer, "# Author:       Julian Brackins,");
+  fprintf( file_pointer, " Samuel Carroll, Alex Nienhueser\n");
+  fprintf( file_pointer, "# Date:         %s", timestamp);
+  fprintf( file_pointer, "#\n" );
+  fprintf( file_pointer, "#*****************************************");
+  fprintf( file_pointer, "**************************************\n");
+
+  fprintf( file_pointer, "\n" );
+  fprintf( file_pointer, "#---------------\n" );
+  fprintf( file_pointer, "# ANN parameters\n" );
+  fprintf( file_pointer, "#---------------\n" );
+  fprintf( file_pointer, "\n" );
+
   Prm::writeWtsFile( );
   Prm::writeEpochs(  );
   Prm::writeLearningRate(  );
@@ -250,13 +287,54 @@ int Prm::writePrm( )
   Prm::writeThreshold(  );
   Prm::writeLayers(  );
   Prm::writeAllNodes();
+
+  fprintf( file_pointer, "\n" );
+  fprintf( file_pointer, "#-------------------------------\n" );
+  fprintf( file_pointer, "# training and testing data file\n" );
+  fprintf( file_pointer, "#-------------------------------\n" );
+  fprintf( file_pointer, "\n" );
+
   Prm::writeCsvFile(  );
+
+  fprintf( file_pointer, "\n" );
+  fprintf( file_pointer, "#------------------------------------------\n" );
+  fprintf( file_pointer, "# input feature vector info:\n" );
+  fprintf( file_pointer, "# years of burned acreage,\n" );  
+  fprintf( file_pointer, "# months of PDSI data (no fewer than # of input");
+  fprintf( file_pointer, ") layer nodes),\n" );
+  fprintf( file_pointer, "# and end month of current year (1=Jan, 2=Feb,");
+  fprintf( file_pointer, ") 3=Mar, etc.) for PDSI data\n" );
+  fprintf( file_pointer, "#------------------------------------------\n" );
+  fprintf( file_pointer, "\n" );
+
   Prm::writeYears(  );
   Prm::writeMonths(  );
   Prm::writeEndMonth(  );
+
+  fprintf( file_pointer, "\n" );
+  fprintf( file_pointer, "#------------------------------------------\n" );
+  fprintf( file_pointer, "# output class info:\n" );
+  fprintf( file_pointer, "# number of classes (no fewer than # of ");
+  fprintf( file_pointer, "input layer nodes)\n" );
+  fprintf( file_pointer, "#------------------------------------------\n" );
+  fprintf( file_pointer, "\n" );
+  
   Prm::writeNumClasses(  );
+
+  fprintf( file_pointer, "\n" );
+  fprintf( file_pointer, "#------------------------------------------\n" );
+  fprintf( file_pointer, "# fire severity parameters:\n" );
+  fprintf( file_pointer, "# burned acres cutoffs, corresponding to ");
+  fprintf( file_pointer, "low/medium/high fire severity\n" );
+  fprintf( file_pointer, "#------------------------------------------\n" );
+  fprintf( file_pointer, "\n" );
+
   Prm::writeLowMed(  );
   Prm::writeMedHigh(  );
+
+  fprintf( file_pointer, "\n" );
+
+  Prm::writeFilename( );
 
   fclose( file_pointer );
 
@@ -277,7 +355,9 @@ int Prm::writeFilename()
 {
   if( file_pointer )
   {
-    fprintf(file_pointer, "%s \n", Prm::getFilename().c_str() );
+    fprintf(file_pointer, "#************************** %s ", 
+            Prm::getFilename().c_str() );
+    fprintf(file_pointer, "***********************************\n");
     return 1;
   }
   return 0;
