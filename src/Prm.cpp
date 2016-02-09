@@ -105,19 +105,6 @@ Prm::~Prm()
  * @author Julian Brackins
  *
  * @par Description:
- * Get the Filename
- *
- *****************************************************************************/
-string Prm::getFilename()
-{
-  return _filename;
-}
-
-
-/**************************************************************************//**
- * @author Julian Brackins
- *
- * @par Description:
  * Read in the parameter file, put everything where it needs to be
  *
  * @param[in] input - input from the .prm file
@@ -240,6 +227,233 @@ int Prm::ReadPrm( )
   return 0;
 }
 
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the Filename
+ *
+ * @returns filename - no seriously what did you even think
+ *
+ *****************************************************************************/
+string Prm::getFilename()
+{
+  return _filename;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the wts file param
+ *
+ * @returns _wts_file - wts file string
+ *
+ *****************************************************************************/
+string Prm::getWtsFile()
+{
+  return _wts_file;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the epochs param
+ *
+ * @returns _epochs - epochs integer
+ *
+ *****************************************************************************/
+int Prm::getEpochs()
+{
+  return _epochs;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the learning rate param
+ *
+ * @returns _learning_rate - learning rate double
+ *
+ *****************************************************************************/
+double Prm::getLearningRate()
+{
+  return _learning_rate;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the momentum param
+ *
+ * @returns _momentum - momentum double
+ *
+ *****************************************************************************/
+double Prm::getMomentum()
+{
+  return _momentum;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the threshold param
+ *
+ * @returns _threshold - threshold double
+ *
+ *****************************************************************************/
+double Prm::getThreshold()
+{
+  return _threshold;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the layers param
+ *
+ * @returns _layers - layers integer
+ *
+ *****************************************************************************/
+int Prm::getLayers()
+{
+  return _layers;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the wts file param
+ * 
+ * @param[in] index - index into vector
+ *
+ * @returns node_count - specific node value. Return last value in vector if 
+ *                       the index exceeds bounds, returns first value in 
+ *                       vector if < 0 is indexed
+ * @returns -100 - nodeCount vector is uninitialized.
+ *
+ *****************************************************************************/
+int Prm::getNodeCount( int index )
+{
+  int sz = _node_count.size();
+  if( _node_count.empty() )
+  {
+    return -100;
+  }
+  else if( index < 0 )
+  {
+    index = 0;
+  }
+  else if( index > sz )
+  {
+    index = _node_count.back();
+  }
+  return _node_count[index];
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the csv file param
+ *
+ * @returns _csv_file - csv file string
+ *
+ *****************************************************************************/
+string Prm::getCsvFile()
+{
+  return _csv_file;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the years param
+ *
+ * @returns _years - years integer
+ *
+ *****************************************************************************/
+int Prm::getYears()
+{
+  return _years;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the months param
+ *
+ * @returns _months - months integer
+ *
+ *****************************************************************************/
+int Prm::getMonths()
+{
+  return _months;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the end month param
+ *
+ * @returns _end_month - end month integer
+ *
+ *****************************************************************************/
+int Prm::getEndMonth()
+{
+  return _end_month;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the number of classes param
+ *
+ * @returns _num_classes - number of classes integer
+ *
+ *****************************************************************************/
+int Prm::getNumClasses()
+{
+  return _num_classes;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the low/med fire severity cutoff param
+ *
+ * @returns _low_med - low/med integer
+ *
+ *****************************************************************************/
+int Prm::getLowMed()
+{
+  return _low_med;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Get the med/high fire severity cutoff param
+ *
+ * @returns _med_high - med/high integer
+ *
+ *****************************************************************************/
+int Prm::getMedHigh()
+{
+  return _med_high;
+}
 
 /**************************************************************************//**
  * @author Julian Brackins
@@ -927,6 +1141,19 @@ int Prm::setMedHigh( int input )
   return 1;
 }
 
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print wts File Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printWtsFile( )
+{
+  //printf( "Weights File: %s \n", Prm::get.c_str() );
+}
 
 /**************************************************************************//**
  * @author Julian Brackins
@@ -941,7 +1168,7 @@ int Prm::setMedHigh( int input )
  *****************************************************************************/
 void printPrm()
 {
-  
+
 }
 
 
