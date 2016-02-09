@@ -115,7 +115,7 @@ Prm::~Prm()
  *              details
  *
  *****************************************************************************/
-int Prm::ReadPrm( )
+int Prm::readPrm( )
 {
 
   string filename = Prm::getFilename();
@@ -497,9 +497,6 @@ int Prm::setWtsFile( string input )
   wts = stripComment(input);
   ///Remove spaces just in case
   wts = stripSpaces(wts); 
-  
-  ///Debugging output...
-  printf("set Weights: %s \n", wts.c_str());
 
   ///Set value to private variable
   Prm::_wts_file = wts;
@@ -528,9 +525,6 @@ int Prm::setEpochs( string input )
   buffer = stripSpaces(buffer);
   string::size_type sz;
   epoch = stoi(buffer, &sz);
-  
-  ///Debugging output...
-  printf("set Epochs: %d \n", epoch);
   
   ///Set value to private variable
   Prm::setEpochs( epoch );
@@ -579,11 +573,6 @@ int Prm::setLearningRate( string input )
   string::size_type sz;
   learn = stod(buffer, &sz);
   
-
-
-  ///Debugging output...
-  printf("set Learning Rate: %lf \n", learn);
-  
   ///Set value to private variable
   Prm::setLearningRate( learn );
   return 1;
@@ -629,11 +618,6 @@ int Prm::setMomentum( string input )
   buffer = stripSpaces(buffer);
   string::size_type sz;
   momentum = stod(buffer, &sz);
-  
-
-
-  ///Debugging output...
-  printf("set Momentum: %lf \n", momentum);
   
   ///Set value to private variable
   Prm::setMomentum( momentum );
@@ -682,11 +666,6 @@ int Prm::setThreshold( string input )
   string::size_type sz;
   thresh = stod(buffer, &sz);
   
-
-
-  ///Debugging output...
-  printf("set Threshold: %lf \n", thresh);
-  
   ///Set value to private variable
   Prm::setThreshold( thresh );
   return 1;
@@ -733,9 +712,6 @@ int Prm::setLayers( string input )
   buffer = stripSpaces(buffer);
   string::size_type sz;
   layers = stoi(buffer, &sz);
-  
-  ///Debugging output...
-  printf("set Layers: %d \n", layers);
   
   ///Set value to private variable
   Prm::setLayers( layers );
@@ -787,15 +763,6 @@ int Prm::setNodeCount( string input )
       Prm::addNodeCount( val );
   }
 
-  printf("set Node Count: ");
-  int sz = Prm::_node_count.size();
-  for(int i = 0; i < sz; i++)
-  {
-    printf("%d ", Prm::_node_count[i]);
-  }
-
-  printf("\n");
-
   return 1;
 }
 
@@ -839,9 +806,6 @@ int Prm::setCsvFile( string input )
   ///Remove spaces just in case
   csv = stripSpaces(csv); 
   
-  ///Debugging output...
-  printf("set Csv File: %s \n", csv.c_str());
-  
   ///Set value to private variable
   Prm::_csv_file = csv;
   return 1;
@@ -868,9 +832,6 @@ int Prm::setYears( string input )
   buffer = stripSpaces(buffer);
   string::size_type sz;
   yrs = stoi(buffer, &sz);
-  
-  ///Debugging output...
-  printf("set Years of Burned Acreage: %d \n", yrs);
   
   ///Set value to private variable
   Prm::setYears( yrs );
@@ -919,9 +880,6 @@ int Prm::setMonths( string input )
   string::size_type sz;
   months = stoi(buffer, &sz);
   
-  ///Debugging output...
-  printf("set Months of PDSI data: %d \n", months);
-  
   ///Set value to private variable
   Prm::setMonths( months );
   return 1;
@@ -967,9 +925,6 @@ int Prm::setEndMonth( string input )
   buffer = stripSpaces(buffer);
   string::size_type sz;
   end = stoi(buffer, &sz);
-  
-  ///Debugging output...
-  printf("set End month of current year: %d \n", end);
   
   ///Set value to private variable
   Prm::setEndMonth( end );
@@ -1017,9 +972,6 @@ int Prm::setNumClasses( string input )
   string::size_type sz;
   num = stoi(buffer, &sz);
   
-  ///Debugging output...
-  printf("set Num Classes: %d \n", num);
-  
   ///Set value to private variable
   Prm::setNumClasses( num );
   return 1;
@@ -1066,9 +1018,6 @@ int Prm::setLowMed( string input )
   string::size_type sz;
   lowmed = stoi(buffer, &sz);
   
-  ///Debugging output...
-  printf("set Fire Severity (low/med): %d \n", lowmed);
-  
   ///Set value to private variable
   Prm::setLowMed( lowmed );
   return 1;
@@ -1114,9 +1063,6 @@ int Prm::setMedHigh( string input )
   string::size_type sz;
   medhi = stoi(buffer, &sz);
   
-  ///Debugging output...
-  printf("set Fire Severity (med/high): %d \n", medhi);
-  
   ///Set value to private variable
   Prm::setMedHigh( medhi );
   return 1;
@@ -1145,6 +1091,20 @@ int Prm::setMedHigh( int input )
  * @author Julian Brackins
  *
  * @par Description:
+ * Print Filename Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printFilename( )
+{
+  printf( "Prm File: %s \n", Prm::getFilename().c_str() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
  * Print wts File Parameter
  *
  * @returns none
@@ -1152,7 +1112,212 @@ int Prm::setMedHigh( int input )
  *****************************************************************************/
 void Prm::printWtsFile( )
 {
-  //printf( "Weights File: %s \n", Prm::get.c_str() );
+  printf( "Weights File: %s \n", Prm::getWtsFile().c_str() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Epochs Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printEpochs( )
+{
+  printf( "Epochs: %d \n", Prm::getEpochs() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Learning Rate Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printLearningRate( )
+{
+  printf( "Learning Rate: %lf \n", Prm::getLearningRate() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Momentum Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printMomentum( )
+{
+  printf( "Momentum: %lf \n", Prm::getMomentum() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Threshold Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printThreshold( )
+{
+  printf( "Threshold: %lf \n", Prm::getThreshold() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Layers Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printLayers( )
+{
+  printf( "Layers: %d \n", Prm::getLayers() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print The whole NodeCount vector
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printAllNodes( )
+{
+  printf("Node Count: ");
+  int sz = Prm::_node_count.size();
+  for(int i = 0; i < sz; i++)
+  {
+    Prm::printNodeCount( i );
+    printf(" ");
+  }
+  printf("\n");
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Individual Node Count Parameter
+ *
+ * @param[in] index - index to specific node count in vector
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printNodeCount( int index )
+{
+  printf( "%d", Prm::getNodeCount(index) );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print csv file Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printCsvFile( )
+{
+  printf( "CSV file: %s \n", Prm::getCsvFile().c_str() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Years Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printYears( )
+{
+  printf( "Years: %d \n", Prm::getYears() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Months Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printMonths( )
+{
+  printf( "Months: %d \n", Prm::getMonths() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print End Month Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printEndMonth( )
+{
+  printf( "End Month: %d \n", Prm::getEndMonth() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Number of Classes Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printNumClasses( )
+{
+  printf( "Number of Classes: %d \n", Prm::getNumClasses() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Low/Med Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printLowMed( )
+{
+  printf( "Low/Med: %d \n", Prm::getLowMed() );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print Med/High Parameter
+ *
+ * @returns none
+ *
+ *****************************************************************************/
+void Prm::printMedHigh( )
+{
+  printf( "Med/High: %d \n", Prm::getMedHigh() );
 }
 
 /**************************************************************************//**
@@ -1166,9 +1331,23 @@ void Prm::printWtsFile( )
  * @returns none
  *
  *****************************************************************************/
-void printPrm()
+void Prm::printPrm()
 {
-
+  Prm::printFilename();
+  Prm::printWtsFile();
+  Prm::printEpochs();
+  Prm::printLearningRate();
+  Prm::printMomentum();
+  Prm::printThreshold();
+  Prm::printLayers();
+  Prm::printAllNodes();
+  Prm::printCsvFile();
+  Prm::printYears();
+  Prm::printMonths();
+  Prm::printEndMonth();
+  Prm::printNumClasses();
+  Prm::printLowMed();
+  Prm::printMedHigh();
 }
 
 

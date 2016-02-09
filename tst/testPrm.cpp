@@ -9,7 +9,9 @@ int main(int argc, char**argv)
 
   Prm * p = new Prm( argv[1] );
   
-  p->ReadPrm();
+  p->readPrm();
+
+  p->printPrm();
   
   return 0;
 

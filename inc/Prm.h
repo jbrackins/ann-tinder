@@ -44,8 +44,8 @@ public:
   // DESTRUCTOR
   ~Prm();
   
-  int ReadPrm( );
-  int WritePrm();
+  int readPrm( );
+  int writePrm();
 
   ///GETTERS - Get the values of each variable
   std::string getFilename();
