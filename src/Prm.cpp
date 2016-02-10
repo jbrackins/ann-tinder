@@ -133,12 +133,13 @@ int Prm::readPrm( )
 
   ///index for parameter values
   int i = 0;
+
+  ///Read in each line of the prm file
   while(getline(infile, buffer))
   {
     index = buffer.find_first_not_of(" \t");
 
     first_char = buffer[index];
-    //buffer.erase(remove(buffer.begin(), buffer.end(), ' '), buffer.end());
     ///we only want the lines that do NOT start with a # and are NOT empty
 
     if( first_char != '#' && first_char != '\0' )
@@ -150,64 +151,79 @@ int Prm::readPrm( )
       switch( i )
       {
         case 0:
+          ///case 0 - Set the .wts file
           if( !setWtsFile( buffer ) )
             i = -100;
           break;
         case 1:
+          ///case 1 - Set the epoch value
           if( !setEpochs( buffer ) )
             i = -101;
           break;
         case 2:
+          ///case 2 - Set the learning rate
           if( !setLearningRate( buffer ) )
             i = -102;
           break;
         case 3:
+          ///case 3 - Set the momentum
           if( !setMomentum( buffer ) )
             i = -103;
           break;
+          ///case 4 - Set the threshold
         case 4:
           if( !setThreshold( buffer ) )
             i = -104;
           break;
         case 5:
+          ///case 5 - Set the layers
           if( !setLayers( buffer ) )
             i = -105;
           break;
         case 6:
+          ///case 6 - Set the node count
           if( !setNodeCount( buffer ) )
             i = -106;
           break;
         case 7:
+          ///case 7 - Set the .csv file
           if( !setCsvFile( buffer ) )
             i = -107;
           break;
         case 8:
+          ///case 8 - Set the years
           if( !setYears( buffer ) )
             i = -108;
           break;
         case 9:
+          ///case 9 - Set the months
           if( !setMonths( buffer ) )
             i = -109;
           break;
         case 10:
+          ///case 10 - Set the end month
           if( !setEndMonth( buffer ) )
             i = -110;
           break;
         case 11:
+          ///case 11 - Set the number of classes
           if( !setNumClasses( buffer ) )
             i = -111;
           break;
         case 12:
+          ///case 12 - Set the fire severity low/med value
           if( !setLowMed( buffer ) )
             i = -112;
           break;
         case 13:
+          ///case 13 - Set the fire severity med/high value
           if( !setMedHigh( buffer ) )
             i = -113;
           break;
       }
       if( i < 0 )
       {
+        ///If something went wrong, print out the proper error code
         Prm::printErrorCode(i);
         return -1;
       }
@@ -244,14 +260,21 @@ int Prm::writePrm( )
   ///Get Timestamp
   curr_time = time(NULL);  
   timestamp = ctime(&curr_time);
-  if (timestamp == NULL)
+  if(timestamp == NULL)
   {
-      printf("error getting the time...\n");
-      return 0;
+    printf("error getting the time...\n");
+    return 0;
   }
 
+  ///Open the file
   file_pointer = fopen( Prm::getFilename().c_str(), "w" );
+  if( file_pointer == NULL )
+  {
+    printf("error opening .prm file...\n");
+    return 0;
+  }
 
+  ///Write the header
   Prm::writeFilename( );
   fprintf( file_pointer, "#\n" );
   fprintf( file_pointer, "# Generated Parameter file for ");
@@ -274,6 +297,7 @@ int Prm::writePrm( )
   fprintf( file_pointer, "#*****************************************");
   fprintf( file_pointer, "**************************************\n");
 
+  ///Write ANN parameters
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#---------------\n" );
   fprintf( file_pointer, "# ANN parameters\n" );
@@ -288,6 +312,7 @@ int Prm::writePrm( )
   Prm::writeLayers(  );
   Prm::writeAllNodes();
 
+  ///Write training and testing data file
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#-------------------------------\n" );
   fprintf( file_pointer, "# training and testing data file\n" );
@@ -296,6 +321,7 @@ int Prm::writePrm( )
 
   Prm::writeCsvFile(  );
 
+  ///Write input feature vector info
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#------------------------------------------\n" );
   fprintf( file_pointer, "# input feature vector info:\n" );
@@ -311,6 +337,7 @@ int Prm::writePrm( )
   Prm::writeMonths(  );
   Prm::writeEndMonth(  );
 
+  ///Write Class info
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#------------------------------------------\n" );
   fprintf( file_pointer, "# output class info:\n" );
@@ -321,6 +348,7 @@ int Prm::writePrm( )
   
   Prm::writeNumClasses(  );
 
+  ///Write Fire Severity Parameters
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#------------------------------------------\n" );
   fprintf( file_pointer, "# fire severity parameters:\n" );
@@ -334,8 +362,10 @@ int Prm::writePrm( )
 
   fprintf( file_pointer, "\n" );
 
+  ///Write Footer
   Prm::writeFilename( );
 
+  ///Close .prm File
   fclose( file_pointer );
 
   return 1;
