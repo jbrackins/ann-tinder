@@ -38,10 +38,10 @@ doxygen:
 dox:
 	doxygen doc/doxy.conf 
 clean:
-	rm -f *.o ${TST} *~ core src/*.o inc/*~ src/*~ $(EXECS) *~
+	rm -f *.o ${TST} *~ core src/*.o inc/*~ src/*~ $(EXECS) *~ prm/testWriter.prm
 realclean:
 	rm -f *.o ANNtest ANNtrain CrossValidate *~ core src/*.o inc/*~ src/*~ $(EXECS) *~ *.swp
 edit:
 	gedit inc/*.h src/*.cpp Makefile &
 sublime:
-	sublime inc/*.h src/*.cpp Makefile &
+	sublime-text inc/*.h src/*.cpp Makefile &
