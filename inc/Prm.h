@@ -44,6 +44,7 @@ public:
   // DESTRUCTOR
   ~Prm();
   
+  ///READ and WRITE to/from the .prm file
   int readPrm( );
   int writePrm();
 
@@ -63,46 +64,6 @@ public:
   int getNumClasses();
   int getLowMed();
   int getMedHigh();
-
-  ///WRITERS - Write the values of each variable to a file
-  int writeFilename( );
-  int writeWtsFile( );
-  int writeEpochs(  );
-  int writeLearningRate(  );
-  int writeMomentum(  );
-  int writeThreshold(  );
-  int writeLayers(  );
-  int writeAllNodes();
-  int writeNodeCount( int index );
-  int writeCsvFile(  );
-  int writeYears(  );
-  int writeMonths(  );
-  int writeEndMonth(  );
-  int writeNumClasses(  );
-  int writeLowMed(  );
-  int writeMedHigh(  );
-
-  ///PRINTERS - Print the values of each variable to stdout
-  void printFilename();
-  void printWtsFile();
-  void printEpochs();
-  void printLearningRate();
-  void printMomentum();
-  void printThreshold();
-  void printLayers();
-  void printAllNodes();
-  void printNodeCount( int index );
-  void printCsvFile();
-  void printYears();
-  void printMonths();
-  void printEndMonth();
-  void printNumClasses();
-  void printLowMed();
-  void printMedHigh();
-  //print the whole damn lot
-  void printPrm();
-  //print errors
-  void printErrorCode( int err );
 
   ///SETTERS - Set the values of each variable. Note that
   ///All non-string parameters have two different setters, 
@@ -151,9 +112,50 @@ public:
   int setMedHigh( std::string input );
   int setMedHigh( int input );
 
+  ///WRITERS - Write the values of each variable to a file
+  int writeFilename( );
+  int writeWtsFile( );
+  int writeEpochs(  );
+  int writeLearningRate(  );
+  int writeMomentum(  );
+  int writeThreshold(  );
+  int writeLayers(  );
+  int writeAllNodes();
+  int writeNodeCount( int index );
+  int writeCsvFile(  );
+  int writeYears(  );
+  int writeMonths(  );
+  int writeEndMonth(  );
+  int writeNumClasses(  );
+  int writeLowMed(  );
+  int writeMedHigh(  );
+
+  ///PRINTERS - Print the values of each variable to stdout
+  void printFilename();
+  void printWtsFile();
+  void printEpochs();
+  void printLearningRate();
+  void printMomentum();
+  void printThreshold();
+  void printLayers();
+  void printAllNodes();
+  void printNodeCount( int index );
+  void printCsvFile();
+  void printYears();
+  void printMonths();
+  void printEndMonth();
+  void printNumClasses();
+  void printLowMed();
+  void printMedHigh();
+  //print the whole damn lot
+  void printPrm();
+  //print errors
+  void printErrorCode( int err );
+
   ///STRIPPERS - Not that kind ;) .... Removes random junk
   std::string stripComment( std::string input );
   std::string stripSpaces( std::string input );
+
 private:
   std::string      _filename;  
 
@@ -181,11 +183,7 @@ private:
   int              _low_med;  /// Corresponds to low/medium/high cutoffs
   int              _med_high;
 
-  FILE * file_pointer; //File Pointer
-public:
-
-  
-  
+  FILE * file_pointer; //File Pointer  
 };
 
 #endif
