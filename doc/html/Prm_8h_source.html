@@ -119,9 +119,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">// DESTRUCTOR</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="classPrm.html#aee17296d5aed3b88420a62a2185f3bf9">~Prm</a>();</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">//READ and WRITE to/from the .prm file</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#a86cfc66d28a7b2d5ff0f00682448b5cc">readPrm</a>( );</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#ae7efb4cd15c4fa2b581f5ec516018ec2">writePrm</a>();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="comment">//GETTERS - Get the values of each variable</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  std::string <a class="code" href="classPrm.html#a7ab628ec643cc240fd9979df81a4ecb0">getFilename</a>();</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  std::string <a class="code" href="classPrm.html#a09dc17d58a61737ed513d8d5c6cbaeae">getWtsFile</a>();</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#a0bda0fec335fce1dcdba315a15b31edf">getEpochs</a>();</div>
@@ -138,6 +140,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#a8dff72e78d8035aab1ced3a932c18922">getLowMed</a>();</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#a72ebfd538bb7ccef05219381d3fbf904">getMedHigh</a>();</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="comment">//SETTERS - Set the values of each variable. Note that</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="comment">//All non-string parameters have two different setters, </span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">//One for ubiquitous std::string types read in from file, </span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">//Another for the specific data type input</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">//File name setter</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#a8dcc18be467324d78416adeeea3d0260">setFilename</a>( std::string input );</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">//Weights file setter</span></div>
@@ -181,6 +187,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keywordtype">int</span> setMedHigh( std::string input );</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordtype">int</span> setMedHigh( <span class="keywordtype">int</span> input );</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="comment">//WRITERS - Write the values of each variable to a file</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#a7c95d54b838af5cc5eb1a546340ad66d">writeFilename</a>( );</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#a2d1fba043a69ff4452b1a3bda1c71c52">writeWtsFile</a>( );</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#a58398324312e3e653e8b345a3aebfc43">writeEpochs</a>(  );</div>
@@ -198,6 +205,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#a07f1dd78bdcb6202c2e99c3bbb4a447f">writeLowMed</a>(  );</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classPrm.html#ad3134a2c27c3910ae01d63ebb475c76d">writeMedHigh</a>(  );</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="comment">//PRINTERS - Print the values of each variable to stdout</span></div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classPrm.html#afe55d01fb0f14f27ea5fe65a4fae2427">printFilename</a>();</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classPrm.html#af0c4bd037982056f86597e002f3f432f">printWtsFile</a>();</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classPrm.html#a234c748d8d2eb0ed5e90a4888b20e97d">printEpochs</a>();</div>
@@ -219,12 +227,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="comment">//print errors</span></div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classPrm.html#a5b8d160d8ab212f09ea9070a313cca6d">printErrorCode</a>( <span class="keywordtype">int</span> err );</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="comment">//STRIPPERS - Not that kind ;) .... Removes random junk</span></div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  std::string <a class="code" href="classPrm.html#a9a8b6a6dd547159f794499a798e2305e">stripComment</a>( std::string input );</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  std::string <a class="code" href="classPrm.html#afc4f884eefec9b35378f31fbc4ffdda4">stripSpaces</a>( std::string input );</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  std::string      _filename;  </div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="comment">//ANN Parameters  </span></div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  std::string      _wts_file;       </div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="keywordtype">int</span>              _epochs;         </div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  <span class="keywordtype">double</span>           _learning_rate;  </div>
@@ -233,14 +243,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  <span class="keywordtype">int</span>              _layers;         </div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  std::vector&lt;int&gt; _node_count;     </div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="comment">//Training and Testing Data file</span></div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  std::string      _csv_file;       </div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="comment">//Feature vector info:</span></div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="keywordtype">int</span>              _years;          </div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keywordtype">int</span>              _months;         </div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <span class="keywordtype">int</span>              _end_month;      </div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="comment">//Output class info</span></div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <span class="keywordtype">int</span>              _num_classes;</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  <span class="comment">//Fire severity parameter</span></div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <span class="keywordtype">int</span>              _low_med;  </div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="keywordtype">int</span>              _med_high;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
@@ -261,23 +275,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classPrm_html_a234c748d8d2eb0ed5e90a4888b20e97d"><div class="ttname"><a href="classPrm.html#a234c748d8d2eb0ed5e90a4888b20e97d">Prm::printEpochs</a></div><div class="ttdeci">void printEpochs()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1612</div></div>
 <div class="ttc" id="classPrm_html_a6e807edee7fa65407fd1ebf01e381443"><div class="ttname"><a href="classPrm.html#a6e807edee7fa65407fd1ebf01e381443">Prm::getNodeCount</a></div><div class="ttdeci">int getNodeCount(int index)</div><div class="ttdef"><b>Definition:</b> Prm.cpp:486</div></div>
 <div class="ttc" id="classPrm_html_a5f187d1ca951065867a2ea3999bfd1ec"><div class="ttname"><a href="classPrm.html#a5f187d1ca951065867a2ea3999bfd1ec">Prm::printLayers</a></div><div class="ttdeci">void printLayers()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1668</div></div>
-<div class="ttc" id="classPrm_html_a7ab628ec643cc240fd9979df81a4ecb0"><div class="ttname"><a href="classPrm.html#a7ab628ec643cc240fd9979df81a4ecb0">Prm::getFilename</a></div><div class="ttdeci">std::string getFilename()</div><div class="ttdoc">GETTERS - Get the values of each variable. </div><div class="ttdef"><b>Definition:</b> Prm.cpp:383</div></div>
+<div class="ttc" id="classPrm_html_a7ab628ec643cc240fd9979df81a4ecb0"><div class="ttname"><a href="classPrm.html#a7ab628ec643cc240fd9979df81a4ecb0">Prm::getFilename</a></div><div class="ttdeci">std::string getFilename()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:383</div></div>
 <div class="ttc" id="classPrm_html_a7b12b30a4ae137fe035e91681b79c61c"><div class="ttname"><a href="classPrm.html#a7b12b30a4ae137fe035e91681b79c61c">Prm::printNodeCount</a></div><div class="ttdeci">void printNodeCount(int index)</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1705</div></div>
 <div class="ttc" id="classPrm_html_ac62b14bce152ea1837c006b53d393c90"><div class="ttname"><a href="classPrm.html#ac62b14bce152ea1837c006b53d393c90">Prm::printMedHigh</a></div><div class="ttdeci">void printMedHigh()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1803</div></div>
 <div class="ttc" id="classPrm_html_a72ebfd538bb7ccef05219381d3fbf904"><div class="ttname"><a href="classPrm.html#a72ebfd538bb7ccef05219381d3fbf904">Prm::getMedHigh</a></div><div class="ttdeci">int getMedHigh()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:597</div></div>
 <div class="ttc" id="classPrm_html_a0bda0fec335fce1dcdba315a15b31edf"><div class="ttname"><a href="classPrm.html#a0bda0fec335fce1dcdba315a15b31edf">Prm::getEpochs</a></div><div class="ttdeci">int getEpochs()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:411</div></div>
 <div class="ttc" id="classPrm_html_a260338aba1a1550ad7b29bb775254080"><div class="ttname"><a href="classPrm.html#a260338aba1a1550ad7b29bb775254080">Prm::Prm</a></div><div class="ttdeci">Prm()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:73</div></div>
 <div class="ttc" id="classPrm_html_a7fb18166e0c062d2e243d13c966e197e"><div class="ttname"><a href="classPrm.html#a7fb18166e0c062d2e243d13c966e197e">Prm::printCsvFile</a></div><div class="ttdeci">void printCsvFile()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1719</div></div>
-<div class="ttc" id="classPrm_html_afe55d01fb0f14f27ea5fe65a4fae2427"><div class="ttname"><a href="classPrm.html#afe55d01fb0f14f27ea5fe65a4fae2427">Prm::printFilename</a></div><div class="ttdeci">void printFilename()</div><div class="ttdoc">PRINTERS - Print the values of each variable to stdout. </div><div class="ttdef"><b>Definition:</b> Prm.cpp:1584</div></div>
+<div class="ttc" id="classPrm_html_afe55d01fb0f14f27ea5fe65a4fae2427"><div class="ttname"><a href="classPrm.html#afe55d01fb0f14f27ea5fe65a4fae2427">Prm::printFilename</a></div><div class="ttdeci">void printFilename()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1584</div></div>
 <div class="ttc" id="classPrm_html_a320c6a41ea4415a979ce18c89ea3a330"><div class="ttname"><a href="classPrm.html#a320c6a41ea4415a979ce18c89ea3a330">Prm::printAllNodes</a></div><div class="ttdeci">void printAllNodes()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1682</div></div>
 <div class="ttc" id="classPrm_html_a30316047049e959eac21840f5095dcaa"><div class="ttname"><a href="classPrm.html#a30316047049e959eac21840f5095dcaa">Prm::getMonths</a></div><div class="ttdeci">int getMonths()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:541</div></div>
 <div class="ttc" id="classPrm_html_a07f1dd78bdcb6202c2e99c3bbb4a447f"><div class="ttname"><a href="classPrm.html#a07f1dd78bdcb6202c2e99c3bbb4a447f">Prm::writeLowMed</a></div><div class="ttdeci">int writeLowMed()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1545</div></div>
 <div class="ttc" id="classPrm_html_a3b1b6521204140b6c56d450b771ebbee"><div class="ttname"><a href="classPrm.html#a3b1b6521204140b6c56d450b771ebbee">Prm::writeLearningRate</a></div><div class="ttdeci">int writeLearningRate()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1308</div></div>
-<div class="ttc" id="classPrm_html_a9a8b6a6dd547159f794499a798e2305e"><div class="ttname"><a href="classPrm.html#a9a8b6a6dd547159f794499a798e2305e">Prm::stripComment</a></div><div class="ttdeci">std::string stripComment(std::string input)</div><div class="ttdoc">STRIPPERS - Not that kind ;) .... Removes random junk. </div><div class="ttdef"><b>Definition:</b> Prm.cpp:1915</div></div>
+<div class="ttc" id="classPrm_html_a9a8b6a6dd547159f794499a798e2305e"><div class="ttname"><a href="classPrm.html#a9a8b6a6dd547159f794499a798e2305e">Prm::stripComment</a></div><div class="ttdeci">std::string stripComment(std::string input)</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1915</div></div>
 <div class="ttc" id="classPrm_html_a44972b47eb79e02a12452bab99323803"><div class="ttname"><a href="classPrm.html#a44972b47eb79e02a12452bab99323803">Prm::getEndMonth</a></div><div class="ttdeci">int getEndMonth()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:555</div></div>
-<div class="ttc" id="classPrm_html_a7c95d54b838af5cc5eb1a546340ad66d"><div class="ttname"><a href="classPrm.html#a7c95d54b838af5cc5eb1a546340ad66d">Prm::writeFilename</a></div><div class="ttdeci">int writeFilename()</div><div class="ttdoc">WRITERS - Write the values of each variable to a file. </div><div class="ttdef"><b>Definition:</b> Prm.cpp:1244</div></div>
+<div class="ttc" id="classPrm_html_a7c95d54b838af5cc5eb1a546340ad66d"><div class="ttname"><a href="classPrm.html#a7c95d54b838af5cc5eb1a546340ad66d">Prm::writeFilename</a></div><div class="ttdeci">int writeFilename()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1244</div></div>
 <div class="ttc" id="classPrm_html_afc37b6607442651ad6e04074d00039ba"><div class="ttname"><a href="classPrm.html#afc37b6607442651ad6e04074d00039ba">Prm::writeYears</a></div><div class="ttdeci">int writeYears()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1460</div></div>
-<div class="ttc" id="classPrm_html_a86cfc66d28a7b2d5ff0f00682448b5cc"><div class="ttname"><a href="classPrm.html#a86cfc66d28a7b2d5ff0f00682448b5cc">Prm::readPrm</a></div><div class="ttdeci">int readPrm()</div><div class="ttdoc">READ and WRITE to/from the .prm file. </div><div class="ttdef"><b>Definition:</b> Prm.cpp:118</div></div>
+<div class="ttc" id="classPrm_html_a86cfc66d28a7b2d5ff0f00682448b5cc"><div class="ttname"><a href="classPrm.html#a86cfc66d28a7b2d5ff0f00682448b5cc">Prm::readPrm</a></div><div class="ttdeci">int readPrm()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:118</div></div>
 <div class="ttc" id="classPrm_html_a09dc17d58a61737ed513d8d5c6cbaeae"><div class="ttname"><a href="classPrm.html#a09dc17d58a61737ed513d8d5c6cbaeae">Prm::getWtsFile</a></div><div class="ttdeci">std::string getWtsFile()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:397</div></div>
 <div class="ttc" id="classPrm_html_a9c2a7e5aac8359d54f6e191e098c54e3"><div class="ttname"><a href="classPrm.html#a9c2a7e5aac8359d54f6e191e098c54e3">Prm::printMonths</a></div><div class="ttdeci">void printMonths()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:1747</div></div>
 <div class="ttc" id="classPrm_html_aaa889209a4dfd53f505ad40f7a29db4b"><div class="ttname"><a href="classPrm.html#aaa889209a4dfd53f505ad40f7a29db4b">Prm::getCsvFile</a></div><div class="ttdeci">std::string getCsvFile()</div><div class="ttdef"><b>Definition:</b> Prm.cpp:513</div></div>
@@ -312,7 +326,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Feb 9 2016 17:21:37 for Artificial Neural Network - T.I.N.D.E.R. Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Feb 9 2016 19:36:50 for Artificial Neural Network - T.I.N.D.E.R. Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -44,11 +44,11 @@ public:
   // DESTRUCTOR
   ~Prm();
   
-  ///READ and WRITE to/from the .prm file
+  //READ and WRITE to/from the .prm file
   int readPrm( );
   int writePrm();
 
-  ///GETTERS - Get the values of each variable
+  //GETTERS - Get the values of each variable
   std::string getFilename();
   std::string getWtsFile();
   int getEpochs();
@@ -65,10 +65,10 @@ public:
   int getLowMed();
   int getMedHigh();
 
-  ///SETTERS - Set the values of each variable. Note that
-  ///All non-string parameters have two different setters, 
-  ///One for ubiquitous std::string types read in from file, 
-  ///Another for the specific data type input
+  //SETTERS - Set the values of each variable. Note that
+  //All non-string parameters have two different setters, 
+  //One for ubiquitous std::string types read in from file, 
+  //Another for the specific data type input
   //File name setter
   int setFilename( std::string input );
   //Weights file setter
@@ -112,7 +112,7 @@ public:
   int setMedHigh( std::string input );
   int setMedHigh( int input );
 
-  ///WRITERS - Write the values of each variable to a file
+  //WRITERS - Write the values of each variable to a file
   int writeFilename( );
   int writeWtsFile( );
   int writeEpochs(  );
@@ -130,7 +130,7 @@ public:
   int writeLowMed(  );
   int writeMedHigh(  );
 
-  ///PRINTERS - Print the values of each variable to stdout
+  //PRINTERS - Print the values of each variable to stdout
   void printFilename();
   void printWtsFile();
   void printEpochs();
@@ -152,14 +152,14 @@ public:
   //print errors
   void printErrorCode( int err );
 
-  ///STRIPPERS - Not that kind ;) .... Removes random junk
+  //STRIPPERS - Not that kind ;) .... Removes random junk
   std::string stripComment( std::string input );
   std::string stripSpaces( std::string input );
 
 private:
   std::string      _filename;  
 
-  ///ANN Parameters  
+  //ANN Parameters  
   std::string      _wts_file;       /// name of ANN weight file
   int              _epochs;         /// number of training epochs
   double           _learning_rate;  /// learning rate
@@ -168,18 +168,18 @@ private:
   int              _layers;         /// layers of adjustable weights
   std::vector<int> _node_count;     /// how many nodes in each layer 
 
-  ///Training and Testing Data file
+  //Training and Testing Data file
   std::string      _csv_file;       /// training and testing data file name
   
-  ///Feature vector info:
+  //Feature vector info:
   int              _years;          /// years of burned acreage, 
   int              _months;         /// months of PDSI data 
   int              _end_month;      /// end month of current year
 
-  ///Output class info
+  //Output class info
   int              _num_classes;
 
-  ///Fire severity parameter
+  //Fire severity parameter
   int              _low_med;  /// Corresponds to low/medium/high cutoffs
   int              _med_high;
 
