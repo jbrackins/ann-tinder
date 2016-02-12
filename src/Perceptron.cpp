@@ -1,25 +1,36 @@
-#include <vector>
-#include <iostream>
-#include <stdlib.h>
-#include <math.h>
+/*************************************************************************//**
+ * @file Perceptron.cpp
+ *
+ * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
+ *
+ * @brief SOURCE - Implementation of a basic Perceptron
+ *
+ ******************************************************************************/
+
+/******************************************************************************
+ *
+ * INCLUDE
+ *
+ ******************************************************************************/
+
+#include "../inc/Perceptron.h"
+
+/******************************************************************************
+ *
+ * NAMESPACES
+ *
+ ******************************************************************************/
 
 using namespace std;
 
-class perceptron
-{
-   public:
-      perceptron();
-      void add_input ( );
-      double* get_output ( );
-      void update_output ( );
-   private:
-      vector <double*> input;
-      vector <double> weights;
-      double* output;
-      double theata;
-};
-
-perceptron::perceptron ( void )
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Perceptron Constructor
+ *
+ *****************************************************************************/
+Perceptron::Perceptron ( void )
 {
    double rand_greater = rand( ) % 100000000;
    double rand_smaller = rand( ) % ( (int) rand_greater - 1 );
@@ -28,21 +39,55 @@ perceptron::perceptron ( void )
    theata = rand_smaller / rand_greater;
 }
 
-void perceptron::add_input (/*input type here?*/ )
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Perceptron Destructor
+ *
+ *****************************************************************************/
+Perceptron::~Perceptron ( )
+{
+
+}
+
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Add Input Function.
+ *
+ * @param[in] input -
+ *
+ *****************************************************************************/
+void Perceptron::add_input (/*input type here?*/ )
 {
    input.push_back(&(3.14)/* add the pointer to the input layer's output*/);
-
-   
 
    update_output ( );
 }
 
-double* perceptron::get_output ( )
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Get Output Function.
+ *
+ * @returns double* - 
+ *****************************************************************************/
+double* Perceptron::get_output ( )
 {
    return output;
 }
 
-void perceptron::update_output ( )
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Update Output Function.
+ *
+ *****************************************************************************/
+void Perceptron::update_output ( )
 {
    int num_input = input.size ( );
    double x_sub_j = 0;
