@@ -36,7 +36,7 @@ Perceptron::Perceptron ( void )
    double rand_smaller = rand( ) % ( (int) rand_greater - 1 );
 
 
-   theata = rand_smaller / rand_greater;
+   theta = rand_smaller / rand_greater;
 }
 
 /**************************************************************************//**
@@ -73,9 +73,9 @@ void Perceptron::add_input (/*input type here?*/ )
  * @par Description:
  * Get Output Function.
  *
- * @returns double* - 
+ * @returns double - 
  *****************************************************************************/
-double* Perceptron::get_output ( )
+double Perceptron::get_output ( )
 {
    return output;
 }
@@ -94,8 +94,8 @@ void Perceptron::update_output ( )
 
    for ( int i = 0; i < num_input; i++)
    {
-      x_sub_j += ((*(input[i])) * weights [ i ] - theata);
+      x_sub_j += ((*(input[i])) * weights [ i ] - theta);
    }
 
-   *output = 1.0 / ( 1 + exp( x_sub_j );
+   output = 1.0 / ( 1 + exp( x_sub_j );
 }

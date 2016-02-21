@@ -40,8 +40,8 @@ class Perceptron
    private:
       vector <double*> input;
       vector <double> weights;
-      double* output;
-      double theata;
+      double output;
+      double theta;
 };
 
  #endif
