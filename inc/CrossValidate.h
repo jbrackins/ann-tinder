@@ -3,7 +3,7 @@
  *
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
  *
- * @brief HEADER - Neural Network Header File
+ * @brief HEADER - Neural Network Cross Validation Header File
  *
  *****************************************************************************/
 
@@ -20,7 +20,9 @@
 #include <stdio.h>
 #include <time.h>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
+#include "ANN.h"
 
 
 /******************************************************************************
@@ -34,24 +36,15 @@ using namespace std;
 
 /******************************************************************************
  *
- * STRUCTS
+ * PROTOTYPES
  *
  ******************************************************************************/
 
-
-/*************************************************************************//**
- * @struct Affine
- *
- * @author Julian Brackins
- *
- * @brief This Struct is a Placeholder for actual stuff.
- *
- *****************************************************************************/
-struct Placeholder
-{
-  
-};
-
+void printHeader( );
+void printCrossValidate( int year, int burned, int severity, int predicted, double error );
+void printSummary( double accuracy );
+std::string formatResult( int result );
+void testPrintout( );
 
 /******************************************************************************
  *

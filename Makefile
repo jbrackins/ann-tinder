@@ -7,7 +7,8 @@ CFLAGS = -c  -g -O0
 CXXFLAGS = $(CFLAGS) -std=c++11 -Wall
 
 #OBJECT FILES
-OBJS = src/Prm.o src/Perceptron.o src/NeuralNet.o
+OBJS = src/Prm.o src/Perceptron.o src/NeuralNet.o src/ANN.o
+
 
 #OBJECT FILES FOR TEST PROGRAMS
 TESTS = tst/testPrm.o
@@ -41,6 +42,7 @@ clean:
 	rm -f *.o ${TST} *~ core src/*.o inc/*~ src/*~ $(EXECS) *~ prm/testWriter.prm
 realclean:
 	rm -f *.o ANNtest ANNtrain CrossValidate *~ core src/*.o inc/*~ src/*~ $(EXECS) *~ *.swp
+	rm -rf doc/html doc/latex
 edit:
 	gedit inc/*.h src/*.cpp Makefile &
 sublime:

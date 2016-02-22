@@ -1,14 +1,14 @@
 /*************************************************************************//**
- * @file ANNtrain.h
+ * @file ANN.h
  *
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
  *
- * @brief HEADER - Neural Network Training Header File
+ * @brief HEADER - ANN Tinder Main Header File
  *
  *****************************************************************************/
 
-#ifndef _ANNTRAIN_H_
-#define _ANNTRAIN_H_
+#ifndef _ANN_H_
+#define _ANN_H_
 
 /******************************************************************************
  *
@@ -16,14 +16,14 @@
  *
  ******************************************************************************/
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
 #include <iostream>
-#include <iomanip>
-#include <sstream>
 #include "Prm.h"
-#include "ANN.h"
+
+/******************************************************************************
+ *
+ * NAMESPACES
+ *
+ ******************************************************************************/
 
 /******************************************************************************
  *
@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-void printTraining( int epoch, std::string equation, double error );
-void testPrintout();
+void printInfo(Prm * paramFile );
+void usage( char ** argv );
 
 /******************************************************************************
  *
