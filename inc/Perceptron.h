@@ -33,13 +33,13 @@ class Perceptron
 {
    public:
       Perceptron();
-      
-      void add_input ( );
+      ~Perceptron();
+      void add_input ( double* new_input );
       double* get_output ( );
       void update_output ( );
    private:
-      vector <double*> input;
-      vector <double> weights;
+      std::vector <double*> input;
+      std::vector <double> weights;
       double output;
       double theta;
 };

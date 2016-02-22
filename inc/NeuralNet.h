@@ -34,7 +34,7 @@ class NeuralNet
       void connect_layers ( );
 
    private:
-      vector <vector <Perceptron>> percep_net;
+      std::vector <std::vector <Perceptron>> percep_net;
 };
 
   #endif

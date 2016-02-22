@@ -97,5 +97,5 @@ void Perceptron::update_output ( )
       x_sub_j += ((*(input[i])) * weights [ i ] - theta);
    }
 
-   output = 1.0 / ( 1 + exp( x_sub_j );
+   output = 1.0 / ( 1 + exp( x_sub_j ));
 }

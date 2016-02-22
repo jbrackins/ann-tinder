@@ -31,7 +31,7 @@ using namespace std;
 * Add perceptron to the neural network
 *
 *****************************************************************************/
-void NeuralNet::add_perceptron ( int nodes )
+void NeuralNet::add_layer ( int nodes )
 {
    int i;
    vector <Perceptron> perceptron_layer; // create a whole new layer
@@ -61,10 +61,10 @@ void NeuralNet::connect_layers( )
    for ( int i = 0; i < ( layers - 1 ); i++ )
    {
       left_layer_nodes = percep_net [i].size ( );
-      right_layer_node = percep_net [i + 1].size ( );
+      right_layer_nodes = percep_net [i + 1].size ( );
 
-      for ( int rt = 0; rt < right_layer_node; rt++ )
-         for ( int lft = 0; lft < left_layer_node; lft++ )
+      for ( int rt = 0; rt < right_layer_nodes; rt++ )
+         for ( int lft = 0; lft < left_layer_nodes; lft++ )
          {
             percep_net [i + 1][rt].add_input(percep_net [i][lft].get_output( ));
          }
