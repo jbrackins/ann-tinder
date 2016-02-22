@@ -70,11 +70,6 @@ using namespace std;
  ******************************************************************************/
 
 
-/******************************************************************************
- *
- * PROTOTYPES
- *
- ******************************************************************************/
 
 
 /**************************************************************************//**
@@ -91,10 +86,30 @@ using namespace std;
  *****************************************************************************/
 int main(int argc, char ** argv)
 {
-  
+  if( argc != 2 )
+  {
+  	usage( argv );
+  	return -1;
+  }  
   cout << "T.\tree\nI.\tntelligence\nN.\tetwork for\n";
   cout << "D.\tetecting\nE.\tmber\nR.\tisk\n";
   cout << "CrossValidate" << endl;
   return 0;
 
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print program Usage statements
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void usage( char ** argv )
+{
+  cout << "Usage: " << argv[0] << "<parameterfile>" << endl;
+  cout << endl;
+  cout << "<parameterfile> - Parameter file used for configuring net" << endl;
 }

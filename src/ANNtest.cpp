@@ -55,6 +55,7 @@
  February 03, 2016  * Prm Class started for reading/writing .prm parameter files
  February 06, 2016  * Finished basic setter methods for Prm Class
  February 09, 2016  * Finished getter, writing and printing methods for Prm Class
+ February 21, 2016  * Setting up executable outputs
  @endverbatim
  *
  ******************************************************************************/
@@ -82,13 +83,6 @@ using namespace std;
  ******************************************************************************/
 
 
-/******************************************************************************
- *
- * PROTOTYPES
- *
- ******************************************************************************/
-
-
 /**************************************************************************//**
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
  *
@@ -103,10 +97,208 @@ using namespace std;
  *****************************************************************************/
 int main(int argc, char ** argv)
 {
-  
-  cout << "T.\tree\nI.\tntelligence\nN.\tetwork for\n";
-  cout << "D.\tetecting\nE.\tmber\nR.\tisk\n";
-  cout << "ANNtest" << endl;
+  if( argc != 2 )
+  {
+  	usage( argv );
+  	return -1;
+  }  
+
+  Prm * p = new Prm( argv[1] );
+
+  //Read in a .prm file  
+  p->readPrm();
+
+  printInfo( p );
+
+  testPrintout(  );
+
   return 0;
 
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out training information
+ *
+ * @param[in] paramFile - Parameter file that has been read in.
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printInfo( Prm * paramFile )
+{
+  //Parameter file: bh.prm
+  //reading data file: PDSI_BH_1978-2015.csv
+
+  cout << "Parameter File: " << paramFile->getFilename( false ) << endl;
+  cout << "CSV  Data File: " << paramFile->getCsvFile()         << endl;
+
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out a testing header.
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printHeader( )
+{
+  cout << "*---------------------------------------*" << endl;
+  cout << "| SAMPLE | ACTUAL | PREDICTED | RESULT  |" << endl;
+  cout << "*---------------------------------------*" << endl;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out a testing iteration.
+ *
+ * @param[in] epoch     - Epoch of a given training iteration
+ * @param[in] equation  - error equation used for training
+ * @param[in] error     - error value
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printTesting( int sample, int actual, int predicted )
+{
+  string str_actual    = formatResult(actual);
+  string str_predicted = formatResult(predicted);
+  string str_result;
+
+  ///If the actual and predicted are identical,
+  ///This prediction was successful.
+  ///Also just make sure predicted isn't an error state
+  if( actual == predicted && predicted != 000 )
+  	str_result = "SUCCESS";
+  else
+  	str_result = "FAILURE";
+  
+  cout << "|" << setw(8) << sample;
+  cout << "|" << " " << str_actual    << "    ";
+  cout << "|" << " " << str_predicted << "       ";
+  cout << "|" << " " << str_result    << " ";
+  cout << "|" << endl;
+  cout << "*---------------------------------------*" << endl;;
+
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out a testing iteration.
+ *
+ * @param[in] epoch     - Epoch of a given training iteration
+ * @param[in] equation  - error equation used for training
+ * @param[in] error     - error value
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printSummary( string equation, double error, double accuracy )
+{
+  
+  cout << endl;
+  cout << equation << "error: ";
+  cout << setiosflags(ios::fixed) << setprecision(3)  << error << endl; 
+  cout << "accuracy: " << setprecision(1) << accuracy * 100 << "%%" << endl;
+
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Format the Actual and Predicted strings so they're pretty!
+ *
+ * @param[in] result - A given value, either actual or predicted
+ *
+ * @returns "LOW" - value passed in was 100
+ * @returns "MED" - value passed in was 010
+ * @returns "Hi " - value passed in was 001
+ * @returns "ERR" - value passed in was invalid (anything other than above)
+ *
+ *****************************************************************************/
+string formatResult( int result )
+{
+  
+  ///100 = LOW
+  if(result == 100 )
+  	return "LOW";
+  ///010 = MED
+  else if(result == 010 )
+  	return "MED";
+  ///001 = HI
+  else if(result == 001 )
+  	return "HI ";
+  ///Invalid otherwise
+  else
+  	return "ERR";
+
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Test the output of our program
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void testPrintout(  )
+{
+  string eq = "RMS";
+  double err = 0.328345;
+  double acc = .91332;
+
+
+  int samp;
+  int act;
+  int pred;
+
+  printHeader( );
+
+  //verify matches work
+  samp = 10;
+  act = 100;
+  pred = 100;
+  printTesting( samp, act, pred );
+
+  //verify non match doesn't...
+  samp = 2;
+  act  = 010;
+  pred = 001;
+  printTesting( samp, act, pred ); 
+
+  //verify invalid...
+  samp = 1000;
+  act  = 001;
+  pred = 000;
+  printTesting( samp, act, pred );  
+
+  printSummary( eq, err, acc );
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print program Usage statements
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void usage( char ** argv )
+{
+  cout << "Usage: " << argv[0] << "<parameterfile>" << endl;
+  cout << endl;
+  cout << "<parameterfile> - Parameter file used for configuring net" << endl;
 }

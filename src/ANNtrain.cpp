@@ -54,7 +54,6 @@
  ******************************************************************************/
 
 #include "../inc/ANNtrain.h"
-#include "../inc/Prm.h"
 
 /******************************************************************************
  *
@@ -79,12 +78,17 @@ using namespace std;
  * @param[in] argc - the number of arguments from the command prompt.
  * @param[in] argv - a 2d array of characters containing the arguments.
  *
- * @returns 0 - Program Ends.
+ * @returns 0 - Program Ends Gracefully.
+ * @returns -1 - Program Ends because YOU GOOFED UP
  *
  *****************************************************************************/
 int main(int argc, char ** argv)
 {
-  
+  if( argc != 2 )
+  {
+  	usage( argv );
+  	return -1;
+  }  
 
   Prm * p = new Prm( argv[1] );
 
@@ -169,3 +173,18 @@ void testPrintout(  )
   }
 }
 
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print program Usage statements
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void usage( char ** argv )
+{
+  cout << "Usage: " << argv[0] << "<parameterfile>" << endl;
+  cout << endl;
+  cout << "<parameterfile> - Parameter file used for configuring net" << endl;
+}

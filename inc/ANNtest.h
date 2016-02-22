@@ -20,7 +20,9 @@
 #include <stdio.h>
 #include <time.h>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
+#include "Prm.h"
 
 
 /******************************************************************************
@@ -34,23 +36,16 @@ using namespace std;
 
 /******************************************************************************
  *
- * STRUCTS
+ * PROTOTYPES
  *
  ******************************************************************************/
-
-
-/*************************************************************************//**
- * @struct Affine
- *
- * @author Julian Brackins
- *
- * @brief This Struct is a Placeholder for actual stuff.
- *
- *****************************************************************************/
-struct Placeholder
-{
-  
-};
+void printInfo( Prm * paramFile );
+void printHeader( );
+void printTesting( int epoch, string equation, double error );
+void printSummary( string equation, double error, double accuracy );
+std::string formatResult( int result );
+void testPrintout(  );
+void usage( char ** argv );
 
 
 /******************************************************************************
