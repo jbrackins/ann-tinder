@@ -7,7 +7,7 @@ CFLAGS = -c  -g -O0
 CXXFLAGS = $(CFLAGS) -std=c++11 -Wall
 
 #OBJECT FILES
-OBJS = src/Prm.o src/ANN.o
+OBJS = src/Prm.o src/ANN.o src/Weights.o src/Reading_CSV.o
 
 #OBJECT FILES FOR TEST PROGRAMS
 TESTS = tst/testPrm.o
@@ -35,14 +35,26 @@ CrossValidate: src/CrossValidate.o ${OBJS}
 	${LINK} -o $@ $^
 doxygen:
 	doxygen doc/doxy.conf 
+	(cd ./doc/latex && make)
+	cp ./doc/latex/refman.pdf doxygen.pdf	
 dox:
-	doxygen doc/doxy.conf 
+	make doxygen
 clean:
 	rm -f *.o ${TST} *~ core src/*.o inc/*~ src/*~ $(EXECS) *~ prm/testWriter.prm
+#Hahaha I am a bad speller sometimes so let's add these for no reason:
+clena:
+	make clean
+celan:
+	make clean
 realclean:
 	rm -f *.o ANNtest ANNtrain CrossValidate *~ core src/*.o inc/*~ src/*~ $(EXECS) *~ *.swp
-	rm -rf doc/html doc/latex
+	rm -rf doc/html doc/latex pa1_brac_carr_nien.tar doxygen.pdf
 edit:
 	gedit inc/*.h src/*.cpp Makefile &
 sublime:
-	sublime-text inc/*.h src/*.cpp Makefile &
+	subl inc/*.h src/*.cpp Makefile &
+#ZIP UP ENTIRE ARCHIVE FOR SUBMISSION. GENERATE LATEX PDF AND LET ER GO
+archive:
+	make realclean
+	make doxygen
+	tar --exclude='../ann-tinder/.git' --exclude='../ann-tinder/doc' -cvf pa1_brac_carr_nien.tar ../ann-tinder/
