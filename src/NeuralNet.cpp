@@ -24,6 +24,23 @@
 
 using namespace std;
 
+NeuralNet::NeuralNet ( string param_file )
+{
+   ANN_params = new Prm ( param_file );
+   ANN_params -> readPrm ( );
+
+   /*if (ANN_params -> valid ( ))
+   {
+      
+   }
+   else
+   {
+      cout << "Error opening parameter file: " + param_file << endl;
+      cout << "Program terminating" << endl;
+      exit ( 2 );
+   }*/
+}
+
 /**************************************************************************//**
 * @author Samuel Carroll
 *
@@ -80,29 +97,79 @@ void NeuralNet::connect_layers( )
 }
 
 /**************************************************************************//**
+* @author Samuel Carroll & Alex Nienhueser
+*
+* @par Description:
+* Update the weights in the ANN
+******************************************************************************/
+void NeuralNet::update_weights( )
+{
+   int layers = percep_net.size ( );
+   int curr_layer;
+   int next_layer_size;
+   int nodes;
+   double new_weight;
+
+   curr_layer = layers - 2;
+
+   for( int i = curr_layer; i >= 0; i-- )
+   {
+      nodes = percep_net[curr_layer].size( );
+      next_layer_size = percep_net[curr_layer + 1].size ( );
+      for ( int j = 0; j < nodes; j++ )
+      {
+         for ( int k = 0; k < next_layer_size; k++ )
+         {
+            new_weight = percep_net[i + 1][k].get_weight ( j );
+            new_weight += ANN_params -> getLearningRate() *
+                          *(percep_net[i][j].get_output ( )) * 
+                          percep_net[i][k].get_error_grad ( );
+            percep_net[i + 1][k].set_weight(new_weight, j);
+         }
+      }
+   }
+}
+
+/**************************************************************************//**
 * @author Samuel Carroll
 *
 * @par Description:
-* Update all the weights for all the nodes in the ANN
+* Update all the error gradiants in the ANN
 *
 ******************************************************************************/
-void NeuralNet::update_weights ( )
+void NeuralNet::update_grads ( )
 {
-   int layers = percep_net.size( );
+   int layers = percep_net.size ( );
+   int next_layer_size;
    int curr_layer;
    int nodes;
    double new_error_grad;
+   double sum;
 
    curr_layer = layers - 1;
    nodes = percep_net[curr_layer].size( );
    for (int i = 0; i < nodes; i++)
    {
-      update_error_grad ( percep_net[curr_layer][i], false );
+      update_error_grad ( percep_net[curr_layer][i], false, 0 );
    }
 
-   for (curr_layer = layers - 2; curr_layer >= 0; curr_layer--)
+   for (curr_layer = layers - 2; curr_layer > 0; curr_layer--)
    {
-   
+      sum = 0;
+      nodes = percep_net[curr_layer].size( );
+      next_layer_size = percep_net[curr_layer + 1].size( );
+      for (int j = 0; j < nodes; j++)
+      {
+         for ( int k = 0; k < next_layer_size; k++ )
+            sum += percep_net[curr_layer + 1][k].get_weight ( j ) *
+                   percep_net[curr_layer + 1][k].get_error_grad ( );
+
+         new_error_grad = *(percep_net[curr_layer][j].get_output( )) *
+                          (1 - *(percep_net[curr_layer][j].get_output ( ))) *
+                          sum;
+
+         update_error_grad (percep_net[curr_layer][j], true, new_error_grad);
+      }
    }
 
 }
@@ -114,14 +181,14 @@ void NeuralNet::update_weights ( )
 * Update the error gradiant for a given perceptron in the ANN
 *
 ******************************************************************************/
-void NeuralNet::update_error_grad (Perceptron curr_node, bool inside_node )
+void NeuralNet::update_error_grad (Perceptron curr_node, bool inside_node,
+                                   double new_error_grad )
 {
    double difference;
-   double new_error_grad;
 
    if ( inside_node == true )
    {
-
+      curr_node.set_error_grad(new_error_grad);
    }
    else
    {
