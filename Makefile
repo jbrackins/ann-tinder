@@ -7,7 +7,8 @@ CFLAGS = -c  -g -O0
 CXXFLAGS = $(CFLAGS) -std=c++11 -Wall
 
 #OBJECT FILES
-OBJS = src/Prm.o src/ANN.o
+OBJS = src/Prm.o src/Perceptron.o src/NeuralNet.o src/ANN.o
+
 
 #OBJECT FILES FOR TEST PROGRAMS
 TESTS = tst/testPrm.o
@@ -29,7 +30,7 @@ testPRM: tst/testPrm.o src/Prm.o
 	${LINK} -o $@ $^
 ANNtest: src/ANNtest.o ${OBJS}
 	${LINK} -o $@ $^
-ANNtrain: src/ANNtrain.o ${OBJS}
+ANNtrain: src/ANNtrain.o ${OBJS} 
 	${LINK} -o $@ $^
 CrossValidate: src/CrossValidate.o ${OBJS}
 	${LINK} -o $@ $^
