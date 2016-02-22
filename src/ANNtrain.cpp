@@ -1,7 +1,7 @@
 /*************************************************************************//**
  * @file ANNtrain.cpp
  *
- * @brief SOURCE - ANNtrain program file. 
+ * @brief SOURCE - Artificial Neural Network - ANNtrain Tester program file. 
  *
  * @mainpage Program 1 - TINDER
  *
@@ -111,6 +111,9 @@ int main(int argc, char ** argv)
 void printTraining( int epoch, string equation, double error )
 {
   
+  ///Print out a single iteration of the training execution. For each epoch, 
+  ///The error value is out displayed. A successful neural network should have 
+  ///a decreasing error value with each iteration.
   cout << "Epoch" << setw(7) << epoch;
   cout << ": " << equation << " error = ";
   cout << setiosflags(ios::fixed) << setprecision(3)  << error << endl; 

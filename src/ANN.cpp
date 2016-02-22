@@ -1,7 +1,7 @@
 /*************************************************************************//**
  * @file ANN.cpp
  *
- * @brief SOURCE - ANN Tinder main file. 
+ * @brief SOURCE - ANN Tinder Main Source file. 
  *
  * @mainpage Program 1 - TINDER
  *
@@ -99,7 +99,7 @@ void printInfo( Prm * paramFile )
 
   cout << "Parameter File: " << paramFile->getFilename( false ) << endl;
   cout << "CSV  Data File: " << paramFile->getCsvFile()         << endl;
-
+  cout << endl;
 }
 
  /**************************************************************************//**

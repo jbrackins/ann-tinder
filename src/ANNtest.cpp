@@ -1,7 +1,7 @@
 /*************************************************************************//**
  * @file ANNtest.cpp
  *
- * @brief SOURCE - ANNtest program file. 
+ * @brief SOURCE - Artificial Neural Network - ANNtest Trainer program file. 
  *
  * @mainpage Program 1 - TINDER
  *
@@ -111,7 +111,7 @@ int main(int argc, char ** argv)
  * @author Julian Brackins
  *
  * @par Description:
- * Print out a testing header.
+ * Print out the testing header.
  *
  * @returns nothing
  *
@@ -129,9 +129,9 @@ void printHeader( )
  * @par Description:
  * Print out a testing iteration.
  *
- * @param[in] epoch     - Epoch of a given training iteration
- * @param[in] equation  - error equation used for training
- * @param[in] error     - error value
+ * @param[in] sample     - sample number
+ * @param[in] actual     - actual forest fire activity from PDSI data
+ * @param[in] predicted  - prediction made by the neural network
  *
  * @returns nothing
  *
@@ -142,14 +142,21 @@ void printTesting( int sample, int actual, int predicted )
   string str_predicted = formatResult(predicted);
   string str_result;
 
-  ///If the actual and predicted are identical,
-  ///This prediction was successful.
-  ///Also just make sure predicted isn't an error state
+  ///Prints out a single line of output. This line is a given sample's
+  ///actual and predicted values, which can each be low (LOW), medium (MED), 
+  ///or high (HI ) fire severity. If the actual and predicted values are 
+  ///identical, this means that the neural net was successful in predicting 
+  ///a given sample. If these values do not match, then the neural network
+  ///did not predict the given sample properly.
+  
+  //If the actual and predicted are identical,
+  //This prediction was successful.
   if( actual == predicted && predicted != 000 )
   	str_result = "SUCCESS";
   else
   	str_result = "FAILURE";
   
+  //print the sample 
   cout << "|" << setw(8) << sample;
   cout << "|" << " " << str_actual    << "    ";
   cout << "|" << " " << str_predicted << "       ";
@@ -163,11 +170,11 @@ void printTesting( int sample, int actual, int predicted )
  * @author Julian Brackins
  *
  * @par Description:
- * Print out a testing iteration.
+ * Print out the testing summary.
  *
- * @param[in] epoch     - Epoch of a given training iteration
  * @param[in] equation  - error equation used for training
- * @param[in] error     - error value
+ * @param[in] error     - error value 
+ * @param[in] accuracy  - percentage of samples correctly predicted
  *
  * @returns nothing
  *
@@ -175,6 +182,8 @@ void printTesting( int sample, int actual, int predicted )
 void printSummary( string equation, double error, double accuracy )
 {
   
+  ///This function will print out the summary statistics of how well the 
+  ///neural network performed in the tests.
   cout << endl;
   cout << equation << "error: ";
   cout << setiosflags(ios::fixed) << setprecision(3)  << error << endl; 
@@ -199,6 +208,11 @@ void printSummary( string equation, double error, double accuracy )
 string formatResult( int result )
 {
   
+  ///This function rewrites each integer value of a given result, either 
+  ///actual or predicted, and displays it in a readable manner.
+  ///The conversions are as follows:
+
+	
   ///100 = LOW
   if(result == 100 )
   	return "LOW";

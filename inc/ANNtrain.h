@@ -3,7 +3,7 @@
  *
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
  *
- * @brief HEADER - Neural Network Header File
+ * @brief HEADER - Neural Network Training Header File
  *
  *****************************************************************************/
 

@@ -3,7 +3,7 @@
  *
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
  *
- * @brief HEADER - Class for reading and writing Parameter Files.
+ * @brief HEADER - Class for reading and writing Prm (Parameter) Files.
  *
  *****************************************************************************/
 
@@ -31,7 +31,7 @@
 *
 * @author Julian Brackins
 *
-* @brief Parameter file class.
+* @brief Prm (Parameter file) class.
 *
 *****************************************************************************/
 class Prm
@@ -163,30 +163,30 @@ private:
   std::string      _filename;  
 
   //ANN Parameters  
-  std::string      _wts_file;       /// name of ANN weight file
-  int              _epochs;         /// number of training epochs
-  double           _learning_rate;  /// learning rate
-  double           _momentum;       /// momentum
-  double           _threshold;      /// threshold for ANN error
-  int              _layers;         /// layers of adjustable weights
-  std::vector<int> _node_count;     /// how many nodes in each layer 
+  std::string      _wts_file;       // name of ANN weight file
+  int              _epochs;         // number of training epochs
+  double           _learning_rate;  // learning rate
+  double           _momentum;       // momentum
+  double           _threshold;      // threshold for ANN error
+  int              _layers;         // layers of adjustable weights
+  std::vector<int> _node_count;     // how many nodes in each layer 
 
   //Training and Testing Data file
-  std::string      _csv_file;       /// training and testing data file name
+  std::string      _csv_file;       // training and testing data file name
   
   //Feature vector info:
-  int              _years;          /// years of burned acreage, 
-  int              _months;         /// months of PDSI data 
-  int              _end_month;      /// end month of current year
+  int              _years;          // years of burned acreage, 
+  int              _months;         // months of PDSI data 
+  int              _end_month;      // end month of current year
 
   //Output class info
   int              _num_classes;
 
   //Fire severity parameter
-  int              _low_med;  /// Corresponds to low/medium/high cutoffs
+  int              _low_med;  // Corresponds to low/medium/high cutoffs
   int              _med_high;
 
-  bool             _valid;    ///Corresponds to if the prm file was read successfully
+  bool             _valid;    //Corresponds to if the prm file was read successfully
   FILE * file_pointer; //File Pointer  
 };
 

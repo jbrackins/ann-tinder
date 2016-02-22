@@ -1,9 +1,9 @@
 /*************************************************************************//**
- * @file ANNtrain.h
+ * @file ANN.h
  *
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
  *
- * @brief HEADER - Main Header File
+ * @brief HEADER - ANN Tinder Main Header File
  *
  *****************************************************************************/
 

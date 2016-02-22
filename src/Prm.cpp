@@ -1,7 +1,7 @@
 /*************************************************************************//**
  * @file Prm.cpp
  *
- * @brief SOURCE - Class for reading and writing Parameter Files.
+ * @brief SOURCE - Class for reading and writing Prm (Parameter) Files.
  *
  ******************************************************************************/
 
@@ -25,13 +25,20 @@ using namespace std;
  * @author Julian Brackins
  *
  * @par Description:
- * Prm Constructor without a filename specified. pROBABLY A BAD IDEA.
+ * Prm Constructor without a filename specified. Generally a bad idea, since 
+ * you will ordinarily have to supply a filename for the parameter file 
+ * immediately afterwards...
  *
  *****************************************************************************/
 Prm::Prm( )
 {
-  ///Validity of the prm file is false by default, will become true
-  ///upon a successfully read prm file.
+  ///Initialize the Parameter file when you have constructed it. This 
+  ///Constructor sets the valid flag of the parameter file as False on 
+  ///construction.
+
+  ///This flag value will become true upon a successfully 
+  ///read prm file. Otherwise, this will be false to indicate there has 
+  ///been an error in reading a parameter file
   _valid = false;
 }
 
@@ -56,12 +63,18 @@ Prm::Prm( string filename )
  * @author Julian Brackins
  *
  * @par Description:
- * Prm DEstructor.
+ * Prm Destructor.
  *
  *****************************************************************************/
 Prm::~Prm()
 {
-
+  ///The destructor will simply double check your file_pointer variable. If 
+  ///for whatever reason this has still hung open, just close it out upon 
+  ///destruction of the class.
+  if( file_pointer != NULL )
+  {
+    fclose( file_pointer );
+  }
 }
 
 /**************************************************************************//**
@@ -81,8 +94,16 @@ Prm::~Prm()
 int Prm::readPrm( )
 {
 
+  string buffer;
+  int index;
+  char first_char;
+
+  ///This function will read in the parameter file. First, the parameter file 
+  ///name will be used to verify that the parameter file actually exists. 
+  ///If the file does not exist, then the program will output an error and will 
+  ///not set the valid flag to true. After running readPrm(), valid() can be used 
+  ///to validate whether the file has been read properly.
   string filename = Prm::getFilename();
-  ///Read in the file
   ifstream infile( filename );
   if( !infile )
   {
@@ -90,25 +111,30 @@ int Prm::readPrm( )
     return 0;
   }
 
-  string buffer;
-  int index;
-  char first_char;
 
-  ///index for parameter values
+
+  //index for parameter values
   int i = 0;
 
-  ///Read in each line of the prm file
+  ///The function will read in each line of the prm file, one after another. 
+  ///The program only cares about lines that do NOT start with a 
+  ///Hashtag - # (or do you call them 'pound signs', I don't even know lmaooo)
+
+  ///A loop structure will parse each line of the input file that does not have 
+  ///the # symbol and determine which parameter this line handles. The handling 
+  ///structure is briefly discussed as follows:
+  //Read in each line of the prm file
   while(getline(infile, buffer))
   {
     index = buffer.find_first_not_of(" \t");
 
     first_char = buffer[index];
-    ///we only want the lines that do NOT start with a # and are NOT empty
+    //we only want the lines that do NOT start with a # and are NOT empty
 
     if( first_char != '#' && first_char != '\0' )
     {
-      ///Set parameter file line to whatever variable is next.
-      ///Based on the i iterator and this case statement
+      //Set parameter file line to whatever variable is next.
+      //Based on the i iterator and this case statement
 
 
       switch( i )
@@ -186,20 +212,25 @@ int Prm::readPrm( )
       }
       if( i < 0 )
       {
-        ///If something went wrong, print out the proper error code
+        ///If something goes wrong, an error code is generated. I don't think this 
+        ///will ever really happen since this assignment should generally have the 
+        ///same order to the parameters.
         Prm::printErrorCode(i);
         return -1;
       }
 
-      ///Go on to filling the next parameter
+      //Go on to filling the next parameter
       i++;    
     }
 
   }
 
+  //close the file.
   infile.close();
 
-  ///If this happens then it's likely the prm file is valid so set that flag.
+  ///Upon successfully reading in all of the parameters, the Prm instance will 
+  ///have its valid flag set to true, which means the class has all the information 
+  //necessary for the neural network.
   _valid = true;
 
   return 0;
@@ -221,10 +252,13 @@ int Prm::readPrm( )
  *****************************************************************************/
 int Prm::writePrm( )
 {
+  ///This function will use all of the information contained in the Prm class 
+  ///to generate a new parameter file if necessary.
+
   time_t curr_time;
   char* timestamp;
 
-  ///Get Timestamp
+  //Get Timestamp
   curr_time = time(NULL);  
   timestamp = ctime(&curr_time);
   if(timestamp == NULL)
@@ -233,7 +267,7 @@ int Prm::writePrm( )
     return 0;
   }
 
-  ///Open the file
+  //Open the file
   file_pointer = fopen( Prm::getFilename().c_str(), "w" );
   if( file_pointer == NULL )
   {
@@ -241,8 +275,8 @@ int Prm::writePrm( )
     return 0;
   }
 
-  ///Write the header
-  ///Pass False into here so that you just get prm file name
+  //Write the header
+  //Pass False into here so that you just get prm file name
   Prm::writeFilename( );
   fprintf( file_pointer, "#\n" );
   fprintf( file_pointer, "# Generated Parameter file for ");
@@ -265,7 +299,7 @@ int Prm::writePrm( )
   fprintf( file_pointer, "#*****************************************");
   fprintf( file_pointer, "**************************************\n");
 
-  ///Write ANN parameters
+  //Write ANN parameters
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#---------------\n" );
   fprintf( file_pointer, "# ANN parameters\n" );
@@ -280,7 +314,7 @@ int Prm::writePrm( )
   Prm::writeLayers(  );
   Prm::writeAllNodes();
 
-  ///Write training and testing data file
+  //Write training and testing data file
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#-------------------------------\n" );
   fprintf( file_pointer, "# training and testing data file\n" );
@@ -289,7 +323,7 @@ int Prm::writePrm( )
 
   Prm::writeCsvFile(  );
 
-  ///Write input feature vector info
+  //Write input feature vector info
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#------------------------------------------\n" );
   fprintf( file_pointer, "# input feature vector info:\n" );
@@ -305,7 +339,7 @@ int Prm::writePrm( )
   Prm::writeMonths(  );
   Prm::writeEndMonth(  );
 
-  ///Write Class info
+  //Write Class info
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#------------------------------------------\n" );
   fprintf( file_pointer, "# output class info:\n" );
@@ -316,7 +350,7 @@ int Prm::writePrm( )
   
   Prm::writeNumClasses(  );
 
-  ///Write Fire Severity Parameters
+  //Write Fire Severity Parameters
   fprintf( file_pointer, "\n" );
   fprintf( file_pointer, "#------------------------------------------\n" );
   fprintf( file_pointer, "# fire severity parameters:\n" );
@@ -330,10 +364,10 @@ int Prm::writePrm( )
 
   fprintf( file_pointer, "\n" );
 
-  ///Write Footer
+  //Write Footer
   Prm::writeFilename( );
 
-  ///Close .prm File
+  //Close .prm File
   fclose( file_pointer );
 
   return 1;
@@ -350,7 +384,12 @@ int Prm::writePrm( )
  *****************************************************************************/
 bool Prm::valid( )
 {
-   return _valid;
+  ///If this method returns FALSE, the file has not been read in successfully. 
+  ///The rest of the program should not commence, as this will cause errors 
+  ///from missing variables.
+
+  ///If this method returns TRUE, the file has been read in successfully. 
+  return _valid;
 }
 
 
@@ -496,6 +535,14 @@ int Prm::getLayers()
  *****************************************************************************/
 int Prm::getNodeCount( int index )
 {
+  ///getNodeCount will give you how many nodes are in each layer of the neural 
+  ///network. There should be three values you can extract from this method.
+  
+  ///getNodeCount(0) - Input Layer
+  
+  ///getNodeCount(1) - Hidden Layer
+
+  ///getNodeCount(2) - Output Layer
   int sz = _node_count.size();
   if( _node_count.empty() )
   {
@@ -660,12 +707,19 @@ int Prm::setWtsFile( string input )
 {
   string wts;
 
-  ///Remove comment from input
+  ///Read in the wts file name from the parameter file. This is stored as a 
+  ///string in the Prm class.
+
+  ///The wts file contains the weights of each node in the input, hidden, and 
+  ///output layers, respectively. These values are generated when running 
+  ///ANNtrain, and read in for use for ANNtest and CrossValidate.
+
+  //Remove comment from input
   wts = stripComment(input);
-  ///Remove spaces just in case
+  //Remove spaces just in case
   wts = stripSpaces(wts); 
 
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_wts_file = wts;
   return 1;
 }
@@ -687,13 +741,16 @@ int Prm::setEpochs( string input )
 {
   int epoch;
 
-  ///Convert param file input to an integer
+  ///When reading in the epochs parameter, the input string 
+  ///needs to be converted to an integer value.
+
+  //Convert param file input to an integer
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   epoch = stoi(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setEpochs( epoch );
   return 1;
 }
@@ -713,7 +770,7 @@ int Prm::setEpochs( string input )
  *****************************************************************************/
 int Prm::setEpochs( int input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_epochs = input;
   return 1;
 }
@@ -734,13 +791,16 @@ int Prm::setLearningRate( string input )
 {
   double learn;
 
-  ///Convert param file input to a double
+  ///When reading in the learning rate parameter, the input string 
+  ///needs to be converted to an double value.
+
+  //Convert param file input to a double
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   learn = stod(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setLearningRate( learn );
   return 1;
 }
@@ -759,7 +819,7 @@ int Prm::setLearningRate( string input )
  *****************************************************************************/
 int Prm::setLearningRate( double input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_learning_rate = input;
   return 1;
 }
@@ -780,13 +840,16 @@ int Prm::setMomentum( string input )
 {
   double momentum;
 
-  ///Convert param file input to a double
+  ///When reading in the momentum parameter, the input string 
+  ///needs to be converted to an double value.
+
+  //Convert param file input to a double
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   momentum = stod(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setMomentum( momentum );
   return 1;
 }
@@ -805,7 +868,7 @@ int Prm::setMomentum( string input )
  *****************************************************************************/
 int Prm::setMomentum( double input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_momentum = input;
   return 1;
 }
@@ -827,13 +890,16 @@ int Prm::setThreshold( string input )
 
   double thresh;
 
-  ///Convert param file input to a double
+  ///When reading in the threshold parameter, the input string 
+  ///needs to be converted to an double value.
+
+  //Convert param file input to a double
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   thresh = stod(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setThreshold( thresh );
   return 1;
 }
@@ -853,7 +919,7 @@ int Prm::setThreshold( string input )
  *****************************************************************************/
 int Prm::setThreshold( double input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_threshold = input;
   return 1;
 }
@@ -874,13 +940,16 @@ int Prm::setLayers( string input )
 {
   int layers;
 
-  ///Convert param file input to an integer
+  ///When reading in the layers parameter, the input string 
+  ///needs to be converted to an integer value.
+
+  //Convert param file input to an integer
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   layers = stoi(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setLayers( layers );
   return 1;
 }
@@ -900,7 +969,7 @@ int Prm::setLayers( string input )
  *****************************************************************************/
 int Prm::setLayers( int input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_layers = input;
   return 1;
 }
@@ -921,12 +990,17 @@ int Prm::setNodeCount( string input )
 {
   string buffer = stripComment(input);
 
+  ///The input line for the node counts will be three numbers separated by 
+  ///spaces. The first (index 0) number is the input layer count, 
+  ///the second (index 1) value is the hidden layer count, and the last 
+  ///(index 2) value is the output layer count.
+
   istringstream iss(buffer);
   int val;
 
   while(iss >> val)
   {
-      ///Push each node count value into vector
+      ///Push each node count value into the node_count vector
       Prm::addNodeCount( val );
   }
 
@@ -948,6 +1022,15 @@ int Prm::setNodeCount( string input )
  *****************************************************************************/
 int Prm::addNodeCount( int input )
 {
+  ///Pushes an individual layer value into the node count vector.
+
+  ///_node_count index values:
+
+  ///0 is the input layer count
+
+  ///1 is the hidden layer count
+
+  ///2 is the output layer count
   Prm::_node_count.push_back( input );
   return 1;
 }
@@ -968,12 +1051,18 @@ int Prm::setCsvFile( string input )
 {
   string csv;
 
-  ///Remove comment from input
+  ///Read in the csv file name from the parameter file. This is stored as a 
+  ///string in the Prm class.
+  
+  ///This csv file contains the PDSI data used to train or test the neural 
+  ///network.
+
+  //Remove comment from input
   csv = stripComment(input);
-  ///Remove spaces just in case
+  //Remove spaces just in case
   csv = stripSpaces(csv); 
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_csv_file = csv;
   return 1;
 }
@@ -994,13 +1083,16 @@ int Prm::setYears( string input )
 {
   int yrs;
 
-  ///Convert param file input to an integer
+  ///When reading in the years parameter, the input string 
+  ///needs to be converted to an integer value.
+
+  //Convert param file input to an integer
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   yrs = stoi(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setYears( yrs );
   return 1;
 }
@@ -1020,7 +1112,7 @@ int Prm::setYears( string input )
  *****************************************************************************/
 int Prm::setYears( int input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_years = input;
   return 1;
 }
@@ -1041,13 +1133,16 @@ int Prm::setMonths( string input )
 {
   int months;
 
-  ///Convert param file input to an integer
+  ///When reading in the months parameter, the input string 
+  ///needs to be converted to an integer value.
+
+  //Convert param file input to an integer
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   months = stoi(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setMonths( months );
   return 1;
 }
@@ -1066,7 +1161,7 @@ int Prm::setMonths( string input )
  *****************************************************************************/
 int Prm::setMonths( int input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_months = input;
   return 1;
 }
@@ -1087,13 +1182,16 @@ int Prm::setEndMonth( string input )
 {
   int end;
 
-  ///Convert param file input to an integer
+  ///When reading in the end month parameter, the input string 
+  ///needs to be converted to an integer value.
+
+  //Convert param file input to an integer
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   end = stoi(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setEndMonth( end );
   return 1;
 }
@@ -1112,7 +1210,7 @@ int Prm::setEndMonth( string input )
  *****************************************************************************/
 int Prm::setEndMonth( int input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_end_month = input;
   return 1;
 }
@@ -1133,13 +1231,16 @@ int Prm::setNumClasses( string input )
 {
   int num;
 
-  ///Convert param file input to an integer
+  ///When reading in the number of classes parameter, the input string 
+  ///needs to be converted to an integer value.
+
+  //Convert param file input to an integer
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   num = stoi(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setNumClasses( num );
   return 1;
 }
@@ -1158,7 +1259,7 @@ int Prm::setNumClasses( string input )
  *****************************************************************************/
 int Prm::setNumClasses( int input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_num_classes = input;
   return 1;
 }
@@ -1179,13 +1280,16 @@ int Prm::setLowMed( string input )
 {
   int lowmed;
 
-  ///Convert param file input to an integer
+  ///When reading in the Fire Severity (low/med) parameter, the input string 
+  ///needs to be converted to an integer value.
+
+  //Convert param file input to an integer
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   lowmed = stoi(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setLowMed( lowmed );
   return 1;
 }
@@ -1224,13 +1328,16 @@ int Prm::setMedHigh( string input )
 {
   int medhi;
 
-  ///Convert param file input to an integer
+  ///When reading in the Fire Severity (med/high) parameter, the input string 
+  ///needs to be converted to an integer value.
+
+  //Convert param file input to an integer
   string buffer = stripComment(input);
   buffer = stripSpaces(buffer);
   string::size_type sz;
   medhi = stoi(buffer, &sz);
   
-  ///Set value to private variable
+  //Set value to private variable
   Prm::setMedHigh( medhi );
   return 1;
 }
@@ -1249,7 +1356,7 @@ int Prm::setMedHigh( string input )
  *****************************************************************************/
 int Prm::setMedHigh( int input )
 {
-  ///Set value to private variable
+  //Set value to private variable
   Prm::_med_high = input;
   return 1;
 }
@@ -1266,6 +1373,8 @@ int Prm::setMedHigh( int input )
  *****************************************************************************/
 int Prm::writeFilename()
 {
+  ///check if file pointer is valid, then write the filename with appropriate
+  ///header style to the prm file
   if( file_pointer )
   {
     fprintf(file_pointer, "#************************** %s ", 
@@ -1288,6 +1397,8 @@ int Prm::writeFilename()
  *****************************************************************************/
 int Prm::writeWtsFile()
 {
+  ///check if file pointer is valid, then write the wts file name with 
+  ///appropriate comment style to the prm file
   if( file_pointer )
   {
     fprintf(file_pointer, "%s", Prm::getWtsFile().c_str() );
@@ -1309,6 +1420,8 @@ int Prm::writeWtsFile()
  *****************************************************************************/
 int Prm::writeEpochs()
 {
+  ///check if file pointer is valid, then write the epochs value with 
+  ///appropriate comment style to the prm file
   if( file_pointer )
   {
     fprintf(file_pointer, "%d", Prm::getEpochs() );
@@ -1330,6 +1443,8 @@ int Prm::writeEpochs()
  *****************************************************************************/
 int Prm::writeLearningRate()
 {
+  ///check if file pointer is valid, then write the learning rate value with 
+  ///appropriate comment style to the prm file
   if( file_pointer )
   {
     fprintf(file_pointer, "%lf", Prm::getLearningRate() );
@@ -1351,6 +1466,8 @@ int Prm::writeLearningRate()
  *****************************************************************************/
 int Prm::writeMomentum()
 {
+  ///check if file pointer is valid, then write the momentum value with 
+  ///appropriate comment style to the prm file
   if( file_pointer )
   {
     fprintf(file_pointer, "%lf", Prm::getMomentum() );
@@ -1372,6 +1489,8 @@ int Prm::writeMomentum()
  *****************************************************************************/
 int Prm::writeThreshold()
 {
+  ///check if file pointer is valid, then write the threshold value with 
+  ///appropriate comment style to the prm file
   if( file_pointer )
   {
     fprintf(file_pointer, "%lf", Prm::getThreshold() );
@@ -1394,6 +1513,8 @@ int Prm::writeThreshold()
  *****************************************************************************/
 int Prm::writeLayers()
 {
+  ///check if file pointer is valid, then write the layers value with 
+  ///appropriate comment style to the prm file
   if( file_pointer )
   {
     fprintf(file_pointer, "%d", Prm::getLayers() );
@@ -1416,6 +1537,9 @@ int Prm::writeLayers()
  *****************************************************************************/
 int Prm::writeAllNodes()
 {
+  ///check if file pointer is valid, then write the nodes counts for each layer 
+  ///(input, hidden, output) with appropriate comment style to the prm file
+
   if( file_pointer )
   {
     int sz = Prm::_node_count.size();
@@ -1442,6 +1566,9 @@ int Prm::writeAllNodes()
  *****************************************************************************/
 int Prm::writeNodeCount( int index )
 {
+  ///check if file pointer is valid, then write an individual layer node count 
+  ///with appropriate comment style to the prm file
+
   if( file_pointer )
   {
     fprintf(file_pointer, "%d", Prm::getNodeCount( index ) );
@@ -1462,6 +1589,9 @@ int Prm::writeNodeCount( int index )
  *****************************************************************************/
 int Prm::writeCsvFile()
 {
+  ///check if file pointer is valid, then write the csv file name with 
+  ///appropriate comment style to the prm file
+
   if( file_pointer )
   {
     fprintf(file_pointer, "%s \n", Prm::getCsvFile().c_str() );
@@ -1482,6 +1612,9 @@ int Prm::writeCsvFile()
  *****************************************************************************/
 int Prm::writeYears()
 {
+  ///check if file pointer is valid, then write the years value with 
+  ///appropriate comment style to the prm file
+
   if( file_pointer )
   {
     fprintf(file_pointer, "%d", Prm::getYears() );
@@ -1503,6 +1636,9 @@ int Prm::writeYears()
  *****************************************************************************/
 int Prm::writeMonths()
 {
+  ///check if file pointer is valid, then write the months value with 
+  ///appropriate comment style to the prm file
+
   if( file_pointer )
   {
     fprintf(file_pointer, "%d", Prm::getMonths() );
@@ -1524,6 +1660,9 @@ int Prm::writeMonths()
  *****************************************************************************/
 int Prm::writeEndMonth()
 {
+  ///check if file pointer is valid, then write the end month value with 
+  ///appropriate comment style to the prm file
+
   if( file_pointer )
   {
     fprintf(file_pointer, "%d", Prm::getEndMonth() );
@@ -1546,6 +1685,9 @@ int Prm::writeEndMonth()
  *****************************************************************************/
 int Prm::writeNumClasses()
 {
+  ///check if file pointer is valid, then write the number of classes with 
+  ///appropriate comment style to the prm file
+
   if( file_pointer )
   {
     fprintf(file_pointer, "%d", Prm::getNumClasses() );
@@ -1567,6 +1709,9 @@ int Prm::writeNumClasses()
  *****************************************************************************/
 int Prm::writeLowMed()
 {
+  ///check if file pointer is valid, then write the fire severity (low/med)
+  /// value with appropriate comment style to the prm file
+
   if( file_pointer )
   {
     fprintf(file_pointer, "%d \n", Prm::getLowMed() );
@@ -1587,6 +1732,9 @@ int Prm::writeLowMed()
  *****************************************************************************/
 int Prm::writeMedHigh()
 {
+  ///check if file pointer is valid, then write the fire severity (med/high)
+  /// value with appropriate comment style to the prm file
+
   if( file_pointer )
   {
     fprintf(file_pointer, "%d \n", Prm::getMedHigh() );
@@ -1841,6 +1989,7 @@ void Prm::printMedHigh( )
  *****************************************************************************/
 void Prm::printPrm()
 {
+  ///Print out everything that has been set for the prm file.
   Prm::printFilename();
   Prm::printWtsFile();
   Prm::printEpochs();
@@ -1872,6 +2021,8 @@ void Prm::printPrm()
  *****************************************************************************/
 void Prm::printErrorCode( int err )
 {
+  ///Print out a corresponding error code based on what error arose when reading 
+  ///in the parameter file.
   err = err * -1;
   printf("Error Code %d: ", err);
   
@@ -1937,6 +2088,8 @@ void Prm::printErrorCode( int err )
  *****************************************************************************/
 string  Prm::stripComment( string input )
 {
+  ///This method will remove the portion of a given input line that is denoted 
+  ///as a comment based on the # symbol.
   string output = input.substr(0, input.find("#",0));
   return output;
 }
@@ -1954,6 +2107,9 @@ string  Prm::stripComment( string input )
  *****************************************************************************/
 string  Prm::stripSpaces( string input )
 {
+  ///This method removes spaces in a given input line. Not PARTICULARLY important 
+  ///but could potentially help with converting given string inputs to numerical
+  ///data types.
   string output = input;
   output.erase(remove(output.begin(), output.end(), ' '), output.end());
   return output;
