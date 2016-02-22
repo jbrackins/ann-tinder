@@ -30,7 +30,9 @@ using namespace std;
  *****************************************************************************/
 Prm::Prm( )
 {
-
+  ///Validity of the prm file is false by default, will become true
+  ///upon a successfully read prm file.
+  _valid = false;
 }
 
 /**************************************************************************//**
@@ -44,6 +46,9 @@ Prm::Prm( )
  *****************************************************************************/
 Prm::Prm( string filename )
 {
+  ///Validity of the prm file is false by default, will become true
+  ///upon a successfully read prm file.
+  _valid = false;
   setFilename( filename );
 }
 
@@ -193,6 +198,10 @@ int Prm::readPrm( )
   }
 
   infile.close();
+
+  ///If this happens then it's likely the prm file is valid so set that flag.
+  _valid = true;
+
   return 0;
 }
 
@@ -328,6 +337,21 @@ int Prm::writePrm( )
 
   return 1;
 }
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Verify that the prm file was read in alright
+ *
+ * @returns _valid - validity of the file
+ *
+ *****************************************************************************/
+bool Prm::valid( )
+{
+   return _valid;
+}
+
 
 /**************************************************************************//**
  * @author Julian Brackins

@@ -48,6 +48,9 @@ public:
   int readPrm( );
   int writePrm();
 
+  //Verify that the prm file was successfully read in.
+  bool valid();
+
   //GETTERS - Get the values of each variable
   std::string getFilename( bool path = true );
   std::string getWtsFile( bool path = true );
@@ -183,6 +186,7 @@ private:
   int              _low_med;  /// Corresponds to low/medium/high cutoffs
   int              _med_high;
 
+  bool             _valid;    ///Corresponds to if the prm file was read successfully
   FILE * file_pointer; //File Pointer  
 };
 
