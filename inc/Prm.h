@@ -49,15 +49,15 @@ public:
   int writePrm();
 
   //GETTERS - Get the values of each variable
-  std::string getFilename();
-  std::string getWtsFile();
+  std::string getFilename( bool path = true );
+  std::string getWtsFile( bool path = true );
   int getEpochs();
   double getLearningRate();
   double getMomentum();
   double getThreshold();
   int getLayers();
   int getNodeCount( int index );
-  std::string getCsvFile();
+  std::string getCsvFile( bool path = true );
   int getYears();
   int getMonths();
   int getEndMonth();

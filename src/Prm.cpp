@@ -335,12 +335,27 @@ int Prm::writePrm( )
  * @par Description:
  * Get the Filename
  *
+ * @param[in] path - whether or not you get the full path
+ *
  * @returns filename - no seriously what did you even think
  *
  *****************************************************************************/
-string Prm::getFilename()
+string Prm::getFilename( bool path )
 {
-  return _filename;
+
+  if( path )
+    ///Return the full path to file if path var is TRUE (Default)
+    return _filename;
+  else
+  {
+    ///Else
+    ///Get position of the last slash.
+    ///The remainder of the path should just be the name of the file
+    size_t pos = _filename.find_last_of("/"); 
+    string name = _filename.substr (pos+1); 
+    return name;    
+  }
+
 }
 
 /**************************************************************************//**
@@ -349,12 +364,25 @@ string Prm::getFilename()
  * @par Description:
  * Get the wts file param
  *
+ * @param[in] path - whether or not you get the full path
+ *
  * @returns _wts_file - wts file string
  *
  *****************************************************************************/
-string Prm::getWtsFile()
+string Prm::getWtsFile( bool path )
 {
-  return _wts_file;
+  if( path )
+    ///Return the full path to file if path var is TRUE (Default)
+    return _wts_file;
+  else
+  {
+    ///Else
+    ///Get position of the last slash.
+    ///The remainder of the path should just be the name of the file
+    size_t pos  = _wts_file.find_last_of("/"); 
+    string name = _wts_file.substr (pos+1); 
+    return name;    
+  }
 }
 
 /**************************************************************************//**
@@ -465,13 +493,25 @@ int Prm::getNodeCount( int index )
  * @par Description:
  * Get the csv file param
  *
+ * @param[in] path - whether or not you get the full path
+ *
  * @returns _csv_file - csv file string
  *
  *****************************************************************************/
-string Prm::getCsvFile()
+string Prm::getCsvFile( bool path )
 {
-  return _csv_file;
-}
+  if( path )
+    ///Return the full path to file if path var is TRUE (Default)
+    return _csv_file;
+  else
+  {
+    ///Else
+    ///Get position of the last slash.
+    ///The remainder of the path should just be the name of the file
+    size_t pos  = _csv_file.find_last_of("/"); 
+    string name = _csv_file.substr (pos+1); 
+    return name;    
+  }}
 
 /**************************************************************************//**
  * @author Julian Brackins
