@@ -1,7 +1,7 @@
 /*************************************************************************//**
  * @file ANNtest.cpp
  *
- * @brief SOURCE - ANNtest program file. 
+ * @brief SOURCE - Artificial Neural Network - ANNtest Trainer program file. 
  *
  * @mainpage Program 1 - TINDER
  *
@@ -47,15 +47,6 @@
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
  *
- * @par Modifications and Development Timeline:
- @verbatim
- Date              Modification
- ----------------  --------------------------------------------------------------
- January  27, 2016  * Began project.
- February 03, 2016  * Prm Class started for reading/writing .prm parameter files
- February 06, 2016  * Finished basic setter methods for Prm Class
- February 09, 2016  * Finished getter, writing and printing methods for Prm Class
- @endverbatim
  *
  ******************************************************************************/
 
@@ -82,13 +73,6 @@ using namespace std;
  ******************************************************************************/
 
 
-/******************************************************************************
- *
- * PROTOTYPES
- *
- ******************************************************************************/
-
-
 /**************************************************************************//**
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
  *
@@ -98,15 +82,191 @@ using namespace std;
  * @param[in] argc - the number of arguments from the command prompt.
  * @param[in] argv - a 2d array of characters containing the arguments.
  *
- * @returns 0 - Program Ends.
+ * @returns 0 - Program Ends Gracefully
+ * @returns -1 - Program Ends with error.
  *
  *****************************************************************************/
 int main(int argc, char ** argv)
 {
-  
-  cout << "T.\tree\nI.\tntelligence\nN.\tetwork for\n";
-  cout << "D.\tetecting\nE.\tmber\nR.\tisk\n";
-  cout << "ANNtest" << endl;
+  if( argc != 2 )
+  {
+  	usage( argv );
+  	return -1;
+  }  
+
+  Prm * p = new Prm( argv[1] );
+
+  //Read in a .prm file  
+  p->readPrm();
+
+  printInfo( p );
+
+  testPrintout(  );
+
   return 0;
 
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out the testing header.
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printHeader( )
+{
+  cout << "*---------------------------------------*" << endl;
+  cout << "| SAMPLE | ACTUAL | PREDICTED | RESULT  |" << endl;
+  cout << "*---------------------------------------*" << endl;
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out a testing iteration.
+ *
+ * @param[in] sample     - sample number
+ * @param[in] actual     - actual forest fire activity from PDSI data
+ * @param[in] predicted  - prediction made by the neural network
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printTesting( int sample, int actual, int predicted )
+{
+  string str_actual    = formatResult(actual);
+  string str_predicted = formatResult(predicted);
+  string str_result;
+
+  ///Prints out a single line of output. This line is a given sample's
+  ///actual and predicted values, which can each be low (LOW), medium (MED), 
+  ///or high (HI ) fire severity. If the actual and predicted values are 
+  ///identical, this means that the neural net was successful in predicting 
+  ///a given sample. If these values do not match, then the neural network
+  ///did not predict the given sample properly.
+  
+  //If the actual and predicted are identical,
+  //This prediction was successful.
+  if( actual == predicted && predicted != 000 )
+  	str_result = "SUCCESS";
+  else
+  	str_result = "FAILURE";
+  
+  //print the sample 
+  cout << "|" << setw(8) << sample;
+  cout << "|" << " " << str_actual    << "    ";
+  cout << "|" << " " << str_predicted << "       ";
+  cout << "|" << " " << str_result    << " ";
+  cout << "|" << endl;
+  cout << "*---------------------------------------*" << endl;;
+
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out the testing summary.
+ *
+ * @param[in] equation  - error equation used for training
+ * @param[in] error     - error value 
+ * @param[in] accuracy  - percentage of samples correctly predicted
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printSummary( string equation, double error, double accuracy )
+{
+  
+  ///This function will print out the summary statistics of how well the 
+  ///neural network performed in the tests.
+  cout << endl;
+  cout << equation << "error: ";
+  cout << setiosflags(ios::fixed) << setprecision(3)  << error << endl; 
+  cout << "accuracy: " << setprecision(1) << accuracy * 100 << "%%" << endl;
+
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Format the Actual and Predicted strings so they're pretty!
+ *
+ * @param[in] result - A given value, either actual or predicted
+ *
+ * @returns "LOW" - value passed in was 100
+ * @returns "MED" - value passed in was 010
+ * @returns "Hi " - value passed in was 001
+ * @returns "ERR" - value passed in was invalid (anything other than above)
+ *
+ *****************************************************************************/
+string formatResult( int result )
+{
+  
+  ///This function rewrites each integer value of a given result, either 
+  ///actual or predicted, and displays it in a readable manner.
+  ///The conversions are as follows:
+
+	
+  ///100 = LOW
+  if(result == 100 )
+  	return "LOW";
+  ///010 = MED
+  else if(result == 010 )
+  	return "MED";
+  ///001 = HI
+  else if(result == 001 )
+  	return "HI ";
+  ///Invalid otherwise
+  else
+  	return "ERR";
+
+}
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Test the output of our program
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void testPrintout(  )
+{
+  string eq = "RMS";
+  double err = 0.328345;
+  double acc = .91332;
+
+
+  int samp;
+  int act;
+  int pred;
+
+  printHeader( );
+
+  //verify matches work
+  samp = 10;
+  act = 100;
+  pred = 100;
+  printTesting( samp, act, pred );
+
+  //verify non match doesn't...
+  samp = 2;
+  act  = 010;
+  pred = 001;
+  printTesting( samp, act, pred ); 
+
+  //verify invalid...
+  samp = 1000;
+  act  = 001;
+  pred = 000;
+  printTesting( samp, act, pred );  
+
+  printSummary( eq, err, acc );
 }

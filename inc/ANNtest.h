@@ -3,7 +3,7 @@
  *
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
  *
- * @brief HEADER - Neural Network Header File
+ * @brief HEADER - Neural Network Testing Header File
  *
  *****************************************************************************/
 
@@ -20,38 +20,22 @@
 #include <stdio.h>
 #include <time.h>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
-
-
-/******************************************************************************
- *
- * NAMESPACES
- *
- ******************************************************************************/
-
-using namespace std;
-
+#include "Prm.h"
+#include "ANN.h"
 
 /******************************************************************************
  *
- * STRUCTS
+ * PROTOTYPES
  *
  ******************************************************************************/
 
-
-/*************************************************************************//**
- * @struct Affine
- *
- * @author Julian Brackins
- *
- * @brief This Struct is a Placeholder for actual stuff.
- *
- *****************************************************************************/
-struct Placeholder
-{
-  
-};
-
+void printHeader( );
+void printTesting( int epoch, std::string equation, double error );
+void printSummary( std::string equation, double error, double accuracy );
+std::string formatResult( int result );
+void testPrintout(  );
 
 /******************************************************************************
  *
