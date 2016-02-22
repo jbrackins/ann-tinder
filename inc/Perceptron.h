@@ -39,6 +39,7 @@ class Perceptron
       double get_error_grad ( );
       void set_desired_output ( double new_desired );
       double get_desired_output ( );
+      void set_output ( double new_output );
       double* get_output ( );
       void set_weight (double weight, int index);
       double get_weight (int index);

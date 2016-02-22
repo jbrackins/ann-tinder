@@ -119,7 +119,21 @@ void Perceptron::set_desired_output ( double new_desired )
 double Perceptron::get_desired_output ( )
 {
    return desired_output;
-}  
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Sets the output value for the input layer of perceptrons
+*
+* @param[in] new_output - the new output for the input layer of the ANN
+*
+*****************************************************************************/
+void Perceptron::set_output ( double new_output )
+{
+   output = new_output;
+}
 
 /**************************************************************************//**
  * @author Samuel Carroll

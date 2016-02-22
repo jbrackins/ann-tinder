@@ -69,6 +69,43 @@ void NeuralNet::add_layer ( int nodes )
 * @author Samuel Carroll
 *
 * @par Description:
+* Add first perceptron layer to the neural network
+*
+* @param[in] input_records - the input parameters for the ANN
+*
+* @todo - add the first n months of the current year
+*
+*****************************************************************************/
+void NeuralNet::add_first_layer ( records * input_records )
+{
+   vector <Perceptron> input_layer;
+   int i = 0;
+
+   while ( input_records->next != NULL )
+   {
+      input_layer.push_back( Perceptron ( ) );
+      input_layer[i].set_output ( input_records->burnedAcres );
+      i++;
+
+      for(int indexY = 0; indexY < 12; indexY++)
+      {
+         input_layer.push_back( Perceptron ( ) );
+         input_layer[i].set_output ( input_records->months[indexY] );
+         i++;
+      }
+
+      // need to add n months of last year
+      
+      input_records = input_records->next;
+   }
+
+   percep_net.push_back ( input_layer );
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
 * Connect all the layers in the Neural network to one another
 *
 ******************************************************************************/
