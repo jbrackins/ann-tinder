@@ -33,7 +33,7 @@ class NeuralNet
       void add_perceptron ( );
 
    private:
-      vector <vector <perceptron>> percep_net;
+      vector <vector <Perceptron>> percep_net;
 };
 
   #endif
