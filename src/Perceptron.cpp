@@ -60,9 +60,9 @@ Perceptron::~Perceptron ( )
  * @param[in] input -
  *
  *****************************************************************************/
-void Perceptron::add_input (/*input type here?*/ )
+void Perceptron::add_input ( double* new_input )
 {
-   input.push_back(&(3.14)/* add the pointer to the input layer's output*/);
+   input.push_back(new_input);
 
    update_output ( );
 }
@@ -75,9 +75,9 @@ void Perceptron::add_input (/*input type here?*/ )
  *
  * @returns double - 
  *****************************************************************************/
-double Perceptron::get_output ( )
+double* Perceptron::get_output ( )
 {
-   return output;
+   return &output;
 }
 
 /**************************************************************************//**

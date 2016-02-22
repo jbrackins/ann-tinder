@@ -30,7 +30,8 @@
 class NeuralNet
 {
    public:
-      void add_perceptron ( );
+      void add_layer ( int nodes );
+      void connect_layers ( );
 
    private:
       vector <vector <Perceptron>> percep_net;
