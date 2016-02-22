@@ -29,7 +29,7 @@ testPRM: tst/testPrm.o src/Prm.o
 	${LINK} -o $@ $^
 ANNtest: src/ANNtest.o src/Prm.o
 	${LINK} -o $@ $^
-ANNtrain: src/ANNtrain.o
+ANNtrain: src/ANNtrain.o src/Prm.o
 	${LINK} -o $@ $^
 CrossValidate: src/CrossValidate.o
 	${LINK} -o $@ $^

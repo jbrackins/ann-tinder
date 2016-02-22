@@ -54,6 +54,7 @@
  ******************************************************************************/
 
 #include "../inc/ANNtrain.h"
+#include "../inc/Prm.h"
 
 /******************************************************************************
  *
@@ -68,14 +69,6 @@ using namespace std;
  * GLOBALS
  *
  ******************************************************************************/
-
-
-/******************************************************************************
- *
- * PROTOTYPES
- *
- ******************************************************************************/
-
 
 /**************************************************************************//**
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
@@ -92,9 +85,87 @@ using namespace std;
 int main(int argc, char ** argv)
 {
   
-  cout << "T.\tree\nI.\tntelligence\nN.\tetwork for\n";
-  cout << "D.\tetecting\nE.\tmber\nR.\tisk\n";
-  cout << "ANNtrain" << endl;
-  return 0;
+
+  Prm * p = new Prm( argv[1] );
+
+  //Read in a .prm file  
+  p->readPrm();
+
+
+  printInfo( p );
+
+  testPrintout();
 
 }
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out training information
+ *
+ * @param[in] paramFile - Parameter file that has been read in.
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printInfo( Prm * paramFile )
+{
+  //Parameter file: bh.prm
+  //reading data file: PDSI_BH_1978-2015.csv
+
+  cout << "Parameter File: " << paramFile->getFilename( false ) << endl;
+  cout << "CSV  Data File: " << paramFile->getCsvFile()  << endl;
+
+}
+
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out a training iteration.
+ *
+ * @param[in] epoch     - Epoch of a given training iteration
+ * @param[in] equation  - error equation used for training
+ * @param[in] error     - error value
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printTraining( int epoch, string equation, double error )
+{
+  
+  cout << "Epoch" << setw(7) << epoch;
+  cout << ": " << equation << "error = ";
+  cout << setiosflags(ios::fixed) << setprecision(3)  << error << endl; 
+
+}
+
+
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Test the output of our program
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void testPrintout(  )
+{
+  int e;
+  string eq = "RMS";
+  double err;
+
+  srand (time(NULL));
+
+
+  for( e = 0; e < 1000; e+=10 )
+  {
+	err = (double)rand() / RAND_MAX;
+    err = err * (1.00 - 0.00);
+    printTraining( e, eq, err );
+  }
+}
+
