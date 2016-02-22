@@ -45,8 +45,8 @@ records *readCSV(string filename, int predictYear, int prevYears)
     records *data = new records;
  	records *temp = data;
 	records *prev = temp;
-	
-	for(indexX = 0; predictYear > strtod(values.front().c_str(), NULL) && !values.empty(); indexX++)
+	//Add Check to for if target year doesnt exist in the spectrum
+	for(indexX = 0; predictYear >= strtod(values.front().c_str(), NULL) && !values.empty(); indexX++)
 	{
 		if(predictYear-(strtod(values.front().c_str(), NULL)) <= prevYears)
 		{
