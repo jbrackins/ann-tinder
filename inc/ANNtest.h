@@ -23,16 +23,7 @@
 #include <iomanip>
 #include <sstream>
 #include "Prm.h"
-
-
-/******************************************************************************
- *
- * NAMESPACES
- *
- ******************************************************************************/
-
-using namespace std;
-
+#include "ANN.h"
 
 /******************************************************************************
  *
@@ -41,12 +32,10 @@ using namespace std;
  ******************************************************************************/
 void printInfo( Prm * paramFile );
 void printHeader( );
-void printTesting( int epoch, string equation, double error );
-void printSummary( string equation, double error, double accuracy );
+void printTesting( int epoch, std::string equation, double error );
+void printSummary( std::string equation, double error, double accuracy );
 std::string formatResult( int result );
 void testPrintout(  );
-void usage( char ** argv );
-
 
 /******************************************************************************
  *

@@ -37,13 +37,6 @@
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
  *
- * @par Modifications and Development Timeline:
- @verbatim
- Date              Modification
- ----------------  --------------------------------------------------------------
- January 27, 2016  * Began project.
- * 
- @endverbatim
  *
  ******************************************************************************/
 
@@ -141,7 +134,7 @@ void printTraining( int epoch, string equation, double error )
 {
   
   cout << "Epoch" << setw(7) << epoch;
-  cout << ": " << equation << "error = ";
+  cout << ": " << equation << " error = ";
   cout << setiosflags(ios::fixed) << setprecision(3)  << error << endl; 
 
 }
@@ -173,18 +166,3 @@ void testPrintout(  )
   }
 }
 
-/**************************************************************************//**
- * @author Julian Brackins
- *
- * @par Description:
- * Print program Usage statements
- *
- * @returns nothing
- *
- *****************************************************************************/
-void usage( char ** argv )
-{
-  cout << "Usage: " << argv[0] << "<parameterfile>" << endl;
-  cout << endl;
-  cout << "<parameterfile> - Parameter file used for configuring net" << endl;
-}

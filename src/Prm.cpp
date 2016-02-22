@@ -242,6 +242,7 @@ int Prm::writePrm( )
   }
 
   ///Write the header
+  ///Pass False into here so that you just get prm file name
   Prm::writeFilename( );
   fprintf( file_pointer, "#\n" );
   fprintf( file_pointer, "# Generated Parameter file for ");
@@ -1268,7 +1269,7 @@ int Prm::writeFilename()
   if( file_pointer )
   {
     fprintf(file_pointer, "#************************** %s ", 
-            Prm::getFilename().c_str() );
+            Prm::getFilename( false ).c_str() );
     fprintf(file_pointer, "***********************************\n");
     return 1;
   }
@@ -1605,7 +1606,7 @@ int Prm::writeMedHigh()
  *****************************************************************************/
 void Prm::printFilename( )
 {
-  printf( "Prm File: %s \n", Prm::getFilename().c_str() );
+  printf( "Prm File: %s \n", Prm::getFilename( false ).c_str() );
 }
 
 /**************************************************************************//**

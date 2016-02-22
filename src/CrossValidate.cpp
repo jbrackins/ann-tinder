@@ -37,13 +37,6 @@
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
  *
- * @par Modifications and Development Timeline:
- @verbatim
- Date              Modification
- ----------------  --------------------------------------------------------------
- January 27, 2016  * Began project.
- * 
- @endverbatim
  *
  ******************************************************************************/
 
@@ -96,20 +89,4 @@ int main(int argc, char ** argv)
   cout << "CrossValidate" << endl;
   return 0;
 
-}
-
-/**************************************************************************//**
- * @author Julian Brackins
- *
- * @par Description:
- * Print program Usage statements
- *
- * @returns nothing
- *
- *****************************************************************************/
-void usage( char ** argv )
-{
-  cout << "Usage: " << argv[0] << "<parameterfile>" << endl;
-  cout << endl;
-  cout << "<parameterfile> - Parameter file used for configuring net" << endl;
 }

@@ -47,16 +47,6 @@
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
  *
- * @par Modifications and Development Timeline:
- @verbatim
- Date              Modification
- ----------------  --------------------------------------------------------------
- January  27, 2016  * Began project.
- February 03, 2016  * Prm Class started for reading/writing .prm parameter files
- February 06, 2016  * Finished basic setter methods for Prm Class
- February 09, 2016  * Finished getter, writing and printing methods for Prm Class
- February 21, 2016  * Setting up executable outputs
- @endverbatim
  *
  ******************************************************************************/
 
@@ -285,20 +275,4 @@ void testPrintout(  )
   printTesting( samp, act, pred );  
 
   printSummary( eq, err, acc );
-}
-
-/**************************************************************************//**
- * @author Julian Brackins
- *
- * @par Description:
- * Print program Usage statements
- *
- * @returns nothing
- *
- *****************************************************************************/
-void usage( char ** argv )
-{
-  cout << "Usage: " << argv[0] << "<parameterfile>" << endl;
-  cout << endl;
-  cout << "<parameterfile> - Parameter file used for configuring net" << endl;
 }
