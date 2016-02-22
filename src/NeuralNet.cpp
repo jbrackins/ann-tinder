@@ -78,3 +78,57 @@ void NeuralNet::connect_layers( )
          }
    }
 }
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Update all the weights for all the nodes in the ANN
+*
+******************************************************************************/
+void NeuralNet::update_weights ( )
+{
+   int layers = percep_net.size( );
+   int curr_layer;
+   int nodes;
+   double new_error_grad;
+
+   curr_layer = layers - 1;
+   nodes = percep_net[curr_layer].size( );
+   for (int i = 0; i < nodes; i++)
+   {
+      update_error_grad ( percep_net[curr_layer][i], false );
+   }
+
+   for (curr_layer = layers - 2; curr_layer >= 0; curr_layer--)
+   {
+   
+   }
+
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Update the error gradiant for a given perceptron in the ANN
+*
+******************************************************************************/
+void NeuralNet::update_error_grad (Perceptron curr_node, bool inside_node )
+{
+   double difference;
+   double new_error_grad;
+
+   if ( inside_node == true )
+   {
+
+   }
+   else
+   {
+      difference = curr_node.get_desired_output( ) - *(curr_node.get_output( ));
+      new_error_grad = *(curr_node.get_output( ));
+      new_error_grad *= (1 - *(curr_node.get_output( ))) * difference;
+      curr_node.set_error_grad( new_error_grad );
+   }
+
+}

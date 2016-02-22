@@ -50,7 +50,7 @@ Perceptron::Perceptron ( void )
  *****************************************************************************/
 Perceptron::~Perceptron ( )
 {
-
+   // make sure that input and weight vectors are clear
 }
 
 /**************************************************************************//**
@@ -59,15 +59,19 @@ Perceptron::~Perceptron ( )
  * @par Description:
  * Add Input Function.
  *
- * @param[in] input -
+ * @param[in] input - pointer to a double that is the new input for the node
  *
  *****************************************************************************/
 void Perceptron::add_input ( double* new_input )
 {
+   double rand_greater = rand( ) % 100000000;
+   double rand_smaller = rand( ) % ( (int) rand_greater );
+
    // Add a pointer to the output of another perceptron, a pointer is used so
    // we don't need to reconnect the all the perceptrons if one input is
    // updated
    input.push_back(new_input);
+   weights.push_back( (rand_smaller / rand_greater) - 0.5);
 
    update_output ( );
 }
@@ -76,15 +80,84 @@ void Perceptron::add_input ( double* new_input )
  * @author Samuel Carroll
  *
  * @par Description:
+ * Sets the error gradiant
+ *
+ * @param[in] new_error_grad - the new error gradiant value
+ *
+ *****************************************************************************/
+void Perceptron::set_error_grad ( double new_error_grad )
+{
+   error_grad = new_error_grad;
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Gets the error gradiant
+*
+*****************************************************************************/
+double Perceptron::get_error_grad ( )
+{
+   return error_grad;
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Sets the desired output value
+*
+* @param[in] new_desired - the new desired output value 
+*
+*****************************************************************************/
+void Perceptron::set_desired_output ( double new_desired )
+{
+   desired_output = new_desired;
+}
+
+double Perceptron::get_desired_output ( )
+{
+   return desired_output;
+}  
+
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
  * Get Output Function.
  *
- * @returns double - 
+ * @returns double* - return pointer to the output
  *****************************************************************************/
 double* Perceptron::get_output ( )
 {
    // Return a pointer to the output of a given perceptron, used for connecting
    // the ANN layers together
    return &output;
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Sets the weight for a specific input node
+*
+******************************************************************************/
+void Perceptron::set_weight (double new_weight, int index)
+{
+   weights[index] = new_weight;
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Gets the weight for a specific input node
+*
+******************************************************************************/
+double Perceptron::get_weight (int index)
+{
+   return weights[index];
 }
 
 /**************************************************************************//**

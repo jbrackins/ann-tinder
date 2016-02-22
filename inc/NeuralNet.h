@@ -32,6 +32,8 @@ class NeuralNet
    public:
       void add_layer ( int nodes );
       void connect_layers ( );
+      void update_weights ( );
+      void update_error_grad (Perceptron curr_node, bool inside_node );
 
    private:
       std::vector <std::vector <Perceptron>> percep_net;
