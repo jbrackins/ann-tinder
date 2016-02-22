@@ -99,28 +99,6 @@ int main(int argc, char ** argv)
  * @author Julian Brackins
  *
  * @par Description:
- * Print out training information
- *
- * @param[in] paramFile - Parameter file that has been read in.
- *
- * @returns nothing
- *
- *****************************************************************************/
-void printInfo( Prm * paramFile )
-{
-  //Parameter file: bh.prm
-  //reading data file: PDSI_BH_1978-2015.csv
-
-  cout << "Parameter File: " << paramFile->getFilename( false ) << endl;
-  cout << "CSV  Data File: " << paramFile->getCsvFile()  << endl;
-
-}
-
-
-/**************************************************************************//**
- * @author Julian Brackins
- *
- * @par Description:
  * Print out a training iteration.
  *
  * @param[in] epoch     - Epoch of a given training iteration

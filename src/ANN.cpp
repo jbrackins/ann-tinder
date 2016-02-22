@@ -80,6 +80,28 @@ using namespace std;
  *
  ******************************************************************************/
 
+/**************************************************************************//**
+ * @author Julian Brackins
+ *
+ * @par Description:
+ * Print out training information
+ *
+ * @param[in] paramFile - Parameter file that has been read in.
+ *
+ * @returns nothing
+ *
+ *****************************************************************************/
+void printInfo( Prm * paramFile )
+{
+  ///Print out the info for what file was read in.
+  //Parameter File: <FILE.prm>
+  //CSV Data  File: <FILE.csv>
+
+  cout << "Parameter File: " << paramFile->getFilename( false ) << endl;
+  cout << "CSV  Data File: " << paramFile->getCsvFile()         << endl;
+
+}
+
  /**************************************************************************//**
  * @author Julian Brackins
  *
@@ -91,6 +113,9 @@ using namespace std;
  *****************************************************************************/
 void usage( char ** argv )
 {
+  ///Print out the usage statement for each executable.
+  ///This is effectively identical in each instance, so one usage statement
+  ///Will suffice.
   cout << "Usage: " << argv[0] << "<parameterfile>" << endl;
   cout << endl;
   cout << "<parameterfile> - Parameter file used for configuring net" << endl;

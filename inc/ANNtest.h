@@ -30,7 +30,7 @@
  * PROTOTYPES
  *
  ******************************************************************************/
-void printInfo( Prm * paramFile );
+
 void printHeader( );
 void printTesting( int epoch, std::string equation, double error );
 void printSummary( std::string equation, double error, double accuracy );

@@ -82,7 +82,8 @@ using namespace std;
  * @param[in] argc - the number of arguments from the command prompt.
  * @param[in] argv - a 2d array of characters containing the arguments.
  *
- * @returns 0 - Program Ends.
+ * @returns 0 - Program Ends Gracefully
+ * @returns -1 - Program Ends with error.
  *
  *****************************************************************************/
 int main(int argc, char ** argv)
@@ -103,27 +104,6 @@ int main(int argc, char ** argv)
   testPrintout(  );
 
   return 0;
-
-}
-
-/**************************************************************************//**
- * @author Julian Brackins
- *
- * @par Description:
- * Print out training information
- *
- * @param[in] paramFile - Parameter file that has been read in.
- *
- * @returns nothing
- *
- *****************************************************************************/
-void printInfo( Prm * paramFile )
-{
-  //Parameter file: bh.prm
-  //reading data file: PDSI_BH_1978-2015.csv
-
-  cout << "Parameter File: " << paramFile->getFilename( false ) << endl;
-  cout << "CSV  Data File: " << paramFile->getCsvFile()         << endl;
 
 }
 
