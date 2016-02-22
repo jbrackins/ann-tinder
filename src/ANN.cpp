@@ -116,7 +116,7 @@ void usage( char ** argv )
   ///Print out the usage statement for each executable.
   ///This is effectively identical in each instance, so one usage statement
   ///Will suffice.
-  cout << "Usage: " << argv[0] << "<parameterfile>" << endl;
+  cout << "Usage: " << argv[0] << " <parameterfile>" << endl;
   cout << endl;
   cout << "<parameterfile> - Parameter file used for configuring net" << endl;
 }
