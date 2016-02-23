@@ -7,7 +7,7 @@ CFLAGS = -c  -g -O0
 CXXFLAGS = $(CFLAGS) -std=c++11 -Wall
 
 #OBJECT FILES
-OBJS = src/ANN.o src/NeuralNet.o src/Perceptron.o src/Prm.o src/ANN.o src/Csv.o src/Weights.o
+OBJS = src/ANN.o src/NeuralNet.o src/Perceptron.o src/Prm.o src/ANN.o src/Csv.o src/Wts.o
 
 #OBJECT FILES FOR TEST PROGRAMS
 TESTS = tst/testPrm.o
