@@ -54,11 +54,26 @@
  Date              Modification
  ----------------  --------------------------------------------------------------
  January  27, 2016  * Began project.
- February 03, 2016  * Prm Class started for reading/writing .prm parameter files
+ January  30, 2016  * Set up project directory structure.
+ February 03, 2016  * Prm Class started for reading/writing .prm parameter 
+                      files.
  February 06, 2016  * Finished basic setter methods for Prm Class
- February 09, 2016  * Finished getter, writing and printing methods for Prm Class
- February 11, 2016  * Started work on perceptron class
- February 21, 2016  * Setting up executable outputs
+ February 09, 2016  * Finished getter, writing and printing methods for Prm 
+                      Class.
+ February 11, 2016  * Started work on perceptron class.
+ February 21, 2016  * Set up executable outputs.
+                    * Set up Perceptron class.
+                    * Set up NeuralNet class.
+                    * Added Prm class behaviour to validate whether or not a 
+                      .prm file was successfully read in.
+                    * Added .csv file reading and .wts file reading.
+ February 22, 2016  * Modified Perceptron behavior
+ February 23, 2016  * Documentation cleanup, Split code into .h and .cpp files.
+                    * Modified readCSV to read entire csv file and return it as 
+                      a Linked list. 
+                    * Added readCSVEntry function to perform the
+                      way readCSV previously did.
+
  @endverbatim
  *
  ******************************************************************************/
