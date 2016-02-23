@@ -1,17 +1,33 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cstdlib>
-#include <list>
-#include "../inc/CSVHeader.h"
+/*************************************************************************//**
+ * @file Csv.cpp
+ *
+ * @brief SOURCE - Methods for reading in Csv File information
+ *
+ ******************************************************************************/
+
+/******************************************************************************
+ *
+ * INCLUDE
+ *
+ ******************************************************************************/
+
+#include "../inc/Csv.h"
+
+/******************************************************************************
+ *
+ * NAMESPACES
+ *
+ ******************************************************************************/
 
 using namespace std;
 
-records *readCSV(string filename, int predictYear, int prevYears);
-void split_line(string& line, string delim, list<string>& values);
-void normalize(records *data);
-
-
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Read in and parse the csv file
+ *
+ *****************************************************************************/
 
 records *readCSV(string filename, int predictYear, int prevYears)
 {
@@ -23,6 +39,7 @@ records *readCSV(string filename, int predictYear, int prevYears)
 	getline ( file, value );
 	getline ( file, value );
 	
+	//int j = 0;
     while ( file.good() )
     {
 		
@@ -78,6 +95,14 @@ records *readCSV(string filename, int predictYear, int prevYears)
 	return data;
 }
 
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Split a line
+ *
+ *****************************************************************************/
+ 
 void split_line(string& line, string delim, list<string>& values)
 {
     size_t pos = 0;
@@ -92,6 +117,14 @@ void split_line(string& line, string delim, list<string>& values)
     }
 }
 
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Normalize data read in from the .csv file
+ *
+ *****************************************************************************/
+ 
 void normalize(records *data)
 {
 	records *temp = data;
@@ -128,6 +161,4 @@ void normalize(records *data)
 		}
 		temp=temp->next;
 	}
-	
-
 }
