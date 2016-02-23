@@ -20,7 +20,7 @@
 #include <string>
 #include "Perceptron.h"
 #include "Prm.h"
-#include "CSVHeader.h"
+#include "Csv.h"
 
 /*************************************************************************//**
 * @class Neural Net

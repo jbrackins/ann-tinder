@@ -7,7 +7,7 @@ CFLAGS = -c  -g -O0
 CXXFLAGS = $(CFLAGS) -std=c++11 -Wall
 
 #OBJECT FILES
-OBJS = src/ANN.o src/NeuralNet.o src/Perceptron.o src/Prm.o src/ANN.o src/Reading_CSV.o src/Weights.o
+OBJS = src/ANN.o src/NeuralNet.o src/Perceptron.o src/Prm.o src/ANN.o src/Csv.o src/Weights.o
 
 #OBJECT FILES FOR TEST PROGRAMS
 TESTS = tst/testPrm.o
@@ -58,3 +58,8 @@ archive:
 	make realclean
 	make doxygen
 	tar --exclude='../ann-tinder/.git' --exclude='../ann-tinder/doc' -cvf pa1_brac_carr_nien.tar ../ann-tinder/
+#Don't ask.....
+a_better_person:
+	@echo ""
+	@echo "( ͡° ͜ʖ ͡°)  ﻿ｙｏｕ  ａｒｅ  ａ  ｗｏｎｄｅｒｆｕｌ  ｐｅｒｓｏｎ"
+	@echo ""
