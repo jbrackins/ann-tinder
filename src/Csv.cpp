@@ -29,7 +29,7 @@ using namespace std;
  *
  *****************************************************************************/
 
-records *readCSV(string filename, int predictYear, int prevYears)
+records *readCSVEntry(string filename, int predictYear, int prevYears)
 {
 	 ifstream file ( "../csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
     string value; 
@@ -39,7 +39,7 @@ records *readCSV(string filename, int predictYear, int prevYears)
 	getline ( file, value );
 	getline ( file, value );
 	
-	//int j = 0;
+	int j = 0;
     while ( file.good() )
     {
 		
@@ -95,14 +95,67 @@ records *readCSV(string filename, int predictYear, int prevYears)
 	return data;
 }
 
-/**************************************************************************//**
- * @author Alex Nienhueser
- *
- * @par Description:
- * Split a line
- *
- *****************************************************************************/
+records *readCSV(string filename)
+{
+	 ifstream file ( "../csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
+    string value; 
+    list<string> values;
+
+	//Skip first two lines
+	getline ( file, value );
+	getline ( file, value );
+	
+    while ( file.good() )
+    {
+		
+        getline ( file, value, ',' ); // read a string until next comma: http://www.cplusplus.com/reference/string/getline/
+			
+			if (value.find('\n') != string::npos) 
+			{
+			    split_line(value, "\n", values);
+			} 
+			else
+			{
+			    values.push_back(value);
+			}
+    }
+
+	int indexX = 0;
  
+	list<string>::const_iterator it = values.begin();
+    records *data = new records;
+ 	records *temp = data;
+	records *prev = temp;
+	
+	for(indexX = 0; !values.empty(); indexX++)
+	{
+		temp->dates = strtod(values.front().c_str(), NULL);
+		values.pop_front();
+		temp->burnedAcres = strtod(values.front().c_str(), NULL);
+		values.pop_front();
+			
+		for(int indexY = 0; indexY < 12; indexY++)
+		{
+			temp->months[indexY] = strtod(values.front().c_str(), NULL);
+			values.pop_front();
+		}
+		prev = temp;
+		temp->next = new records;
+		temp = temp->next;	
+
+		//for(int indexZ = 0; indexZ < 14; indexZ++)
+		//		values.pop_front();
+	}
+	prev->next = NULL;
+	
+	normalize(data);
+
+	file.close();
+	//delete data;
+	return data;
+}
+
+
 void split_line(string& line, string delim, list<string>& values)
 {
     size_t pos = 0;
@@ -117,14 +170,6 @@ void split_line(string& line, string delim, list<string>& values)
     }
 }
 
-/**************************************************************************//**
- * @author Alex Nienhueser
- *
- * @par Description:
- * Normalize data read in from the .csv file
- *
- *****************************************************************************/
- 
 void normalize(records *data)
 {
 	records *temp = data;

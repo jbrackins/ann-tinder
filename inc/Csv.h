@@ -1,7 +1,8 @@
 /*************************************************************************//**
- * @file ANNtrain.h
+ * @file Csv.h
  *
  * @author Julian Brackins, Samuel Carroll, Alex Nienhueser
+ *
  *
  * @brief HEADER - Methods for reading in Csv File information
  *
@@ -50,7 +51,8 @@ struct records
  *
  ******************************************************************************/
 
-records *readCSV( std::string filename, int predictYear, int prevYears );
+records *readCSV(std::string filename);
+records *readCSVEntry( std::string filename, int predictYear, int prevYears );
 void split_line( std::string& line, std::string delim, std::list<std::string>& values );
 void normalize( records *data );
 
