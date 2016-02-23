@@ -24,6 +24,8 @@
 #include <sstream>
 #include "Prm.h"
 #include "ANN.h"
+#include "NeuralNet.h"
+// don't include CSVHeader.h as it's included with NeuralNet.h
 
 /******************************************************************************
  *

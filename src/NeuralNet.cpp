@@ -30,16 +30,25 @@ NeuralNet::NeuralNet ( string param_file )
    ANN_params -> readPrm ( );
 
    /*if (ANN_params -> valid ( ))
-   {
-      
-   }
+   {*/
+      // add all the layers to the ANN and connect them
+      int layers = ANN_params -> getLayers ( );
+      for ( int i = 0; i < layers; i++ )
+      {
+         add_layer( ANN_params -> getNodeCount ( i ) );
+      }
+
+      connect_layers ( );
+   /*}
    else
    {
       cout << "Error opening parameter file: " + param_file << endl;
       cout << "Program terminating" << endl;
-      exit ( 2 );
+      exit ( -1 );
    }*/
 }
+
+//should add a deconstructor 
 
 /**************************************************************************//**
 * @author Samuel Carroll
@@ -54,6 +63,14 @@ void NeuralNet::add_layer ( int nodes )
    // perceptrons to add to the ANN
    int i;
    vector <Perceptron> perceptron_layer;
+
+   // if the node count is not viable quit the program
+   if (nodes == -100)
+   {
+      cout << "Could not get layer node count, program ending" << endl;
+
+      exit ( -1 );
+   }
 
    // Add all the perceptrons for a given layer
    for ( i = 0; i < nodes; i++ )
@@ -76,26 +93,25 @@ void NeuralNet::add_layer ( int nodes )
 * @todo - add the first n months of the current year
 *
 *****************************************************************************/
-void NeuralNet::add_first_layer ( records * input_records )
+void NeuralNet::set_first_layer ( records * input_records )
 {
    vector <Perceptron> input_layer;
    int i = 0;
+   int input_nodes = ANN_params -> getNodeCount( 0 );
 
-   while ( input_records->next != NULL )
+   // need to add n months of current year
+
+   while ( input_records->next != NULL && i < input_nodes)
    {
-      input_layer.push_back( Perceptron ( ) );
       input_layer[i].set_output ( input_records->burnedAcres );
       i++;
 
-      for(int indexY = 0; indexY < 12; indexY++)
+      for(int indexY = 0; indexY < 12 && i < input_nodes; indexY++)
       {
-         input_layer.push_back( Perceptron ( ) );
          input_layer[i].set_output ( input_records->months[indexY] );
          i++;
       }
 
-      // need to add n months of last year
-      
       input_records = input_records->next;
    }
 
@@ -235,4 +251,106 @@ void NeuralNet::update_error_grad (Perceptron curr_node, bool inside_node,
       curr_node.set_error_grad( new_error_grad );
    }
 
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Set the weights for the ANN
+*
+* @param weights - an array holding the set of weights of the ANN
+*
+******************************************************************************/
+void NeuralNet::set_weights ( double weights [ ] )
+{
+   int layers = percep_net.size ( );
+   int lft_nodes = 0;
+   int nodes = 0;
+   int weights_loc = 0;
+
+   for ( int i = 1; i < layers; i++ )
+   {
+      lft_nodes = percep_net [ i - 1].size ( );
+      nodes = percep_net [ i ].size ( );
+
+      for (int j = 0; j < nodes; j++ )
+         for (int k = 0; k < lft_nodes; k++)
+         {
+            percep_net[i][j].set_weight ( weights[ weights_loc ], k );
+            weights_loc++;
+         }
+   }
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Set the weights for the ANN
+*
+* @param weights - an array holding the set of weights of the ANN
+*
+******************************************************************************/
+double NeuralNet::get_error ( )
+{
+   int layers = percep_net.size ( );
+   int nodes = percep_net [ layers - 1 ].size ( );
+   double error = 0.0;
+   double sum = 0.0;
+
+   for ( int i = 0; i < nodes; i++ )
+   {
+      sum = percep_net [ layers - 1 ][ i ].get_desired_output( ) -
+               *(percep_net [ layers - 1 ][ i ].get_output ( ));
+      error += sum * sum;
+   }
+
+   return error;
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Returns the number of nodes in the layer specified in index
+*
+* @params [in] index - which layer that we want to get the number of nodes of
+*
+* @returns layer_nodes - number of nodes in the specified layer
+*
+******************************************************************************/
+int NeuralNet::get_layer_nodes ( int index )
+{
+   return ANN_params -> getLayers ( );
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Returns the weights file name
+*
+* @returns string - name of the weights file
+*
+******************************************************************************/
+string NeuralNet::get_weights_file ( )
+{
+   return ANN_params -> getWtsFile ( );
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Returns the CSV file to use for input
+*
+* @returns string - returns a string that is the CSV file name
+*
+*****************************************************************************/
+string NeuralNet::getCsvFile ( )
+{
+   string CsvFileName = ANN_params -> getCsvFile ( );
+
+   return ( CsvFileName );
 }
