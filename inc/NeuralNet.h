@@ -15,6 +15,7 @@
 * INCLUDE
 *
 ******************************************************************************/
+
 #include <vector>
 #include <iostream>
 #include <string>
@@ -23,17 +24,18 @@
 #include "Csv.h"
 
 /*************************************************************************//**
-* @class Neural Net
+* @class NeuralNet
 *
 * @author Samuel Carroll
 *
-* @brief Neural Net class.
+* @brief NeuralNet (Neural Network) class.
 *
 *****************************************************************************/
 class NeuralNet
 {
    public:
       NeuralNet ( std::string param_file );
+      ~NeuralNet ( );
       void add_layer ( int nodes );
       void set_first_layer ( records *input_records );
       void connect_layers ( );
