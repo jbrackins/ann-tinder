@@ -84,9 +84,20 @@ int main(int argc, char ** argv)
   }  
 
   Prm * p = new Prm( argv[1] );
+  //instead instantiate a neural net that should have the prm file inside it
 
   //Read in a .prm file  
   p->readPrm();
+  // also handled in instatiating a neural net
+  // open and read the csv file
+  // set the csv file input to the neural net
+  // open and set weights values (if present)
+  // run the neural net
+  // calculate the error every year based on the sum of the input expect vs input actual
+  // sum all error of the inputs together
+  // find the Root squared error from this sum
+  // print the Training for the epoch and repeat for every year in the csv file
+  // after we have all the training done, write the weights file
 
 
   printInfo( p );

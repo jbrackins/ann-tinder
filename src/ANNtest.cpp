@@ -98,6 +98,12 @@ int main(int argc, char ** argv)
 
   //Read in a .prm file  
   p->readPrm();
+  // Handle this parameter opening in the neural net
+  // open and read the csv file
+  // set the csv file input to the neural net
+  // open and set weights values (if present, else return -1)
+  // run the neural net
+  // output the result
 
   printInfo( p );
 
