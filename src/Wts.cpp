@@ -1,13 +1,33 @@
-#include <iostream>
-#include <list>
-#include <string>
-#include <fstream>
+/*************************************************************************//**
+ * @file Wts.cpp
+ *
+ * @brief SOURCE - Methods for reading in Wts File information
+ *
+ ******************************************************************************/
+
+/******************************************************************************
+ *
+ * INCLUDE
+ *
+ ******************************************************************************/
+
+#include "../inc/Wts.h"
+
+/******************************************************************************
+ *
+ * NAMESPACES
+ *
+ ******************************************************************************/
 
 using namespace std;
 
-bool setWeights(string fileName, double wieghts[], int arraySize);
-bool readWeights(string fileName, double wieghts[], int arraySize);
-
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Read in and parse the wts file
+ *
+ *****************************************************************************/
 
 bool readWeights(string fileName, double wieghts[], int arraySize)
 {
@@ -29,6 +49,14 @@ bool readWeights(string fileName, double wieghts[], int arraySize)
 	file.close();
 	return 0;
 }
+
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Write to the wts file
+ *
+ *****************************************************************************/
 
 bool setWeights(string fileName, double wieghts[], int arraySize)
 {

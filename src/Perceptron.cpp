@@ -96,6 +96,8 @@ void Perceptron::set_error_grad ( double new_error_grad )
 * @par Description:
 * Gets the error gradiant
 *
+* @return error_grad - error gradiant value
+*
 *****************************************************************************/
 double Perceptron::get_error_grad ( )
 {
@@ -116,6 +118,15 @@ void Perceptron::set_desired_output ( double new_desired )
    desired_output = new_desired;
 }
 
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Get the desired output value
+*
+* @returns desired_output - the desired output value 
+*
+*****************************************************************************/
 double Perceptron::get_desired_output ( )
 {
    return desired_output;
@@ -142,6 +153,7 @@ void Perceptron::set_output ( double new_output )
  * Get Output Function.
  *
  * @returns double* - return pointer to the output
+ *
  *****************************************************************************/
 double* Perceptron::get_output ( )
 {
@@ -167,6 +179,8 @@ void Perceptron::set_weight (double new_weight, int index)
 *
 * @par Description:
 * Gets the weight for a specific input node
+*
+* @return weight - return a given weight for the indexed input node.
 *
 ******************************************************************************/
 double Perceptron::get_weight (int index)

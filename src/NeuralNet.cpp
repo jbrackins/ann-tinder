@@ -21,6 +21,13 @@
 *
 ******************************************************************************/
 
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* NeuralNet Constructor
+*
+*****************************************************************************/
 using namespace std;
 
 NeuralNet::NeuralNet ( string param_file )
@@ -47,13 +54,28 @@ NeuralNet::NeuralNet ( string param_file )
    }*/
 }
 
-//should add a deconstructor 
+/**************************************************************************//**
+* @author Julian Brackins
+*
+* @par Description:
+* NeuralNet Destructor
+*
+*****************************************************************************/
+NeuralNet::~NeuralNet()
+{
+
+}
+
 
 /**************************************************************************//**
 * @author Samuel Carroll
 *
 * @par Description:
 * Add perceptron layer to the neural network
+*
+* @param[in] nodes - number of nodes in perceptron layer
+*
+* @return none
 *
 *****************************************************************************/
 void NeuralNet::add_layer ( int nodes )
@@ -153,6 +175,7 @@ void NeuralNet::connect_layers( )
 *
 * @par Description:
 * Update the weights in the ANN
+*
 ******************************************************************************/
 void NeuralNet::update_weights( )
 {
@@ -232,6 +255,10 @@ void NeuralNet::update_grads ( )
 * @par Description:
 * Update the error gradiant for a given perceptron in the ANN
 *
+* @param[in] curr_node      - current node
+* @param[in] inside_node    - inside node
+* @param[in] new_error_grad - new error gradiant to be updated.
+*
 ******************************************************************************/
 void NeuralNet::update_error_grad (Perceptron curr_node, bool inside_node,
                                    double new_error_grad )
@@ -249,7 +276,6 @@ void NeuralNet::update_error_grad (Perceptron curr_node, bool inside_node,
       new_error_grad *= (1 - *(curr_node.get_output( ))) * difference;
       curr_node.set_error_grad( new_error_grad );
    }
-
 }
 
 /**************************************************************************//**
@@ -286,9 +312,9 @@ void NeuralNet::set_weights ( double weights [ ] )
 * @author Samuel Carroll
 *
 * @par Description:
-* Set the weights for the ANN
+* Get the error value
 *
-* @param weights - an array holding the set of weights of the ANN
+* @return error - error value
 *
 ******************************************************************************/
 double NeuralNet::get_error ( )
