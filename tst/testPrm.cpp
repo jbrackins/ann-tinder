@@ -9,27 +9,30 @@ int main(int argc, char**argv)
 
   printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 
-  Prm * p = new Prm( argv[1] );
+  Prm param = Prm(argv[1]);
+  //Prm * p = new Prm( argv[1] );
 
   //Read in a .prm file  
-  p->readPrm();
+  param.readPrm();
 
   //Verify .prm was read into class
-  p->printPrm();
+  param.printPrm();
   
   printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 
   //Verify that .prm writing works
-  p->setFilename( "prm/testWriter.prm" );
-  p->writePrm();
+  param.setFilename( "prm/testWriter.prm" );
+  param.writePrm();
   
   //Should be identical to previous
-  Prm * tst = new Prm( "prm/testWriter.prm" );
-  tst->readPrm();
-  tst->printPrm();
+  Prm tst = Prm( "prm/testWriter.prm" );
+  tst.readPrm();
+  tst.printPrm();
 
   printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 
+
   return 0;
+
 
 }
