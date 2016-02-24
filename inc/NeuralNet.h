@@ -42,7 +42,7 @@ class NeuralNet
       void connect_layers ( );
       void update_weights ( );
       void update_grads ( );
-      void update_error_grad (Perceptron curr_node, bool inside_node,
+      void update_error_grad (int layer, int node, bool inside_node,
                               double new_error_grad );
       void set_weights ( double weights [ ] );
       void get_weights ( double weights [ ], int size );

@@ -220,6 +220,8 @@ void NeuralNet::update_weights( )
    int nodes;
    double new_weight;
 
+   cout << "updating the weights function" << endl;
+
    curr_layer = layers - 2;
 
    for( int i = curr_layer; i >= 0; i-- )
@@ -232,6 +234,9 @@ void NeuralNet::update_weights( )
          for ( int k = 0; k < next_layer_size; k++ )
          {
             new_weight = percep_net[i + 1][k].get_weight ( j );
+            cout << "LR = " << ANN_params -> getLearningRate() <<
+                    "\tout = " << *(percep_net[i][j].get_output ( )) <<
+                    "\tEG = " << percep_net[i][k].get_error_grad ( ) << endl;
             new_weight += ANN_params -> getLearningRate() *
                           *(percep_net[i][j].get_output ( )) * 
                           percep_net[i][k].get_error_grad ( );
@@ -259,9 +264,13 @@ void NeuralNet::update_grads ( )
 
    curr_layer = layers - 1;
    nodes = percep_net[curr_layer].size( );
+
    for (int i = 0; i < nodes; i++)
    {
-      update_error_grad ( percep_net[curr_layer][i], false, 0 );
+      new_error_grad = percep_net[curr_layer][i].get_desired_output ( ) -
+                       *(percep_net[curr_layer][i].get_output ( ));
+      update_error_grad ( curr_layer, i, false, new_error_grad );
+      cout << "set EG of node [" << curr_layer << "]["<<i<<"] to " << percep_net[curr_layer][i].get_error_grad ( ) << endl;
    }
 
    for (curr_layer = layers - 2; curr_layer > 0; curr_layer--)
@@ -272,14 +281,19 @@ void NeuralNet::update_grads ( )
       for (int j = 0; j < nodes; j++)
       {
          for ( int k = 0; k < next_layer_size; k++ )
+         {
+            cout << "Curr weight is " << percep_net[curr_layer + 1][k].get_weight ( j )
+                 << "\tcurr EG is " << percep_net[curr_layer + 1][k].get_error_grad ( ) << endl;
             sum += percep_net[curr_layer + 1][k].get_weight ( j ) *
                    percep_net[curr_layer + 1][k].get_error_grad ( );
+         }
 
+         cout << "sum = " << sum << endl;
          new_error_grad = *(percep_net[curr_layer][j].get_output( )) *
                           (1 - *(percep_net[curr_layer][j].get_output ( ))) *
                           sum;
 
-         update_error_grad (percep_net[curr_layer][j], true, new_error_grad);
+         update_error_grad (curr_layer, j, true, new_error_grad);
       }
    }
 
@@ -291,26 +305,29 @@ void NeuralNet::update_grads ( )
 * @par Description:
 * Update the error gradiant for a given perceptron in the ANN
 *
-* @param[in] curr_node      - current node
+* @param[in] layer          - current node layer
+* @param[in] node           - node position in layer
 * @param[in] inside_node    - inside node
 * @param[in] new_error_grad - new error gradiant to be updated.
 *
 ******************************************************************************/
-void NeuralNet::update_error_grad (Perceptron curr_node, bool inside_node,
+void NeuralNet::update_error_grad (int layer, int node, bool inside_node,
                                    double new_error_grad )
 {
-   double difference;
+   double error_grad;
+   double output;
 
    if ( inside_node == true )
    {
-      curr_node.set_error_grad(new_error_grad);
+      percep_net[layer][node].set_error_grad(new_error_grad);
    }
    else
    {
-      difference = curr_node.get_desired_output( ) - *(curr_node.get_output( ));
-      new_error_grad = *(curr_node.get_output( ));
-      new_error_grad *= (1 - *(curr_node.get_output( ))) * difference;
-      curr_node.set_error_grad( new_error_grad );
+      output = *(percep_net[layer][node].get_output( ));
+
+      error_grad = output * (1 - output) * new_error_grad;
+      percep_net[layer][node].set_error_grad( error_grad );
+      cout << percep_net[layer][node].get_error_grad ( )<< endl;
    }
 }
 
@@ -367,6 +384,8 @@ void NeuralNet::get_weights ( double weights [ ], int size )
    int lft_nodes;
    int nodes;
    int weights_loc = 0;
+
+   cout << "HI" << endl;
 
    for ( int i = 1; i < layers; i++ )
    {
@@ -466,22 +485,26 @@ string NeuralNet::getCsvFile ( )
 
 /**************************************************************************//**
 * @author Samuel Carroll
-* *
-* * @par Description:
-* * Returns the CSV file to use for input
-* *
-* * @returns nodeCount - integer with the number of nodes in the ANN 
-* *
-* *****************************************************************************/
+*
+* @par Description:
+* Returns the CSV file to use for input
+*
+* @returns nodeCount - integer with the number of weights in the ANN 
+*
+*****************************************************************************/
 int NeuralNet::getNetSize ( )
 {
-   int nodeCount = 0;
+   int weightCount = 0;
+   int lft_nodes;
+   int rght_nodes;
    int layers = percep_net.size( );
 
-   for ( int i = 0; i < layers; i++ )
+   for ( int i = 0; i < layers - 1; i++ )
    {
-      nodeCount += percep_net [ i ].size ( );
+      lft_nodes = percep_net [ i ].size ( );
+      rght_nodes = percep_net [ i + 1 ].size ( );
+      weightCount += lft_nodes * rght_nodes;
    }
 
-   return nodeCount;
+   return weightCount;
 }

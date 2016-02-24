@@ -107,10 +107,8 @@ int main(int argc, char ** argv)
   {
     epoch++;
     records *temp = head_record;
-    cout << "setting first layer" << endl;
     // set the csv file input to the neural net input layer
     ANN.set_first_layer ( temp );
-    cout << "set first layer" << endl;
     ANN.set_desired_output ( temp );
 
     ANN.connect_layers ( );
@@ -119,10 +117,13 @@ int main(int argc, char ** argv)
     // make sure we can read weights file from another cpp
     // check if file exists
     if (!readWeights (ANN.get_weights_file ( ), weights, ANN.getNetSize( )))
+    {
       ANN.set_weights ( weights );
+    }
 
     // we want to update the desired output of the ANN here
     // should add to neural net get output for output nodes;
+    //cout << "attempting to update gradiants" << endl;
     ANN.update_grads ( ); // update error gradiants
     ANN.update_weights ( ); // update the weights for the neural net
 
