@@ -309,8 +309,8 @@ void NeuralNet::set_weights ( double weights [ ] )
                weights_loc++;
             }
          }
-         percep_net[i][j].set_theta ( weights [ weights_loc ] );
-         weights_loc++;
+         //percep_net[i][j].set_theta ( weights [ weights_loc ] );
+         //weights_loc++;
       }
    }
 }
@@ -351,9 +351,9 @@ void NeuralNet::get_weights ( double weights [ ], int size )
             }
             weights_loc++;
          }
-         weights[weights_loc] = percep_net[i][j].get_theta ( );
-         cout << "Theta from " << i << " " <<  j << " has theta " << weights[weights_loc] << endl;
-         weights_loc++;
+         //weights[weights_loc] = percep_net[i][j].get_theta ( );
+         //cout << "Theta from " << i << " " <<  j << " has theta " << weights[weights_loc] << endl;
+         //weights_loc++;
       }
    }
 }

@@ -33,9 +33,9 @@ bool readWeights(string fileName, double wieghts[], int arraySize)
 {
 	string strInput;
 	ifstream file;
-	file.open ("../wts/"+fileName);
+	file.open ("wts/"+fileName);
 	
-	if (!file.is_open())
+	if (!file)
 	{
 		cout << "File unsuccessfully open, nothing was read from "<< fileName;
 		return 1;
@@ -60,17 +60,18 @@ bool readWeights(string fileName, double wieghts[], int arraySize)
 
 bool setWeights(string fileName, double wieghts[], int arraySize)
 {
-	ofstream file;
-	file.open("../wts/"+fileName);
-	if (!file.is_open())
-	{
-		cout << "File unsuccessfully open, nothing was written in "<< fileName;
-		return 1;
-	}
+  ofstream file;
+  file.open("wts/"+fileName);
+  if (!file)
+  {
+    cout << "File unsuccessfully open, nothing was written in "<< 
+      fileName << endl;
+    return 1;
+  }
 
-	for(int fileCounter = 0; fileCounter < arraySize; fileCounter++)
-		file<<wieghts[fileCounter]<< " ";
+  for(int fileCounter = 0; fileCounter < arraySize; fileCounter++)
+    file<<wieghts[fileCounter]<< " ";
 
-	file.close();
-	return 0;
+  file.close();
+  return 0;
 }

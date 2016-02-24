@@ -34,11 +34,10 @@ Perceptron::Perceptron ( void )
 {
    // Randomly generate a theta thershold for each perceptron, in the range
    // of 0 to 1 (from Artificial Intelligence Illuminated page 303)
-   double rand_greater = rand( ) % 100000000;
-   double rand_smaller = rand( ) % ( (int) rand_greater - 1 );
+   //double rand_greater = rand( ) % 100000000;
+   //double rand_smaller = rand( ) % ( (int) rand_greater - 1 );
 
-
-   theta = rand_smaller / rand_greater;
+   //theta = rand_smaller / rand_greater;
 }
 
 /**************************************************************************//**
@@ -233,7 +232,7 @@ void Perceptron::update_output ( )
    // perceptron
    for ( int i = 0; i < num_input; i++)
    {
-      x_sub_j += ((*(input[i])) * weights [ i ] - theta);
+      x_sub_j += ((*(input[i])) * weights [ i ] /*- theta*/);
    }
 
    // actually find the output of the perceptron
