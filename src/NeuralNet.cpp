@@ -62,7 +62,8 @@ NeuralNet::NeuralNet ( string param_file )
 *****************************************************************************/
 NeuralNet::~NeuralNet()
 {
-
+   if ( ANN_params != NULL)
+      delete ANN_params;
 }
 
 
@@ -132,6 +133,30 @@ void NeuralNet::set_first_layer ( records * input_records )
       }
 
       input_records = input_records->next;
+   }
+
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Updates the output of each of the perceptrons in the Neural Net
+*
+*****************************************************************************/
+void NeuralNet::update_output ( )
+{
+   int layers = percep_net.size( );
+   int nodes;
+
+   for (int i = 1; i < layers; i++)
+   {
+      nodes = percep_net[i].size ( );
+
+      for (int j = 0; j < nodes; j++)
+      {
+         percep_net[i][j].update_output ( );
+      }
    }
 
 }
@@ -234,9 +259,7 @@ void NeuralNet::update_weights( )
          for ( int k = 0; k < next_layer_size; k++ )
          {
             new_weight = percep_net[i + 1][k].get_weight ( j );
-            cout << "LR = " << ANN_params -> getLearningRate() <<
-                    "\tout = " << *(percep_net[i][j].get_output ( )) <<
-                    "\tEG = " << percep_net[i][k].get_error_grad ( ) << endl;
+
             new_weight += ANN_params -> getLearningRate() *
                           *(percep_net[i][j].get_output ( )) * 
                           percep_net[i][k].get_error_grad ( );
@@ -347,7 +370,7 @@ void NeuralNet::set_weights ( double weights [ ] )
    int nodes = 0;
    int weights_loc = 0;
 
-   for ( int i = 1; i <= layers; i++ )
+   for ( int i = 1; i < layers; i++ )
    {
       lft_nodes = percep_net [ i - 1].size ( );
       nodes = percep_net [ i ].size ( );
@@ -385,7 +408,7 @@ void NeuralNet::get_weights ( double weights [ ], int size )
    int nodes;
    int weights_loc = 0;
 
-   cout << "HI" << endl;
+   //cout << "HI" << endl;
 
    for ( int i = 1; i < layers; i++ )
    {

@@ -29,7 +29,7 @@ using namespace std;
  *
  *****************************************************************************/
 
-records *readCSVEntry(string filename, int predictYear, int prevYears)
+records *readCSVEntry(string filename, int predictYear, int prevYears, records *data)
 {
 	 ifstream file ( "csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
     string value; 
@@ -57,7 +57,7 @@ records *readCSVEntry(string filename, int predictYear, int prevYears)
 	int indexX = 0;
  
 	list<string>::const_iterator it = values.begin();
-    records *data = new records;
+    //records *data = new records;
  	records *temp = data;
 	records *prev = temp;
 	//Add Check to for if target year doesnt exist in the spectrum
@@ -85,7 +85,8 @@ records *readCSVEntry(string filename, int predictYear, int prevYears)
 				values.pop_front();
 		}
 	}
-	prev->next = NULL;
+	delete prev->next;
+	//prev->next = NULL;
 	
 	normalize(data);
 
@@ -94,7 +95,7 @@ records *readCSVEntry(string filename, int predictYear, int prevYears)
 	return data;
 }
 
-records *readCSV(string filename)
+records *readCSV(string filename, records *data)
 {
 	 ifstream file ( "csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
     string value; 
@@ -122,7 +123,7 @@ records *readCSV(string filename)
 	int indexX = 0;
  
 	list<string>::const_iterator it = values.begin();
-    records *data = new records;
+    //records *data = new records;
  	records *temp = data;
 	records *prev = temp;
 	
@@ -145,7 +146,8 @@ records *readCSV(string filename)
 		//for(int indexZ = 0; indexZ < 14; indexZ++)
 		//		values.pop_front();
 	}
-	prev->next = NULL;
+	delete prev->next;
+	//prev->next = NULL;
 	
 	normalize(data);
 
@@ -205,4 +207,18 @@ void normalize(records *data)
 		}
 		temp=temp->next;
 	}
+}
+
+void freeRecords(records *data)
+{
+  if(data->next == NULL)
+  {
+  	return;
+  }
+  freeRecords(data->next);
+  //delete data->next;
+  //data->next = NULL;
+  if(data !=NULL)
+  delete data;
+  //data = NULL;
 }

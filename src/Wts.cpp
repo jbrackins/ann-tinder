@@ -70,7 +70,9 @@ bool setWeights(string fileName, double wieghts[], int arraySize)
   }
 
   for(int fileCounter = 0; fileCounter < arraySize; fileCounter++)
-    file<<wieghts[fileCounter]<< " ";
+  {
+  	    file<<wieghts[fileCounter]<< " ";
+  }
 
   file.close();
   return 0;

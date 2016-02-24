@@ -226,7 +226,7 @@ void Perceptron::update_output ( )
    // Get the number of inputs coming into a perceptron to feed into our
    // sigmoid function
    int num_input = input.size ( );
-   double x_sub_j = 0;
+   double x_sub_j = 0.0;
 
    // For every input adjust the xj to calculate the sigmoid function of the
    // perceptron

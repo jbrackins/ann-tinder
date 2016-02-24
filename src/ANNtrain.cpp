@@ -81,7 +81,7 @@ int main(int argc, char ** argv)
   int epoch = 0;
   double error_sum = 0;
   double rms = 0.0;
-  double weights [ 10001 ]; //set weight not in weight range
+  double weights [ 10001 ] = { 0.0 }; //set weight not in weight range
 
   if( argc != 2 )
   {
@@ -93,6 +93,7 @@ int main(int argc, char ** argv)
   //Prm * p = new Prm( argv[1] );
   // open the Neural Net with the given parameter file
   NeuralNet ANN(argv[1]);
+  ANN.connect_layers ( );
 
   //Read in a .prm file  
   //p->readPrm();
@@ -101,7 +102,8 @@ int main(int argc, char ** argv)
  // records *head_record = new records( );
 
   //open and read the specified records
-  records *head_record = readCSV( ANN.getCsvFile( ) );
+  records *head_record = new records();
+  readCSV( ANN.getCsvFile( ), head_record );
 
   //while ( 0 /*haven't tested all records */ )
   {
@@ -111,7 +113,7 @@ int main(int argc, char ** argv)
     ANN.set_first_layer ( temp );
     ANN.set_desired_output ( temp );
 
-    ANN.connect_layers ( );
+    ANN.update_output ( );
 
     // open and set weights values (if present)
     // make sure we can read weights file from another cpp
@@ -148,9 +150,14 @@ int main(int argc, char ** argv)
   setWeights(ANN.get_weights_file ( ), weights, ANN.getNetSize( ));
   // write weights to file
 
+  freeRecords( head_record );
+  //delete head_record;
+  //head_record=NULL;
+
   //printInfo( p );
   return 0;
 }
+
 
 /**************************************************************************//**
  * @author Julian Brackins
