@@ -73,6 +73,8 @@
                       a Linked list. 
                     * Added readCSVEntry function to perform the
                       way readCSV previously did.
+                    * Completed first stable build of neural net
+ February 24, 2016  * Error Gradiant calculations correct.
 
  @endverbatim
  *
