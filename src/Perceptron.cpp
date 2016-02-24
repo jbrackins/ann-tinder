@@ -71,8 +71,6 @@ void Perceptron::add_input ( double* new_input )
    // updated
    input.push_back(new_input);
    weights.push_back( (rand_smaller / rand_greater) - 0.5);
-
-   update_output ( );
 }
 
 /**************************************************************************//**
@@ -227,16 +225,27 @@ void Perceptron::update_output ( )
    // sigmoid function
    int num_input = input.size ( );
    double x_sub_j = 0.0;
+   double e = 0.0;
 
    // For every input adjust the xj to calculate the sigmoid function of the
    // perceptron
+   //cout << "SIZE OF WEIGHTS: "<< weights.size() << endl;
+   //cout << "SIZE OF INPUT  : " << num_input << endl;
    for ( int i = 0; i < num_input; i++)
    {
-      x_sub_j += ((*(input[i])) * weights [ i ] /*- theta*/);
+      //cout << "INPUT  : " << *(input[i]) << endl;
+      //cout << "WEIGHTS: " << (weights[i]) << endl;
+      x_sub_j += ((*(input[i])) * weights [ i ]);
+      //cout << "x_sub_j: " << x_sub_j << endl;
    }
 
    // actually find the output of the perceptron
-   output = 1.0 / ( 1 + exp( x_sub_j ));
+   //cout << "x_sub_j: " << x_sub_j << endl;
+   //if(x_sub_j < 0.00000001)
+   //   x_sub_j = 0.0;
+   e = 1 + exp( -1*x_sub_j );
+   //cout << "e: " << e << endl;
+   output = 1.0 / ( e );
 
    // To get a true range of 0 to 1 as our output we will need to round up or
    // down if we are within a certain thershold of 0 or 1. See Artificial

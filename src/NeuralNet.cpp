@@ -155,6 +155,7 @@ void NeuralNet::update_output ( )
 
       for (int j = 0; j < nodes; j++)
       {
+         //cout << "Node [" << i << "][" << j << "]\n";
          percep_net[i][j].update_output ( );
       }
    }
