@@ -44,10 +44,12 @@ class NeuralNet
       void update_error_grad (Perceptron curr_node, bool inside_node,
                               double new_error_grad );
       void set_weights ( double weights [ ] );
+      void get_weights ( double weights [ ], int size );
       double get_error ( );
       int get_layer_nodes ( int index );
       std::string get_weights_file ( );
       std::string getCsvFile ( );
+      int getNetSize ( );
 
    private:
       std::vector <std::vector <Perceptron>> percep_net;

@@ -39,12 +39,11 @@ NeuralNet::NeuralNet ( string param_file )
    {*/
       // add all the layers to the ANN and connect them
       int layers = ANN_params -> getLayers ( );
-      for ( int i = 0; i < layers; i++ )
+      for ( int i = 0; i <= layers; i++ )
       {
          add_layer( ANN_params -> getNodeCount ( i ) );
       }
 
-      connect_layers ( );
    /*}
    else
    {
@@ -191,6 +190,7 @@ void NeuralNet::update_weights( )
    {
       nodes = percep_net[curr_layer].size( );
       next_layer_size = percep_net[curr_layer + 1].size ( );
+
       for ( int j = 0; j < nodes; j++ )
       {
          for ( int k = 0; k < next_layer_size; k++ )
@@ -294,17 +294,67 @@ void NeuralNet::set_weights ( double weights [ ] )
    int nodes = 0;
    int weights_loc = 0;
 
+   for ( int i = 1; i <= layers; i++ )
+   {
+      lft_nodes = percep_net [ i - 1].size ( );
+      nodes = percep_net [ i ].size ( );
+
+      for (int j = 0; j < nodes; j++ )
+      {
+         for (int k = 0; k < lft_nodes; k++)
+         {
+            if ( weights_loc < 10000 )
+            {
+               percep_net[i][j].set_weight ( weights[ weights_loc ], k );
+               weights_loc++;
+            }
+         }
+         percep_net[i][j].set_theta ( weights [ weights_loc ] );
+         weights_loc++;
+      }
+   }
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Get the weights for the ANN
+*
+* @param weights - an array to hold the set of weights of the ANN
+* @param size - the size of the weights array
+*
+******************************************************************************/
+void NeuralNet::get_weights ( double weights [ ], int size )
+{
+   int layers = percep_net.size ( );
+   int lft_nodes;
+   int nodes;
+   int weights_loc = 0;
+
    for ( int i = 1; i < layers; i++ )
    {
       lft_nodes = percep_net [ i - 1].size ( );
       nodes = percep_net [ i ].size ( );
 
       for (int j = 0; j < nodes; j++ )
-         for (int k = 0; k < lft_nodes; k++)
+      {
+         for ( int k = 0; k < lft_nodes; k++ )
          {
-            percep_net[i][j].set_weight ( weights[ weights_loc ], k );
+            if ( weights_loc < size )
+               weights[weights_loc] = percep_net[i][j].get_weight ( k );
+            else
+            {
+               cout << "Weights array too small make it larger" << endl;
+               cout << "Program ending!";
+               exit ( -1 );
+            }
             weights_loc++;
          }
+         weights[weights_loc] = percep_net[i][j].get_theta ( );
+         cout << "Theta from " << i << " " <<  j << " has theta " << weights[weights_loc] << endl;
+         weights_loc++;
+      }
    }
 }
 
@@ -375,7 +425,27 @@ string NeuralNet::get_weights_file ( )
 *****************************************************************************/
 string NeuralNet::getCsvFile ( )
 {
-   string CsvFileName = ANN_params -> getCsvFile ( );
+   return ( ANN_params -> getCsvFile ( ) );
+}
 
-   return ( CsvFileName );
+/**************************************************************************//**
+* @author Samuel Carroll
+* *
+* * @par Description:
+* * Returns the CSV file to use for input
+* *
+* * @returns nodeCount - integer with the number of nodes in the ANN 
+* *
+* *****************************************************************************/
+int NeuralNet::getNetSize ( )
+{
+   int nodeCount = 0;
+   int layers = percep_net.size( );
+
+   for ( int i = 0; i < layers; i++ )
+   {
+      nodeCount += percep_net [ i ].size ( );
+   }
+
+   return nodeCount;
 }

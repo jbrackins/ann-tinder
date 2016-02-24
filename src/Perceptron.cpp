@@ -189,6 +189,33 @@ double Perceptron::get_weight (int index)
 }
 
 /**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Sets the theta for a node
+*
+******************************************************************************/
+void Perceptron::set_theta ( double new_theta )
+{
+   theta = new_theta;
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Gets the theta for a perceptron
+*
+* @return theta - return the threshold for the node.
+*
+******************************************************************************/
+double Perceptron::get_theta ( )
+{
+   return theta;
+}
+
+
+/**************************************************************************//**
  * @author Samuel Carroll
  *
  * @par Description:

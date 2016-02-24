@@ -78,8 +78,10 @@ using namespace std;
 int main(int argc, char ** argv)
 {
   int num_samples = 0;
+  int epoch = 0;
   double error_sum = 0;
   double rms = 0.0;
+  double weights [ 10001 ]; //set weight not in weight range
 
   if( argc != 2 )
   {
@@ -87,6 +89,7 @@ int main(int argc, char ** argv)
   	return -1;
   }  
 
+  srand ( time( 0 ) );
   //Prm * p = new Prm( argv[1] );
   // open the Neural Net with the given parameter file
   NeuralNet ANN(argv[1]);
@@ -97,47 +100,52 @@ int main(int argc, char ** argv)
   //create the records template so we can read in the CSV file
   records *head_record = new records( );
 
-  // strat loop
   //open and read the specified records
-  ///todo make sure we can read in an entire CSV file
-  /*head_record = readCSV(ANN.getCsvFile(), 2015, 30);*/
-  records *temp = head_record;
-  
-  // set the csv file input to the neural net input layer
-  ANN.set_first_layer ( temp );
+  head_record = readCSV( ANN.getCsvFile( ) );
 
-  // open and set weights values (if present)
-  double weights [ 1000 ] = { -1000 }; // set value outside acceptable weight range
-  // make sure we can read weights file from another cpp
-  //readWeights (ANN.get_weights_file ( ), weights, 1000 );
-  ANN.set_weights ( weights );
+  //while ( 0 /*haven't tested all records */ )
+  {
+    epoch++;
+    records *temp = head_record;
 
-  // run the neural net
-  ANN.connect_layers ( ); // connects and updates output of perceptrons
-  // should add to neural net get output for output nodes;
-  ANN.update_grads ( ); // update error gradiants
-  ANN.update_weights ( ); // update the weights for the neural net
+    // set the csv file input to the neural net input layer
+    ANN.set_first_layer ( temp );
 
-  // calculate the error every year based on the sum of the input expect vs input actual
-  error_sum = ANN.get_error ( );
+    ANN.connect_layers ( );
 
-  // sum all error of the inputs together
-  num_samples = ANN.get_layer_nodes ( 0 ); // get number of samples used
+    // open and set weights values (if present)
+    // make sure we can read weights file from another cpp
+    // check if file exists
+    if (!readWeights (ANN.get_weights_file ( ), weights, ANN.getNetSize( )))
+      ANN.set_weights ( weights );
 
-  // find the Root squared error from this sum
-  rms = 1.0 / num_samples * error_sum;
-  rms = sqrt(rms);
+    // we want to update the desired output of the ANN here
+    // should add to neural net get output for output nodes;
+    ANN.update_grads ( ); // update error gradiants
+    ANN.update_weights ( ); // update the weights for the neural net
 
+    // calculate the error every year based on the sum of the input expect vs input actual
+    error_sum = ANN.get_error ( );
+
+    // sum all error of the inputs together
+    num_samples = ANN.get_layer_nodes ( 0 ); // get number of samples used
+
+    // find the Root squared error from this sum
+    rms = 1.0 / num_samples * error_sum;
+    rms = sqrt(rms);
+
+    printTraining ( epoch, "RMS", rms );
+  }
   // print the Training for the epoch and repeat for every year in the csv file
 
   // after we have all the training done, write the weights file
   // add a get weights function
-
+  ANN.get_weights ( weights, 10000 );
+  setWeights(ANN.get_weights_file ( ), weights, ANN.getNetSize( ));
+  // write weights to file
 
   //printInfo( p );
-
-  testPrintout();
-
+  return 0;
 }
 
 /**************************************************************************//**
@@ -175,7 +183,7 @@ void printTraining( int epoch, string equation, double error )
  * @returns nothing
  *
  *****************************************************************************/
-void testPrintout(  )
+void testPrintout( )
 {
   int e;
   string eq = "RMS";

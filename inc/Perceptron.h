@@ -43,6 +43,8 @@ class Perceptron
       double* get_output ( );
       void set_weight (double weight, int index);
       double get_weight (int index);
+      void set_theta ( double new_theta );
+      double get_theta ( );
       void update_output ( );
    private:
       std::vector <double*> input;

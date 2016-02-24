@@ -39,7 +39,6 @@ records *readCSVEntry(string filename, int predictYear, int prevYears)
 	getline ( file, value );
 	getline ( file, value );
 	
-	int j = 0;
     while ( file.good() )
     {
 		
