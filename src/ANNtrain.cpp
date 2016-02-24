@@ -92,7 +92,7 @@ int main(int argc, char ** argv)
   srand ( time( 0 ) );
   //Prm * p = new Prm( argv[1] );
   // open the Neural Net with the given parameter file
-  NeuralNet ANN(argv[1]);
+  NeuralNet ANN = NeuralNet(argv[1]);
   ANN.connect_layers ( );
 
   //Read in a .prm file  

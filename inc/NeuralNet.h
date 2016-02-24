@@ -55,7 +55,7 @@ class NeuralNet
 
    private:
       std::vector <std::vector <Perceptron>> percep_net;
-      Prm* ANN_params;
+      Prm ANN_params;
 };
 
   #endif

@@ -32,16 +32,16 @@ using namespace std;
 
 NeuralNet::NeuralNet ( string param_file )
 {
-   ANN_params = new Prm ( param_file );
-   ANN_params -> readPrm ( );
+   ANN_params = Prm ( param_file );
+   ANN_params.readPrm ( );
 
    /*if (ANN_params -> valid ( ))
    {*/
       // add all the layers to the ANN and connect them
-      int layers = ANN_params -> getLayers ( );
+      int layers = ANN_params.getLayers ( );
       for ( int i = 0; i <= layers; i++ )
       {
-         add_layer( ANN_params -> getNodeCount ( i ) );
+         add_layer( ANN_params.getNodeCount ( i ) );
       }
 
    /*}
@@ -62,8 +62,8 @@ NeuralNet::NeuralNet ( string param_file )
 *****************************************************************************/
 NeuralNet::~NeuralNet()
 {
-   if ( ANN_params != NULL)
-      delete ANN_params;
+   //if ( ANN_params != NULL)
+   //   delete ANN_params;
 }
 
 
@@ -117,7 +117,7 @@ void NeuralNet::add_layer ( int nodes )
 void NeuralNet::set_first_layer ( records * input_records )
 {
    int i = 0;
-   int input_nodes = ANN_params -> getNodeCount( 0 );
+   int input_nodes = ANN_params.getNodeCount( 0 );
 
    // need to add n months of current year
 
@@ -260,7 +260,7 @@ void NeuralNet::update_weights( )
          {
             new_weight = percep_net[i + 1][k].get_weight ( j );
 
-            new_weight += ANN_params -> getLearningRate() *
+            new_weight += ANN_params.getLearningRate() *
                           *(percep_net[i][j].get_output ( )) * 
                           percep_net[i][k].get_error_grad ( );
             percep_net[i + 1][k].set_weight(new_weight, j);
@@ -475,7 +475,7 @@ double NeuralNet::get_error ( )
 ******************************************************************************/
 int NeuralNet::get_layer_nodes ( int index )
 {
-   return ANN_params -> getLayers ( );
+   return ANN_params.getLayers ( );
 }
 
 /**************************************************************************//**
@@ -489,7 +489,7 @@ int NeuralNet::get_layer_nodes ( int index )
 ******************************************************************************/
 string NeuralNet::get_weights_file ( )
 {
-   return ANN_params -> getWtsFile ( );
+   return ANN_params.getWtsFile ( );
 }
 
 /**************************************************************************//**
@@ -503,7 +503,7 @@ string NeuralNet::get_weights_file ( )
 *****************************************************************************/
 string NeuralNet::getCsvFile ( )
 {
-   return ( ANN_params -> getCsvFile ( ) );
+   return ( ANN_params.getCsvFile ( ) );
 }
 
 /**************************************************************************//**
