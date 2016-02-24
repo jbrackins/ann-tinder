@@ -115,7 +115,6 @@ void NeuralNet::add_layer ( int nodes )
 *****************************************************************************/
 void NeuralNet::set_first_layer ( records * input_records )
 {
-   vector <Perceptron> input_layer;
    int i = 0;
    int input_nodes = ANN_params -> getNodeCount( 0 );
 
@@ -123,19 +122,56 @@ void NeuralNet::set_first_layer ( records * input_records )
 
    while ( input_records->next != NULL && i < input_nodes)
    {
-      input_layer[i].set_output ( input_records->burnedAcres );
+      percep_net[0][i].set_output ( input_records->burnedAcres );
       i++;
 
       for(int indexY = 0; indexY < 12 && i < input_nodes; indexY++)
       {
-         input_layer[i].set_output ( input_records->months[indexY] );
+         percep_net[0][i].set_output ( input_records->months[indexY] );
          i++;
       }
 
       input_records = input_records->next;
    }
 
-   percep_net.push_back ( input_layer );
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Add desired output for the neural net based on the burned acreage
+*
+* @param[in] input_records - the input parameters for the ANN
+*
+*****************************************************************************/
+void NeuralNet::set_desired_output ( records *input_records )
+{
+   double burnage = input_records -> burnedAcres;
+   int layers = percep_net.size ( );
+
+   cout << burnage << endl;
+   // set high if high burned acreage
+   if ( burnage > 0.666666 )
+   {
+      percep_net [ layers - 1 ][ 0 ].set_desired_output ( 1.0 );
+      percep_net [ layers - 1 ][ 1 ].set_desired_output ( 0.0 );
+      percep_net [ layers - 1 ][ 2 ].set_desired_output ( 0.0 );
+   }
+   // set low if low burned acreage
+   else if ( burnage < 0.333333 )
+   {
+      percep_net [ layers - 1 ][ 0 ].set_desired_output ( 0.0 );
+      percep_net [ layers - 1 ][ 1 ].set_desired_output ( 0.0 );
+      percep_net [ layers - 1 ][ 2 ].set_desired_output ( 1.0 );
+   }
+   // set mild if mild burned acreage
+   else
+   {
+      percep_net [ layers - 1 ][ 0 ].set_desired_output ( 0.0 );
+      percep_net [ layers - 1 ][ 1 ].set_desired_output ( 1.0 );
+      percep_net [ layers - 1 ][ 2 ].set_desired_output ( 0.0 );
+   }
 }
 
 /**************************************************************************//**

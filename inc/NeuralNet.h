@@ -38,6 +38,7 @@ class NeuralNet
       ~NeuralNet ( );
       void add_layer ( int nodes );
       void set_first_layer ( records *input_records );
+      void set_desired_output ( records *input_records );
       void connect_layers ( );
       void update_weights ( );
       void update_grads ( );

@@ -98,18 +98,20 @@ int main(int argc, char ** argv)
   //p->readPrm();
 
   //create the records template so we can read in the CSV file
-  records *head_record = new records( );
+ // records *head_record = new records( );
 
   //open and read the specified records
-  head_record = readCSV( ANN.getCsvFile( ) );
+  records *head_record = readCSV( ANN.getCsvFile( ) );
 
   //while ( 0 /*haven't tested all records */ )
   {
     epoch++;
     records *temp = head_record;
-
+    cout << "setting first layer" << endl;
     // set the csv file input to the neural net input layer
     ANN.set_first_layer ( temp );
+    cout << "set first layer" << endl;
+    ANN.set_desired_output ( temp );
 
     ANN.connect_layers ( );
 
@@ -135,6 +137,7 @@ int main(int argc, char ** argv)
     rms = sqrt(rms);
 
     printTraining ( epoch, "RMS", rms );
+
   }
   // print the Training for the epoch and repeat for every year in the csv file
 

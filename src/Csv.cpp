@@ -31,7 +31,7 @@ using namespace std;
 
 records *readCSVEntry(string filename, int predictYear, int prevYears)
 {
-	 ifstream file ( "../csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
+	 ifstream file ( "csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
     string value; 
     list<string> values;
 
@@ -96,7 +96,7 @@ records *readCSVEntry(string filename, int predictYear, int prevYears)
 
 records *readCSV(string filename)
 {
-	 ifstream file ( "../csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
+	 ifstream file ( "csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
     string value; 
     list<string> values;
 
