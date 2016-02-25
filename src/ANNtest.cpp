@@ -92,12 +92,9 @@ int main(int argc, char ** argv)
   {
   	usage( argv );
   	return -1;
-  }  
-
-  Prm * p = new Prm( argv[1] );
+  }
 
   //Read in a .prm file  
-  p->readPrm();
   // Handle this parameter opening in the neural net
   // open and read the csv file
   // set the csv file input to the neural net
@@ -105,9 +102,94 @@ int main(int argc, char ** argv)
   // run the neural net
   // output the result
 
-  printInfo( p );
+  int num_records;
+  int start = 0;
+  int years;
+  int fin_out;
+  int act_out;
+  double sample;
+  double weights [ 10001 ] = { 0.0 }; //set weight not in weight range
+  int trueHi = 0;
+  int trueLow = 0;
+  int trueMed = 0;
+  int predHi = 0;
+  int predLow = 0;
+  int predMed = 0;
+  int success = 0;
 
-  testPrintout(  );
+
+  //srand ( time( 0 ) );
+
+  // open the Neural Net with the given parameter file
+
+  NeuralNet ANN = NeuralNet(argv[1]);
+  ANN.connect_layers ( );
+
+  //open and read the specified records
+  records *head_record = new records;
+
+  readCSV( ANN.ANN_params.getCsvFile( ), head_record );
+  records *temp = head_record;
+  num_records = getRecordsSize( temp );
+
+  years = ceil (ANN.ANN_params.getMonths ( ) / 12.0 ); 
+
+  if (!readWeights (ANN.ANN_params.getWtsFile ( ), weights,
+                    ANN.getNetSize( ))) // have this
+  {
+    ANN.set_weights ( weights ); // change to warning
+
+    while (start < num_records - years )
+    {
+      success = 0;
+      ANN.set_first_layer ( temp );
+      for ( int i = 0; i < years; i++)
+        temp = temp->next;
+      ANN.update_output ( );
+
+      sample = temp -> dates; // get the year we tested
+
+      fin_out = ANN.get_fin_out ( );
+      act_out = get_actual_output ( (int)temp -> iAcres, ANN.ANN_params.getMedHigh( ),
+                                    ANN.ANN_params.getLowMed ( ) );
+
+      start++;
+
+      success = printTesting ( sample, act_out, fin_out );
+
+      if ( success == 1 && act_out == 100 )
+        predHi++;
+      else if (success == 1 && act_out == 10 )
+        predMed++;
+      else if (success == 1 && act_out == 1 )
+        predLow++;
+      if ( act_out == 100 )
+        trueHi++;
+      else if ( act_out == 10 )
+        trueMed++;
+      else if ( act_out == 1 )
+        trueLow++;
+
+      temp = head_record;
+      for (int i = 0; i < start && temp->next != NULL; i++ )
+        temp = temp -> next;
+
+    }
+
+    printSummary ( (double)predLow/trueLow, (double)predMed/trueMed, 
+                   (double)predHi/trueHi );
+  }
+  else
+  {
+    cout << "Weight File not found program terminating" << endl;
+    return -1;
+  }
+
+  // print final output
+
+  freeRecords( head_record );
+  //delete head_record;
+  //head_record=NULL;
 
   return 0;
 
@@ -142,7 +224,7 @@ void printHeader( )
  * @returns nothing
  *
  *****************************************************************************/
-void printTesting( int sample, int actual, int predicted )
+int printTesting( int sample, int actual, int predicted )
 {
   string str_actual    = formatResult(actual);
   string str_predicted = formatResult(predicted);
@@ -170,6 +252,10 @@ void printTesting( int sample, int actual, int predicted )
   cout << "|" << endl;
   cout << "*---------------------------------------*" << endl;;
 
+  if ( str_result == "SUCCESS" )
+    return 1;
+  else
+    return 0;
 }
 
 /**************************************************************************//**
@@ -185,15 +271,16 @@ void printTesting( int sample, int actual, int predicted )
  * @returns nothing
  *
  *****************************************************************************/
-void printSummary( string equation, double error, double accuracy )
+void printSummary( double lowAcc, double medAcc, double hiAcc )
 {
   
   ///This function will print out the summary statistics of how well the 
   ///neural network performed in the tests.
   cout << endl;
-  cout << equation << "error: ";
-  cout << setiosflags(ios::fixed) << setprecision(3)  << error << endl; 
-  cout << "accuracy: " << setprecision(1) << accuracy * 100 << "%%" << endl;
+  cout << setiosflags(ios::fixed) << setprecision(3)  << endl; 
+  cout << "Low accuracy: " << setprecision(1) << lowAcc * 100 << "%%" << endl;
+  cout << "Med accuracy: " << setprecision(1) << medAcc * 100 << "%%" << endl;
+  cout << "Hi accuracy: " << setprecision(1) << hiAcc * 100 << "%%" << endl;
 
 }
 
@@ -205,9 +292,9 @@ void printSummary( string equation, double error, double accuracy )
  *
  * @param[in] result - A given value, either actual or predicted
  *
- * @returns "LOW" - value passed in was 100
+ * @returns "LOW" - value passed in was 001
  * @returns "MED" - value passed in was 010
- * @returns "Hi " - value passed in was 001
+ * @returns "Hi " - value passed in was 100
  * @returns "ERR" - value passed in was invalid (anything other than above)
  *
  *****************************************************************************/
@@ -217,17 +304,16 @@ string formatResult( int result )
   ///This function rewrites each integer value of a given result, either 
   ///actual or predicted, and displays it in a readable manner.
   ///The conversions are as follows:
-
 	
   ///100 = LOW
   if(result == 100 )
-  	return "LOW";
+  	return "HI ";
   ///010 = MED
-  else if(result == 010 )
+  else if(result == 10 )
   	return "MED";
   ///001 = HI
-  else if(result == 001 )
-  	return "HI ";
+  else if(result == 1 )
+  	return "LOW";
   ///Invalid otherwise
   else
   	return "ERR";
@@ -274,5 +360,35 @@ void testPrintout(  )
   pred = 000;
   printTesting( samp, act, pred );  
 
-  printSummary( eq, err, acc );
+  //printSummary( eq, err, acc );
+}
+
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Test the output of our program
+ *
+ * @returns 100 - if we have a burn acreage in the high range
+ * @returns 10 - if we have a burn acreage in the medium range
+ * @returns 1 - if we have a burn acreage in the low range
+ *
+ *****************************************************************************/
+int get_actual_output ( double burnAcre, int high, int low )
+{
+   // set high if high burned acreage
+   if ( burnAcre > high )
+   {
+      return 100;
+   }
+   // set low if low burned acreage
+   else if ( burnAcre < low )
+   {
+      return 1;
+   }
+   // set mild if mild burned acreage
+   else
+   {
+      return 10;
+   }
 }

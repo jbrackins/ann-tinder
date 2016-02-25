@@ -63,9 +63,9 @@ Perceptron::~Perceptron ( )
  *****************************************************************************/
 void Perceptron::add_input ( double* new_input )
 {
-   double rand_greater = rand( ) % 1000;
-   double rand_smaller = rand( ) % ( (int) rand_greater );
-   double weight_val = (rand_smaller / rand_greater) - 0.5;
+   double rand_greater = (rand( ) % 1000) + 1;
+   double rand_smaller = rand( ) % ( (int) (rand_greater + 1 ));
+   double weight_val = (rand_smaller / rand_greater) /*- 0.5*/;
 
    // Add a pointer to the output of another perceptron, a pointer is used so
    // we don't need to reconnect the all the perceptrons if one input is
@@ -161,6 +161,13 @@ double* Perceptron::get_output ( )
    return &output;
 }
 
+int Perceptron::get_whole_out ( )
+{
+   if ( output > 0.7)
+      return 1;
+   return 0;
+}
+
 /**************************************************************************//**
 * @author Samuel Carroll
 *
@@ -232,7 +239,7 @@ void Perceptron::update_output ( )
    // perceptron
    for ( int i = 0; i < num_input; i++)
    {
-      x_sub_j += ((*(input[i])) * weights [ i ] /*- theta*/);
+      x_sub_j += ((*(input[i])) * weights [ i ] );
    }
 
    // actually find the output of the perceptron
@@ -241,9 +248,21 @@ void Perceptron::update_output ( )
    // To get a true range of 0 to 1 as our output we will need to round up or
    // down if we are within a certain thershold of 0 or 1. See Artificial
    // Intelligence Illuminated page 303 for reasons why.
-   if (output > 0.95)
-      output = 1;
-   else if (output < 0.05)
-      output = 0;
+   if (output > 0.9)
+      output = 1.0;
+   else if (output < 0.1)
+      output = 0.0;
 }
 
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Clear vectors in the Perceptron
+ *
+ *****************************************************************************/
+void Perceptron::clear_vectors( )
+{
+  input.clear ( );
+  weights.clear ( );
+}

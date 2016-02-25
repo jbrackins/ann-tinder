@@ -24,6 +24,8 @@
 #include <sstream>
 #include "Prm.h"
 #include "ANN.h"
+#include "NeuralNet.h"
+#include "Wts.h"
 
 /******************************************************************************
  *
@@ -32,10 +34,11 @@
  ******************************************************************************/
 
 void printHeader( );
-void printTesting( int epoch, std::string equation, double error );
-void printSummary( std::string equation, double error, double accuracy );
+int printTesting( int sample, int actual, int predicted );
+void printSummary( double lowAcc, double medAcc, double hiAcc );
 std::string formatResult( int result );
 void testPrintout(  );
+int get_actual_output ( double burnAcre, int high, int low );
 
 /******************************************************************************
  *
