@@ -36,7 +36,7 @@ CrossValidate: src/CrossValidate.o ${OBJS}
 doxygen:
 	doxygen doc/doxy.conf 
 	(cd ./doc/latex && make)
-	cp ./doc/latex/refman.pdf doxygen.pdf	
+	cp ./doc/latex/refman.pdf Program_Writeup.pdf	
 dox:
 	make doxygen
 clean:
@@ -48,7 +48,7 @@ celan:
 	make clean
 realclean:
 	rm -f *.o ANNtest ANNtrain CrossValidate *~ core src/*.o inc/*~ src/*~ $(EXECS) *~ *.swp
-	rm -rf doc/html doc/latex pa1_brac_carr_nien.tar doxygen.pdf
+	rm -rf doc/html doc/latex pa1_brac_carr_nien.tar Program_Writeup.pdf
 edit:
 	gedit inc/*.h src/*.cpp Makefile &
 sublime:
