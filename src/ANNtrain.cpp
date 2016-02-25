@@ -84,8 +84,13 @@ int main(int argc, char ** argv)
   int num_samples = 0;
   int epoch = 0;
   double error_sum = 0;
-  double rms = 0.0;
+  double rms = 1.0;
+  int num_records;
+  int start;
+  vector<bool> start_here;
+  int years;
   double weights [ 10001 ] = { 0.0 }; //set weight not in weight range
+
 
   if( argc != 2 )
   {
@@ -93,65 +98,93 @@ int main(int argc, char ** argv)
   	return -1;
   }  
 
+
   srand ( time( 0 ) );
   //Prm * p = new Prm( argv[1] );
   // open the Neural Net with the given parameter file
-  NeuralNet ANN = NeuralNet(argv[1]);
-  ANN.connect_layers ( );
 
-  //Read in a .prm file  
-  //p->readPrm();
+  NeuralNet ANN = NeuralNet(argv[1]); // need this
+  ANN.connect_layers ( ); // need this
 
-  //create the records template so we can read in the CSV file
- // records *head_record = new records( );
 
   //open and read the specified records
-  records *head_record = new records;
-  readCSV( ANN.getCsvFile( ), head_record );
+  records *head_record = new records; // need this
 
-  //while ( 0 /*haven't tested all records */ )
+  readCSV( ANN.ANN_params.getCsvFile( ), head_record ); // need this
+  records *temp = head_record; // need this
+  num_records = getRecordsSize( temp ); // need this
+  // input_nodes = ANN.get_layer_nodes ( 0 );
+
+  years = ceil (ANN.ANN_params.getMonths ( ) / 12.0 ); // need this
+  for (int i = 0; i < num_records - years; i++)
   {
-    epoch++;
-    records *temp = head_record;
+    start_here.push_back(false);
+  }
+
+  // open and set weights values (if present)
+  // make sure we can read weights file from another cpp
+  // check if file exists
+  if (!readWeights (ANN.ANN_params.getWtsFile ( ), weights,
+                    ANN.getNetSize( ))) // have this
+  {
+    ANN.set_weights ( weights ); // change to warning
+  }
+
+  while ( epoch < ANN.ANN_params.getEpochs ( ) )
+  {
+    temp = head_record;// need this
+
+    start = getStart ( start_here, ANN.ANN_params.getMonths ( ), num_records );
+    start_here [ start ] = true;
+
+    for (int i = 0; i < start; i++ )
+      temp = temp->next;
+    
     // set the csv file input to the neural net input layer
-    ANN.set_first_layer ( temp );
+    ANN.set_first_layer ( temp ); // need this
+    for (int i = 0; i < years; i++ )
+      temp = temp->next;
     ANN.set_desired_output ( temp );
-
-    ANN.update_output ( );
-
-    // open and set weights values (if present)
-    // make sure we can read weights file from another cpp
-    // check if file exists
-    if (!readWeights (ANN.get_weights_file ( ), weights, ANN.getNetSize( )))
-    {
-      ANN.set_weights ( weights );
-    }
 
     // we want to update the desired output of the ANN here
     // should add to neural net get output for output nodes;
     //cout << "attempting to update gradiants" << endl;
+    ANN.update_output ( ); // need this
     ANN.update_grads ( ); // update error gradiants
     ANN.update_weights ( ); // update the weights for the neural net
 
     // calculate the error every year based on the sum of the input expect vs input actual
-    error_sum = ANN.get_error ( );
+    error_sum += ANN.get_error ( );
 
     // sum all error of the inputs together
-    num_samples = ANN.get_layer_nodes ( 0 ); // get number of samples used
+    num_samples++; // get number of samples used
 
-    // find the Root squared error from this sum
-    rms = 1.0 / num_samples * error_sum;
-    rms = sqrt(rms);
+    if (isTrue(start_here, num_records - years) )
+    {
+       epoch++;
+       for (int i = 0; i < num_records - years; i++)
+       {
+          start_here[i] = false;
+       }
 
-    printTraining ( epoch, "RMS", rms );
+       rms = (1.0 / num_samples) * error_sum;
+       rms = sqrt(rms);
 
+       if (epoch % 10 == 0)
+         printTraining ( epoch, "RMS", rms );
+       num_samples = 0;
+       error_sum = 0.0;
+    }
   }
   // print the Training for the epoch and repeat for every year in the csv file
+  ANN.get_weights ( weights, 10000 );
+  //cout<<weights[0]<<endl;
+  setWeights(ANN.ANN_params.getWtsFile ( ), weights, ANN.getNetSize( ));
 
   // after we have all the training done, write the weights file
   // add a get weights function
-  ANN.get_weights ( weights, 10000 );
-  setWeights(ANN.get_weights_file ( ), weights, ANN.getNetSize( ));
+  //ANN.get_weights ( weights, 10000 );
+  //setWeights(ANN.get_weights_file ( ), weights, ANN.getNetSize( ));
   // write weights to file
 
   freeRecords( head_record );
@@ -213,5 +246,28 @@ void testPrintout( )
     err = err * (1.00 - 0.00);
     printTraining( e, eq, err );
   }
+}
+
+bool isTrue ( vector <bool> start_here, int vec_size )
+{
+   for (int i = 0; i < vec_size; i++)
+   {
+      if ( !start_here[i] )
+         return false;
+   }
+
+   return true;
+}
+
+int getStart ( vector <bool> start_here, int months, int num_recs )
+{
+  double divideFloat = months / 12.0;
+  int years = ceil ( divideFloat );
+  int start = (rand ( ) % (num_recs - years));
+
+  while (start_here[start])
+    start = (rand ( ) % (num_recs - years));
+    
+  return start;
 }
 

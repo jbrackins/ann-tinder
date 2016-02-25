@@ -22,7 +22,10 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include "Prm.h"
 #include "ANN.h"
+#include "NeuralNet.h"
+#include "Wts.h"
 
 
 /******************************************************************************
@@ -45,6 +48,8 @@ void printCrossValidate( int year, int burned, int severity, int predicted, doub
 void printSummary( double accuracy );
 std::string formatResult( int result );
 void testPrintout( );
+int get_actual_output ( double burnAcre, int high, int low );
+bool hasFalse ( std::vector<bool> chk_vector );
 
 /******************************************************************************
  *

@@ -28,7 +28,6 @@ using namespace std;
  * Read in and parse the wts file
  *
  *****************************************************************************/
-
 bool readWeights(string fileName, double wieghts[], int arraySize)
 {
 	string strInput;
@@ -37,7 +36,7 @@ bool readWeights(string fileName, double wieghts[], int arraySize)
 	
 	if (!file)
 	{
-		cout << "File unsuccessfully open, nothing was read from "<< fileName;
+                cout << "Couldn't open file " << fileName << " for weights" << endl;
 		return 1;
 	}
 
@@ -69,12 +68,11 @@ bool setWeights(string fileName, double wieghts[], int arraySize)
     return 1;
   }
 
-  cout << "ARRAY SIZE: " << arraySize << endl;
   for(int fileCounter = 0; fileCounter < arraySize; fileCounter++)
   {
   	//cout << "i: " << fileCounter << endl;
   	//cout << "w: " << wieghts[fileCounter] << endl;
-  	if(wieghts[fileCounter] == NULL)
+  	//if(wieghts[fileCounter] == NULL)
     file<<wieghts[fileCounter]<< " ";
   }
 

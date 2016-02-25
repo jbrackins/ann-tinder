@@ -22,7 +22,6 @@
 #include <string>
 #include <cstdlib>
 #include <list>
-#include "../inc/Csv.h"
 
 /******************************************************************************
  *
@@ -40,6 +39,7 @@
 struct records
 {
 	double dates;
+        double iAcres;
 	double burnedAcres;
 	double months[12];
 	records *next;
@@ -51,7 +51,7 @@ struct records
  *
  ******************************************************************************/
 
-
+int getRecordsSize( records *data );
 records *readCSV(std::string filename, records *data);
 records *readCSVEntry( std::string filename, int predictYear, int prevYears, records *data );
 void freeRecords(records *data);

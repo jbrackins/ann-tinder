@@ -25,74 +25,85 @@ using namespace std;
  * @author Alex Nienhueser
  *
  * @par Description:
- * Read in and parse the csv file
+ * Read in and parse the csv file for a specific entry.
+ *
+ * @param[in] filename - csv file name
+ * @param[in] predictYear - predicted year
+ * @param[in] prevYears - previous years to be predicted
+ * @param[in] *data    - head pointer for records struct.
  *
  *****************************************************************************/
 
 records *readCSVEntry(string filename, int predictYear, int prevYears, records *data)
 {
-	 ifstream file ( "csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
-    string value; 
-    list<string> values;
+  ifstream file ( "csv/"+filename ); // declare file stream
+  string value; 
+  list<string> values;
 
-	//Skip first two lines
-	getline ( file, value );
-	getline ( file, value );
-	
-    while ( file.good() )
-    {
+  //Skip first two lines
+  getline ( file, value );
+  getline ( file, value );
+  
+  //Fill list with string in csv
+  while ( file.good() )
+  {
 		
-        getline ( file, value, ',' ); // read a string until next comma: http://www.cplusplus.com/reference/string/getline/
-			
-			if (value.find('\n') != string::npos) 
-			{
-			    split_line(value, "\n", values);
-			} 
-			else
-			{
-			    values.push_back(value);
-			}
+    getline ( file, value, ',' ); // read a string until next comma
+    if (value.find('\n') != string::npos) 
+    {
+      split_line(value, "\n", values);
+    } 
+    else
+    {
+      values.push_back(value);
     }
+  }
 
-	int indexX = 0;
+  int indexX = 0;
  
-	list<string>::const_iterator it = values.begin();
-    //records *data = new records;
- 	records *temp = data;
-	records *prev = temp;
-	//Add Check to for if target year doesnt exist in the spectrum
-	for(indexX = 0; predictYear >= strtod(values.front().c_str(), NULL) && !values.empty(); indexX++)
-	{
-		if(predictYear-(strtod(values.front().c_str(), NULL)) <= prevYears)
-		{
-			temp->dates = strtod(values.front().c_str(), NULL);
-			values.pop_front();
-			temp->burnedAcres = strtod(values.front().c_str(), NULL);
-			values.pop_front();
-				
-			for(int indexY = 0; indexY < 12; indexY++)
-			{
-				temp->months[indexY] = strtod(values.front().c_str(), NULL);
-				values.pop_front();
-			}
-			prev = temp;
-			temp->next = new records;
-			temp = temp->next;	
-		}
-		else
-		{
-			for(int indexZ = 0; indexZ < 14; indexZ++)
-				values.pop_front();
-		}
-	}
-	delete prev->next;
-	//prev->next = NULL;
-	
-	normalize(data);
+  //Create list iterator
+  list<string>::const_iterator it = values.begin();
+  records *temp = data;
+  records *prev = temp;
+  
+  //Loop through list
+  for(indexX = 0; predictYear >= strtod(values.front().c_str(), NULL) &&
+                !values.empty(); indexX++)
+  {
+    if(predictYear-(strtod(values.front().c_str(), NULL)) <= prevYears)
+    {
+        temp->dates = strtod(values.front().c_str(), NULL);
+        values.pop_front();
+        temp->burnedAcres = strtod(values.front().c_str(), NULL);
+        values.pop_front();
 
-	file.close();
-	//delete data;
-	return data;
+        //Fill Months
+        for(int indexY = 0; indexY < 12; indexY++)
+        {
+          temp->months[indexY] = strtod(values.front().c_str(), NULL);
+          values.pop_front();
+        }
+        prev = temp;
+        temp->next = new records;
+        temp = temp->next;
+	
+        }
+        else
+        {
+
+          for(int indexZ = 0; indexZ < 14; indexZ++)
+            values.pop_front();
+        }
+    }
+    delete prev->next;
+    
+    //Normalize the data read in from the file
+    normalize(data);
+
+    //Close the file
+    file.close();
+
+    return data;
 }
 
 /**************************************************************************//**
@@ -109,63 +120,67 @@ records *readCSVEntry(string filename, int predictYear, int prevYears, records *
  *****************************************************************************/
 records *readCSV(string filename, records *data)
 {
-	 ifstream file ( "csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
-    string value; 
-    list<string> values;
+  ifstream file ( "csv/"+filename ); // declare file stream: 
+  string value;
+  list<string> values;
 
-	//Skip first two lines
-	getline ( file, value );
-	getline ( file, value );
-	
-    while ( file.good() )
+  //Skip first two lines
+  getline ( file, value );
+  getline ( file, value );
+
+  //Fill list with string in csv
+  while ( file.good() )
+  {
+    getline ( file, value, ',' ); // read a string until next comma
+    if (value.find('\n') != string::npos) 
     {
-		
-        getline ( file, value, ',' ); // read a string until next comma: http://www.cplusplus.com/reference/string/getline/
-			
-			if (value.find('\n') != string::npos) 
-			{
-			    split_line(value, "\n", values);
-			} 
-			else
-			{
-			    values.push_back(value);
-			}
+      split_line(value, "\n", values);
+    } 
+    else
+    {
+      values.push_back(value);
+    }
+  }
+  int indexX = 0;
+
+  //Create list iterator 
+  list<string>::const_iterator it = values.begin();
+
+  records *temp = data;
+  records *prev = temp;
+
+  //Loop through list
+  for(indexX = 0; !values.empty(); indexX++)
+  {
+    temp->dates = strtod(values.front().c_str(), NULL);
+    values.pop_front();
+    temp->burnedAcres = strtod(values.front().c_str(), NULL);
+    temp->iAcres = temp->burnedAcres;
+    values.pop_front();
+
+    //Fill Months		
+    for(int indexY = 0; indexY < 12; indexY++)
+    {
+      temp->months[indexY] = strtod(values.front().c_str(), NULL);
+      values.pop_front();
     }
 
-	int indexX = 0;
- 
-	list<string>::const_iterator it = values.begin();
-    //records *data = new records;
- 	records *temp = data;
-	records *prev = temp;
-	
-	for(indexX = 0; !values.empty(); indexX++)
-	{
-		temp->dates = strtod(values.front().c_str(), NULL);
-		values.pop_front();
-		temp->burnedAcres = strtod(values.front().c_str(), NULL);
-		values.pop_front();
-			
-		for(int indexY = 0; indexY < 12; indexY++)
-		{
-			temp->months[indexY] = strtod(values.front().c_str(), NULL);
-			values.pop_front();
-		}
-		prev = temp;
-		temp->next = new records;
-		temp = temp->next;	
+    prev = temp;
+    temp->next = new records;
+    temp = temp->next;	
 
-		//for(int indexZ = 0; indexZ < 14; indexZ++)
-		//		values.pop_front();
-	}
-	delete prev->next;
-	//prev->next = NULL;
-	
-	normalize(data);
+  }
 
-	file.close();
-	//delete data;
-	return data;
+  delete prev->next;
+  prev->next = NULL;
+
+  //Normalize the data read in from the file
+  normalize(data);
+
+  //Close the file
+  file.close();
+  
+  return data;
 }
 
 /**************************************************************************//**
@@ -204,40 +219,66 @@ void split_line(string& line, string delim, list<string>& values)
  *****************************************************************************/
 void normalize(records *data)
 {
-	records *temp = data;
-	double minBurnedAcres = temp->burnedAcres;
-	double minMonths = temp->months[0];
-	double maxBurnedAcres = temp->burnedAcres;
-	double maxMonths = temp->months[0];
+  records *temp = data;
+  double minBurnedAcres = temp->burnedAcres;
+  double minMonths = temp->months[0];
+  double maxBurnedAcres = temp->burnedAcres;
+  double maxMonths = temp->months[0];
 
-	while(temp != NULL)
-	{
-		if(minBurnedAcres > temp->burnedAcres)
-			minBurnedAcres = temp->burnedAcres;
-		if(maxBurnedAcres < temp->burnedAcres)
-			maxBurnedAcres = temp->burnedAcres;
+  while(temp != NULL)
+  {
+    //Check for highest/lowest burnedAcres
+    if(minBurnedAcres > temp->burnedAcres)
+      minBurnedAcres = temp->burnedAcres;
+    if(maxBurnedAcres < temp->burnedAcres)
+      maxBurnedAcres = temp->burnedAcres;
 
-		for(int indexX = 0; indexX < 12; indexX++)
-		{
-			if(minMonths > temp->months[indexX])
-				minMonths = temp->months[indexX];
-			if(maxMonths < temp->months[indexX])
-				maxMonths = temp->months[indexX];
-		}
-		temp=temp->next;
-	}
-	temp = data;
+    //Check for highest/lowest all monthes
+    for(int indexX = 0; indexX < 12; indexX++)
+    {
+      if(minMonths > temp->months[indexX])
+        minMonths = temp->months[indexX];
+      if(maxMonths < temp->months[indexX])
+         maxMonths = temp->months[indexX];
+    }
 
-	while(temp != NULL)
-	{
-		temp->burnedAcres=(temp->burnedAcres-minBurnedAcres)/(maxBurnedAcres-minBurnedAcres);
+    temp=temp->next;
+  }
+  temp = data;
 
-		for(int indexX = 0; indexX < 12; indexX++)
-		{
-			temp->months[indexX]=(temp->months[indexX]-minMonths)/(maxMonths-minMonths);
-		}
-		temp=temp->next;
-	}
+  //Nomalize burned acres and months
+  while(temp != NULL)
+  {
+    temp->burnedAcres=(temp->burnedAcres-minBurnedAcres)/(maxBurnedAcres-minBurnedAcres);
+
+    for(int indexX = 0; indexX < 12; indexX++)
+    {
+      temp->months[indexX]=(temp->months[indexX]-minMonths)/(maxMonths-minMonths);
+    }
+    temp=temp->next;
+  }
+}
+
+
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Get the record size
+ *
+ * @param[in] *data - head pointer for records struct.
+ *
+ *****************************************************************************/
+int getRecordsSize( records *data )
+{
+  int recordSize = 0;
+  records *temp = data;
+
+  for( recordSize = 0; temp != NULL; recordSize++)
+    temp = temp -> next;
+
+
+  return recordSize;
 }
 
 /**************************************************************************//**
@@ -260,10 +301,7 @@ void freeRecords(records *data)
   {
   	return;
   }
-  freeRecords(data->next);
-  //delete data->next;
-  //data->next = NULL;
+  freeRecords(data->next); 
   if(data !=NULL)
 	  delete data;
-  //data = NULL;
 }

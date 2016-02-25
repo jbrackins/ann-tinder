@@ -82,15 +82,83 @@ int main(int argc, char ** argv)
     return -1;
   }  
 
-  Prm * p = new Prm( argv[1] );
+  int num_records;
+  vector <bool> left_out;
+  int years;
+  int fin_out;
+  int act_out;
+  int curr_year;
+  int leave_out = 0;
+  int sample;
+  int epoch;
 
-  //Read in a .prm file  
-  p->readPrm();
+  NeuralNet ANN = NeuralNet(argv[1]);
 
+  records *head_record = new records;
 
-  printInfo( p );
+  readCSV( ANN.ANN_params.getCsvFile( ), head_record );
+  records *temp = head_record;
+  num_records = getRecordsSize( temp );
 
-  testPrintout();
+  years = ceil (ANN.ANN_params.getMonths ( ) / 12.0 );
+
+  for (int i = 0; i < num_records - years; i++)
+    left_out.push_back(false);
+
+  while (hasFalse (left_out ) )
+  {
+    ANN.connect_layers ( );
+
+    while ( epoch < ANN.ANN_params.getEpochs ( ) )
+    {
+      for (curr_year = 0; curr_year < num_records - years; curr_year++ )
+      {
+        temp = head_record;
+        if ( leave_out != curr_year )
+        {
+          for ( int i = 0; i < curr_year; i++)
+            temp = temp->next;      
+          ANN.set_first_layer ( temp );
+          for ( int i = 0; i < years; i++)
+            temp = temp->next;
+
+          ANN.set_desired_output ( temp );
+
+          ANN.update_output ( ); // need this
+          ANN.update_grads ( ); // update error gradiants
+          ANN.update_weights ( ); // update the weights for the neural net
+          // loop through and train
+        }
+      }
+      epoch++;
+    }
+
+    temp = head_record;
+    for ( int i = 0; i < leave_out; i++)
+      temp = temp->next;
+
+    ANN.set_first_layer ( temp );
+    for (int i = 0; i < years; i++ )
+      temp = temp->next;
+    ANN.update_output ( );
+
+    sample = temp -> dates; // get the year we tested
+
+    fin_out = ANN.get_fin_out ( );
+    act_out = get_actual_output ( (int)temp -> iAcres, ANN.ANN_params.getMedHigh( ),
+                                  ANN.ANN_params.getLowMed ( ) );
+
+    printCrossValidate ( sample, (int)temp -> iAcres, act_out, fin_out, 3.14);
+
+    left_out[leave_out] = true;
+    leave_out++;
+    ANN.resetANN( );
+    // reset ANN
+  }
+
+  //printInfo( p );
+
+  //testPrintout();
 
 }
 
@@ -206,10 +274,10 @@ string formatResult( int result )
   if(result == 100 )
     return "LOW";
   ///010 = MED
-  else if(result == 010 )
+  else if(result == 10 )
     return "MED";
   ///001 = HI
-  else if(result == 001 )
+  else if(result == 1 )
     return "HI ";
   ///Invalid otherwise
   else
@@ -263,4 +331,63 @@ void testPrintout(  )
   printCrossValidate( yr, burn, sev, pred, err );
 
   printSummary( acc );
+}
+
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Checks if we have a high, medium or low range of burned acreage
+ *
+ * @param burnAcre - the number of acres burned
+ * @param high - the high threshold
+ * @param low - the low threshold
+ *
+ * @returns 100 - if we have a burn acreage in the high range
+ * @returns 10 - if we have a burn acreage in the medium range
+ * @returns 1 - if we have a burn acreage in the low range
+ *
+ *****************************************************************************/
+int get_actual_output ( double burnAcre, int high, int low )
+{
+   // set high if high burned acreage
+   if ( burnAcre > high )
+   {
+      return 100;
+   }
+   // set low if low burned acreage
+   else if ( burnAcre < low )
+   {
+      return 1;
+   }
+   // set mild if mild burned acreage
+   else
+   {
+      return 10;
+   }
+}
+
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Tests if a vector has any false values in it
+ * 
+ * @param vector<bool> chk_vector - the vector to check
+ *
+ * @returns true - the vector had at least one false value
+ * @returns false - the vector had been set to all true
+ *
+ *****************************************************************************/
+bool hasFalse ( std::vector<bool> chk_vector )
+{
+  int size = chk_vector.size ( );
+
+  for (int i = 0; i < size; i++)
+  {
+    if (chk_vector[i] == false)
+      return true;
+  }
+
+  return false;
 }
