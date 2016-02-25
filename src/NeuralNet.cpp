@@ -171,6 +171,33 @@ void NeuralNet::update_output ( )
    }
 }
 
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Get's final 
+*
+* @param[in] input_records - the input parameters for the ANN
+*
+*****************************************************************************/
+int NeuralNet::get_fin_out ( )
+{
+   int layers = percep_net.size ( );
+   int fin_out;
+   double hi_out = *(percep_net[layers - 1][0].get_output ( ));
+   double med_out = *(percep_net[layers - 1][0].get_output ( ));
+   double low_out = *(percep_net[layers - 1][0].get_output ( ));
+
+   if (hi_out > med_out && hi_out > low_out)
+      fin_out = 100;
+   else if (med_out > hi_out && med_out > low_out )
+      fin_out = 10;
+   else
+      fin_out = 1;
+   
+   return fin_out;
+}
+
 
 /**************************************************************************//**
 * @author Samuel Carroll
@@ -513,4 +540,26 @@ int NeuralNet::getNetSize ( )
    }
 
    return weightCount;
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Resets the ANN for new input and weights
+*
+*****************************************************************************/
+void NeuralNet::resetANN ( )
+{
+  int layers = percep_net.size ( );
+  int nodes;
+
+  for ( int i = 0; i < layers; i++ )
+  {
+    nodes = percep_net[i].size ( );
+    for ( int j = 0; j < nodes; j++ )
+    {
+      percep_net[i][j].clear_vectors ( );
+    }
+  }
 }

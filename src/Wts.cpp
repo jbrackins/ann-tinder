@@ -36,7 +36,7 @@ bool readWeights(string fileName, double wieghts[], int arraySize)
 	
 	if (!file)
 	{
-                cout << "Couldn't open file " << fileName << endl;
+                cout << "Couldn't open file " << fileName << " for weights" << endl;
 		return 1;
 	}
 
