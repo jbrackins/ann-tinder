@@ -141,6 +141,7 @@ records *readCSV(string filename, records *data)
 		temp->dates = strtod(values.front().c_str(), NULL);
 		values.pop_front();
 		temp->burnedAcres = strtod(values.front().c_str(), NULL);
+                temp->iAcres = temp->burnedAcres;
 		values.pop_front();
 			
 		for(int indexY = 0; indexY < 12; indexY++)

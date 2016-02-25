@@ -63,9 +63,9 @@ Perceptron::~Perceptron ( )
  *****************************************************************************/
 void Perceptron::add_input ( double* new_input )
 {
-   double rand_greater = rand( ) % 1000;
-   double rand_smaller = rand( ) % ( (int) rand_greater );
-   double weight_val = (rand_smaller / rand_greater) - 0.5;
+   double rand_greater = (rand( ) % 1000) + 1;
+   double rand_smaller = rand( ) % ( (int) (rand_greater + 1 ));
+   double weight_val = (rand_smaller / rand_greater) /*- 0.5*/;
 
    // Add a pointer to the output of another perceptron, a pointer is used so
    // we don't need to reconnect the all the perceptrons if one input is

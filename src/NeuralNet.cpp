@@ -183,18 +183,18 @@ void NeuralNet::update_output ( )
 *****************************************************************************/
 void NeuralNet::set_desired_output ( records *input_records )
 {
-   double burnage = input_records -> burnedAcres;
+   double burnage = input_records -> iAcres;
    int layers = percep_net.size ( );
 
    // set high if high burned acreage
-   if ( burnage > 0.666666 )
+   if ( burnage > ANN_params.getMedHigh( ) )
    {
       percep_net [ layers - 1 ][ 0 ].set_desired_output ( 1.0 );
       percep_net [ layers - 1 ][ 1 ].set_desired_output ( 0.0 );
       percep_net [ layers - 1 ][ 2 ].set_desired_output ( 0.0 );
    }
    // set low if low burned acreage
-   else if ( burnage < 0.333333 )
+   else if ( burnage < ANN_params.getLowMed( ) )
    {
       percep_net [ layers - 1 ][ 0 ].set_desired_output ( 0.0 );
       percep_net [ layers - 1 ][ 1 ].set_desired_output ( 0.0 );
@@ -292,14 +292,21 @@ void NeuralNet::update_grads ( )
    int nodes;
    double new_error_grad;
    double sum;
+   double err_sig;
 
    curr_layer = layers - 1;
    nodes = percep_net[curr_layer].size( );
 
    for (int i = 0; i < nodes; i++)
    {
-      new_error_grad = percep_net[curr_layer][i].get_desired_output ( ) -
+ 
+      err_sig = percep_net[curr_layer][i].get_desired_output ( ) -
                        *(percep_net[curr_layer][i].get_output ( ));
+
+      new_error_grad = *(percep_net[curr_layer][i].get_output ( )) *
+                       ( 1.0 - *(percep_net[curr_layer][i].get_output ( ))) *
+                       err_sig;
+
       update_error_grad ( curr_layer, i, false, new_error_grad );
    }
 
@@ -387,7 +394,7 @@ void NeuralNet::set_weights ( double weights [ ] )
             if ( weights_loc < 10000 )
             {
                percep_net[i][j].set_weight ( weights[ weights_loc ], k );
-               cout << weights [weights_loc] << endl;
+
                weights_loc++;
             }
          }
