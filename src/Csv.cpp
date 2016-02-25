@@ -95,6 +95,18 @@ records *readCSVEntry(string filename, int predictYear, int prevYears, records *
 	return data;
 }
 
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Read In the CSV File
+ *
+ * @param[in] filename - csv file name
+ * @param[in] *data    - head pointer for records struct.
+ *
+ * @returns pointer to the linked list of records read in from csv file.
+ *
+ *****************************************************************************/
 records *readCSV(string filename, records *data)
 {
 	 ifstream file ( "csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
@@ -156,7 +168,17 @@ records *readCSV(string filename, records *data)
 	return data;
 }
 
-
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Split a line read in from csv file by a specified delimeter.
+ *
+ * @param[in] line - line to be split
+ * @param[in] delim - delimeter string
+ * @param[in] values - list of values
+ *
+ *****************************************************************************/
 void split_line(string& line, string delim, list<string>& values)
 {
     size_t pos = 0;
@@ -171,6 +193,15 @@ void split_line(string& line, string delim, list<string>& values)
     }
 }
 
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Normalization Function.
+ *
+ * @param[in] *data - head pointer for records struct.
+ *
+ *****************************************************************************/
 void normalize(records *data)
 {
 	records *temp = data;
@@ -209,6 +240,15 @@ void normalize(records *data)
 	}
 }
 
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Free up the records structure
+ *
+ * @param[in] *data - head pointer for records struct.
+ *
+ *****************************************************************************/
 void freeRecords(records *data)
 {
   if(data->next == NULL)
