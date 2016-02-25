@@ -289,6 +289,11 @@ int getRecordsSize( records *data )
  *
  * @param[in] *data - head pointer for records struct.
  *
+ * @bug - This method which frees up the linked list of csv data records is 
+ * performed recursively. Although this is less efficient than an iterative 
+ * approach, for whatever reason every iterative approach to freeing the 
+ * linked list just resulted in nasty seg faults. - Julian A. Brackins
+ *
  *****************************************************************************/
 void freeRecords(records *data)
 {

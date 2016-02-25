@@ -74,6 +74,10 @@ using namespace std;
  * @returns 0 - Program Ends Gracefully.
  * @returns -1 - Program Ends because YOU GOOFED UP
  *
+ * @bug - ANNtrain does not properly converge to a low error rate. This is 
+ * likely due to a mistake in how the error gradients are being 
+ * calculated.
+ *
  *****************************************************************************/
 int main(int argc, char ** argv)
 {
