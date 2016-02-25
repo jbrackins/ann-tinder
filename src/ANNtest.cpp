@@ -139,6 +139,7 @@ int main(int argc, char ** argv)
   {
     ANN.set_weights ( weights ); // change to warning
 
+    printHeader( );
     while (start < num_records - years )
     {
       success = 0;

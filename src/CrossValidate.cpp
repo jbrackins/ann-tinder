@@ -105,6 +105,8 @@ int main(int argc, char ** argv)
   for (int i = 0; i < num_records - years; i++)
     left_out.push_back(false);
 
+  printHeader( );
+
   while (hasFalse (left_out ) )
   {
     ANN.connect_layers ( );

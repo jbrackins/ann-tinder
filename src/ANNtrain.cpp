@@ -131,6 +131,7 @@ int main(int argc, char ** argv)
     temp = head_record;// need this
 
     start = getStart ( start_here, ANN.ANN_params.getMonths ( ), num_records );
+
     start_here [ start ] = true;
 
     for (int i = 0; i < start; i++ )
