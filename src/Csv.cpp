@@ -219,6 +219,6 @@ void freeRecords(records *data)
   //delete data->next;
   //data->next = NULL;
   if(data !=NULL)
-  delete data;
+	  delete data;
   //data = NULL;
 }

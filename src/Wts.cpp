@@ -69,9 +69,12 @@ bool setWeights(string fileName, double wieghts[], int arraySize)
     return 1;
   }
 
+  cout << "ARRAY SIZE: " << arraySize << endl;
   for(int fileCounter = 0; fileCounter < arraySize; fileCounter++)
   {
-  	//cout << fileCounter << endl;
+  	//cout << "i: " << fileCounter << endl;
+  	//cout << "w: " << wieghts[fileCounter] << endl;
+  	if(wieghts[fileCounter] == NULL)
     file<<wieghts[fileCounter]<< " ";
   }
 

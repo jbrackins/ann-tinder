@@ -102,7 +102,7 @@ int main(int argc, char ** argv)
  // records *head_record = new records( );
 
   //open and read the specified records
-  records *head_record = new records();
+  records *head_record = new records;
   readCSV( ANN.getCsvFile( ), head_record );
 
   //while ( 0 /*haven't tested all records */ )
