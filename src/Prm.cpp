@@ -68,13 +68,10 @@ Prm::Prm( string filename )
  *****************************************************************************/
 Prm::~Prm()
 {
-  ///The destructor will simply double check your file_pointer variable. If 
+  ///The destructor will simply double check your Prm::file_pointer variable. If 
   ///for whatever reason this has still hung open, just close it out upon 
   ///destruction of the class.
-  if( file_pointer != NULL )
-  {
-    fclose( file_pointer );
-  }
+
 }
 
 /**************************************************************************//**
@@ -128,10 +125,16 @@ int Prm::readPrm( )
   {
     index = buffer.find_first_not_of(" \t");
 
+    //FEBRUARY 24, 2016 - Fixed error in situations where buffer is empty,
+    //causing first_char to have a bad value
+    if (buffer.empty())
+      first_char = '#';
+    else
     first_char = buffer[index];
+
     //we only want the lines that do NOT start with a # and are NOT empty
 
-    if( first_char != '#' && first_char != '\0' )
+    if( first_char != '\0' && first_char != '#' )
     {
       //Set parameter file line to whatever variable is next.
       //Based on the i iterator and this case statement
@@ -268,8 +271,8 @@ int Prm::writePrm( )
   }
 
   //Open the file
-  file_pointer = fopen( Prm::getFilename().c_str(), "w" );
-  if( file_pointer == NULL )
+  Prm::file_pointer = fopen( Prm::getFilename().c_str(), "w" );
+  if( Prm::file_pointer == NULL )
   {
     printf("error opening .prm file...\n");
     return 0;
@@ -278,33 +281,33 @@ int Prm::writePrm( )
   //Write the header
   //Pass False into here so that you just get prm file name
   Prm::writeFilename( );
-  fprintf( file_pointer, "#\n" );
-  fprintf( file_pointer, "# Generated Parameter file for ");
-  fprintf( file_pointer, "ANN TINDER project: \n" );
-  fprintf( file_pointer, "#\n" );
-  fprintf( file_pointer, "# Modify this parameter file as needed.\n" );
-  fprintf( file_pointer, "#\n" );
-  fprintf( file_pointer, "# The order of fields is specified in ");
-  fprintf( file_pointer, "the example below, and cannot be changed.\n" );
-  fprintf( file_pointer, "# Fields are separated by white space.\n" );
-  fprintf( file_pointer, "# Anything following # (or %%) on a line ");
-  fprintf( file_pointer, "is ignored as a comment.\n" );
-  fprintf( file_pointer, "#\n" );
-  fprintf( file_pointer, "# Class:        CSC447/547 ");
-  fprintf( file_pointer, "Artificial Intelligence\n");
-  fprintf( file_pointer, "# Author:       Julian Brackins,");
-  fprintf( file_pointer, " Samuel Carroll, Alex Nienhueser\n");
-  fprintf( file_pointer, "# Date:         %s", timestamp);
-  fprintf( file_pointer, "#\n" );
-  fprintf( file_pointer, "#*****************************************");
-  fprintf( file_pointer, "**************************************\n");
+  fprintf( Prm::file_pointer, "#\n" );
+  fprintf( Prm::file_pointer, "# Generated Parameter file for ");
+  fprintf( Prm::file_pointer, "ANN TINDER project: \n" );
+  fprintf( Prm::file_pointer, "#\n" );
+  fprintf( Prm::file_pointer, "# Modify this parameter file as needed.\n" );
+  fprintf( Prm::file_pointer, "#\n" );
+  fprintf( Prm::file_pointer, "# The order of fields is specified in ");
+  fprintf( Prm::file_pointer, "the example below, and cannot be changed.\n" );
+  fprintf( Prm::file_pointer, "# Fields are separated by white space.\n" );
+  fprintf( Prm::file_pointer, "# Anything following # (or %%) on a line ");
+  fprintf( Prm::file_pointer, "is ignored as a comment.\n" );
+  fprintf( Prm::file_pointer, "#\n" );
+  fprintf( Prm::file_pointer, "# Class:        CSC447/547 ");
+  fprintf( Prm::file_pointer, "Artificial Intelligence\n");
+  fprintf( Prm::file_pointer, "# Author:       Julian Brackins,");
+  fprintf( Prm::file_pointer, " Samuel Carroll, Alex Nienhueser\n");
+  fprintf( Prm::file_pointer, "# Date:         %s", timestamp);
+  fprintf( Prm::file_pointer, "#\n" );
+  fprintf( Prm::file_pointer, "#*****************************************");
+  fprintf( Prm::file_pointer, "**************************************\n");
 
   //Write ANN parameters
-  fprintf( file_pointer, "\n" );
-  fprintf( file_pointer, "#---------------\n" );
-  fprintf( file_pointer, "# ANN parameters\n" );
-  fprintf( file_pointer, "#---------------\n" );
-  fprintf( file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "#---------------\n" );
+  fprintf( Prm::file_pointer, "# ANN parameters\n" );
+  fprintf( Prm::file_pointer, "#---------------\n" );
+  fprintf( Prm::file_pointer, "\n" );
 
   Prm::writeWtsFile( );
   Prm::writeEpochs(  );
@@ -315,60 +318,60 @@ int Prm::writePrm( )
   Prm::writeAllNodes();
 
   //Write training and testing data file
-  fprintf( file_pointer, "\n" );
-  fprintf( file_pointer, "#-------------------------------\n" );
-  fprintf( file_pointer, "# training and testing data file\n" );
-  fprintf( file_pointer, "#-------------------------------\n" );
-  fprintf( file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "#-------------------------------\n" );
+  fprintf( Prm::file_pointer, "# training and testing data file\n" );
+  fprintf( Prm::file_pointer, "#-------------------------------\n" );
+  fprintf( Prm::file_pointer, "\n" );
 
   Prm::writeCsvFile(  );
 
   //Write input feature vector info
-  fprintf( file_pointer, "\n" );
-  fprintf( file_pointer, "#------------------------------------------\n" );
-  fprintf( file_pointer, "# input feature vector info:\n" );
-  fprintf( file_pointer, "# years of burned acreage,\n" );  
-  fprintf( file_pointer, "# months of PDSI data (no fewer than # of input");
-  fprintf( file_pointer, ") layer nodes),\n" );
-  fprintf( file_pointer, "# and end month of current year (1=Jan, 2=Feb,");
-  fprintf( file_pointer, ") 3=Mar, etc.) for PDSI data\n" );
-  fprintf( file_pointer, "#------------------------------------------\n" );
-  fprintf( file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "#------------------------------------------\n" );
+  fprintf( Prm::file_pointer, "# input feature vector info:\n" );
+  fprintf( Prm::file_pointer, "# years of burned acreage,\n" );  
+  fprintf( Prm::file_pointer, "# months of PDSI data (no fewer than # of input");
+  fprintf( Prm::file_pointer, ") layer nodes),\n" );
+  fprintf( Prm::file_pointer, "# and end month of current year (1=Jan, 2=Feb,");
+  fprintf( Prm::file_pointer, ") 3=Mar, etc.) for PDSI data\n" );
+  fprintf( Prm::file_pointer, "#------------------------------------------\n" );
+  fprintf( Prm::file_pointer, "\n" );
 
   Prm::writeYears(  );
   Prm::writeMonths(  );
   Prm::writeEndMonth(  );
 
   //Write Class info
-  fprintf( file_pointer, "\n" );
-  fprintf( file_pointer, "#------------------------------------------\n" );
-  fprintf( file_pointer, "# output class info:\n" );
-  fprintf( file_pointer, "# number of classes (no fewer than # of ");
-  fprintf( file_pointer, "input layer nodes)\n" );
-  fprintf( file_pointer, "#------------------------------------------\n" );
-  fprintf( file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "#------------------------------------------\n" );
+  fprintf( Prm::file_pointer, "# output class info:\n" );
+  fprintf( Prm::file_pointer, "# number of classes (no fewer than # of ");
+  fprintf( Prm::file_pointer, "input layer nodes)\n" );
+  fprintf( Prm::file_pointer, "#------------------------------------------\n" );
+  fprintf( Prm::file_pointer, "\n" );
   
   Prm::writeNumClasses(  );
 
   //Write Fire Severity Parameters
-  fprintf( file_pointer, "\n" );
-  fprintf( file_pointer, "#------------------------------------------\n" );
-  fprintf( file_pointer, "# fire severity parameters:\n" );
-  fprintf( file_pointer, "# burned acres cutoffs, corresponding to ");
-  fprintf( file_pointer, "low/medium/high fire severity\n" );
-  fprintf( file_pointer, "#------------------------------------------\n" );
-  fprintf( file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "#------------------------------------------\n" );
+  fprintf( Prm::file_pointer, "# fire severity parameters:\n" );
+  fprintf( Prm::file_pointer, "# burned acres cutoffs, corresponding to ");
+  fprintf( Prm::file_pointer, "low/medium/high fire severity\n" );
+  fprintf( Prm::file_pointer, "#------------------------------------------\n" );
+  fprintf( Prm::file_pointer, "\n" );
 
   Prm::writeLowMed(  );
   Prm::writeMedHigh(  );
 
-  fprintf( file_pointer, "\n" );
+  fprintf( Prm::file_pointer, "\n" );
 
   //Write Footer
   Prm::writeFilename( );
 
   //Close .prm File
-  fclose( file_pointer );
+  fclose( Prm::file_pointer );
 
   return 1;
 }
@@ -1375,11 +1378,11 @@ int Prm::writeFilename()
 {
   ///check if file pointer is valid, then write the filename with appropriate
   ///header style to the prm file
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "#************************** %s ", 
+    fprintf(Prm::file_pointer, "#************************** %s ", 
             Prm::getFilename( false ).c_str() );
-    fprintf(file_pointer, "***********************************\n");
+    fprintf(Prm::file_pointer, "***********************************\n");
     return 1;
   }
   return 0;
@@ -1399,10 +1402,10 @@ int Prm::writeWtsFile()
 {
   ///check if file pointer is valid, then write the wts file name with 
   ///appropriate comment style to the prm file
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%s", Prm::getWtsFile().c_str() );
-    fprintf(file_pointer, "     # name of ANN weight file\n");
+    fprintf(Prm::file_pointer, "%s", Prm::getWtsFile().c_str() );
+    fprintf(Prm::file_pointer, "     # name of ANN weight file\n");
     return 1;
   }
   return 0;
@@ -1422,10 +1425,10 @@ int Prm::writeEpochs()
 {
   ///check if file pointer is valid, then write the epochs value with 
   ///appropriate comment style to the prm file
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%d", Prm::getEpochs() );
-    fprintf(file_pointer, "     # number of training epochs\n");
+    fprintf(Prm::file_pointer, "%d", Prm::getEpochs() );
+    fprintf(Prm::file_pointer, "     # number of training epochs\n");
     return 1;
   }
   return 0;
@@ -1445,10 +1448,10 @@ int Prm::writeLearningRate()
 {
   ///check if file pointer is valid, then write the learning rate value with 
   ///appropriate comment style to the prm file
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%lf", Prm::getLearningRate() );
-    fprintf(file_pointer, "     # learning rate\n");
+    fprintf(Prm::file_pointer, "%lf", Prm::getLearningRate() );
+    fprintf(Prm::file_pointer, "     # learning rate\n");
     return 1;
   }
   return 0;
@@ -1468,10 +1471,10 @@ int Prm::writeMomentum()
 {
   ///check if file pointer is valid, then write the momentum value with 
   ///appropriate comment style to the prm file
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%lf", Prm::getMomentum() );
-    fprintf(file_pointer, "     # momentum\n");
+    fprintf(Prm::file_pointer, "%lf", Prm::getMomentum() );
+    fprintf(Prm::file_pointer, "     # momentum\n");
     return 1;
   }
   return 0;
@@ -1491,11 +1494,11 @@ int Prm::writeThreshold()
 {
   ///check if file pointer is valid, then write the threshold value with 
   ///appropriate comment style to the prm file
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%lf", Prm::getThreshold() );
-    fprintf(file_pointer, "     # threshold for ANN error");
-    fprintf(file_pointer, " (training cutoff OR testing acceptance)\n");
+    fprintf(Prm::file_pointer, "%lf", Prm::getThreshold() );
+    fprintf(Prm::file_pointer, "     # threshold for ANN error");
+    fprintf(Prm::file_pointer, " (training cutoff OR testing acceptance)\n");
     return 1;
   }
   return 0;
@@ -1515,11 +1518,11 @@ int Prm::writeLayers()
 {
   ///check if file pointer is valid, then write the layers value with 
   ///appropriate comment style to the prm file
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%d", Prm::getLayers() );
-    fprintf(file_pointer, "     # layers of adjustable weights");
-    fprintf(file_pointer, " (one less than layers of nodes)\n");
+    fprintf(Prm::file_pointer, "%d", Prm::getLayers() );
+    fprintf(Prm::file_pointer, "     # layers of adjustable weights");
+    fprintf(Prm::file_pointer, " (one less than layers of nodes)\n");
     return 1;
   }
   return 0;
@@ -1540,15 +1543,15 @@ int Prm::writeAllNodes()
   ///check if file pointer is valid, then write the nodes counts for each layer 
   ///(input, hidden, output) with appropriate comment style to the prm file
 
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
     int sz = Prm::_node_count.size();
     for(int i = 0; i < sz; i++)
     {
       Prm::writeNodeCount( i );
-      fprintf( file_pointer, " " );
+      fprintf( Prm::file_pointer, " " );
     }
-    fprintf(file_pointer, "    # how many nodes in each layer\n");
+    fprintf(Prm::file_pointer, "    # how many nodes in each layer\n");
     return 1;
   }
   return 0;
@@ -1569,9 +1572,9 @@ int Prm::writeNodeCount( int index )
   ///check if file pointer is valid, then write an individual layer node count 
   ///with appropriate comment style to the prm file
 
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%d", Prm::getNodeCount( index ) );
+    fprintf(Prm::file_pointer, "%d", Prm::getNodeCount( index ) );
     return 1;
   }
   return 0;
@@ -1592,9 +1595,9 @@ int Prm::writeCsvFile()
   ///check if file pointer is valid, then write the csv file name with 
   ///appropriate comment style to the prm file
 
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%s \n", Prm::getCsvFile().c_str() );
+    fprintf(Prm::file_pointer, "%s \n", Prm::getCsvFile().c_str() );
     return 1;
   }
   return 0;
@@ -1615,10 +1618,10 @@ int Prm::writeYears()
   ///check if file pointer is valid, then write the years value with 
   ///appropriate comment style to the prm file
 
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%d", Prm::getYears() );
-    fprintf(file_pointer, "     # years of burned acreage\n");
+    fprintf(Prm::file_pointer, "%d", Prm::getYears() );
+    fprintf(Prm::file_pointer, "     # years of burned acreage\n");
     return 1;
   }
   return 0;
@@ -1639,10 +1642,10 @@ int Prm::writeMonths()
   ///check if file pointer is valid, then write the months value with 
   ///appropriate comment style to the prm file
 
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%d", Prm::getMonths() );
-    fprintf(file_pointer, "     # months of PDSI data\n");
+    fprintf(Prm::file_pointer, "%d", Prm::getMonths() );
+    fprintf(Prm::file_pointer, "     # months of PDSI data\n");
     return 1;
   }
   return 0;
@@ -1663,11 +1666,11 @@ int Prm::writeEndMonth()
   ///check if file pointer is valid, then write the end month value with 
   ///appropriate comment style to the prm file
 
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%d", Prm::getEndMonth() );
-    fprintf(file_pointer, "     # end month of current year");
-    fprintf(file_pointer, " (1=Jan, 2=Feb, 3=Mar, etc.)\n");
+    fprintf(Prm::file_pointer, "%d", Prm::getEndMonth() );
+    fprintf(Prm::file_pointer, "     # end month of current year");
+    fprintf(Prm::file_pointer, " (1=Jan, 2=Feb, 3=Mar, etc.)\n");
     return 1;
   }
   return 0;
@@ -1688,10 +1691,10 @@ int Prm::writeNumClasses()
   ///check if file pointer is valid, then write the number of classes with 
   ///appropriate comment style to the prm file
 
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%d", Prm::getNumClasses() );
-    fprintf(file_pointer, "     # number of classes\n");
+    fprintf(Prm::file_pointer, "%d", Prm::getNumClasses() );
+    fprintf(Prm::file_pointer, "     # number of classes\n");
     return 1;
   }
   return 0;
@@ -1712,9 +1715,9 @@ int Prm::writeLowMed()
   ///check if file pointer is valid, then write the fire severity (low/med)
   /// value with appropriate comment style to the prm file
 
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%d \n", Prm::getLowMed() );
+    fprintf(Prm::file_pointer, "%d \n", Prm::getLowMed() );
     return 1;
   }
   return 0;
@@ -1735,9 +1738,9 @@ int Prm::writeMedHigh()
   ///check if file pointer is valid, then write the fire severity (med/high)
   /// value with appropriate comment style to the prm file
 
-  if( file_pointer )
+  if( Prm::file_pointer )
   {
-    fprintf(file_pointer, "%d \n", Prm::getMedHigh() );
+    fprintf(Prm::file_pointer, "%d \n", Prm::getMedHigh() );
     return 1;
   }
   return 0;

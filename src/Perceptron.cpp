@@ -246,3 +246,4 @@ void Perceptron::update_output ( )
    else if (output < 0.05)
       output = 0;
 }
+

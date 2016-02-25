@@ -80,12 +80,15 @@ int main(int argc, char ** argv)
   int num_samples = 0;
   int epoch = 0;
   double error_sum = 0;
+
   double rms = 1.0;
-  double weights [ 10001 ]; //set weight not in weight range
   int num_records;
   int start;
   vector<bool> start_here;
   int years;
+
+  double weights [ 10001 ] = { 0.0 }; //set weight not in weight range
+
 
   if( argc != 2 )
   {
@@ -93,45 +96,49 @@ int main(int argc, char ** argv)
   	return -1;
   }  
 
+
   srand ( time( 0 ) );
   //Prm * p = new Prm( argv[1] );
   // open the Neural Net with the given parameter file
-  NeuralNet ANN(argv[1]);
 
+  NeuralNet ANN = NeuralNet(argv[1]);
   ANN.connect_layers ( );
+
 
  // records *head_record = new records( );
 
   //open and read the specified records
-  records *head_record = readCSV( ANN.ANN_params -> getCsvFile( ) );
-  records *temp = head_record;
+  records *head_record = new records;
 
+  cout << ANN.ANN_params.getCsvFile ( ) << endl;
+  readCSV( ANN.ANN_params.getCsvFile( ), head_record );
+  cout << "Here3" << endl;
+  records *temp = head_record;
+  cout << "Here4" << endl;
   num_records = getRecordsSize( temp );
   // input_nodes = ANN.get_layer_nodes ( 0 );
 
-  years = ceil (ANN.ANN_params -> getMonths ( ) / 12.0 );
+  cout << "Here5" << endl;
+  years = ceil (ANN.ANN_params.getMonths ( ) / 12.0 );
   for (int i = 0; i < num_records - years; i++)
   {
     start_here.push_back(false);
   }
 
-  cout << "Size of start_here = " << start_here.size ( ) << endl;
-
   // open and set weights values (if present)
   // make sure we can read weights file from another cpp
   // check if file exists
-  if (!readWeights (ANN.ANN_params -> getWtsFile ( ), weights,
+  if (!readWeights (ANN.ANN_params.getWtsFile ( ), weights,
                     ANN.getNetSize( )))
   {
-    cout << "Reading the weights file" << endl;
     ANN.set_weights ( weights );
   }
 
   while ( epoch < 100 /*haven't tested all records */ )
   {
-    records *temp = head_record;
+    temp = head_record;
 
-    start = getStart ( start_here, ANN.ANN_params -> getMonths ( ), num_records );
+    start = getStart ( start_here, ANN.ANN_params.getMonths ( ), num_records );
     start_here [ start ] = true;
 
     for (int i = 0; i < start; i++ )
@@ -156,7 +163,6 @@ int main(int argc, char ** argv)
 
     if (isTrue(start_here, num_records - years) )
     {
-       cout << "incrementing a epoch" << endl;
        epoch++;
        for (int i = 0; i < num_records - years; i++)
        {
@@ -172,10 +178,9 @@ int main(int argc, char ** argv)
     }
   }
   // print the Training for the epoch and repeat for every year in the csv file
-  cout << "About to write the weights file" << endl;
   ANN.get_weights ( weights, 10000 );
   //cout<<weights[0]<<endl;
-  setWeights(ANN.ANN_params -> getWtsFile ( ), weights, ANN.getNetSize( ));
+  setWeights(ANN.ANN_params.getWtsFile ( ), weights, ANN.getNetSize( ));
 
   // after we have all the training done, write the weights file
   // add a get weights function
@@ -183,9 +188,14 @@ int main(int argc, char ** argv)
   //setWeights(ANN.get_weights_file ( ), weights, ANN.getNetSize( ));
   // write weights to file
 
+  freeRecords( head_record );
+  //delete head_record;
+  //head_record=NULL;
+
   //printInfo( p );
   return 0;
 }
+
 
 /**************************************************************************//**
  * @author Julian Brackins
@@ -259,7 +269,6 @@ int getStart ( vector <bool> start_here, int months, int num_recs )
   while (start_here[start])
     start = (rand ( ) % (num_recs - years));
     
-  cout << "Trying position " << start << endl;
   return start;
 }
 

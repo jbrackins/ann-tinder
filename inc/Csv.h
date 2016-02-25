@@ -51,9 +51,10 @@ struct records
  *
  ******************************************************************************/
 
-records *readCSV(std::string filename);
-records *readCSVEntry( std::string filename, int predictYear, int prevYears );
 int getRecordsSize( records *data );
+records *readCSV(std::string filename, records *data);
+records *readCSVEntry( std::string filename, int predictYear, int prevYears, records *data );
+void freeRecords(records *data);
 void split_line( std::string& line, std::string delim, std::list<std::string>& values );
 void normalize( records *data );
 

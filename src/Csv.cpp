@@ -29,7 +29,7 @@ using namespace std;
  *
  *****************************************************************************/
 
-records *readCSVEntry(string filename, int predictYear, int prevYears)
+records *readCSVEntry(string filename, int predictYear, int prevYears, records *data)
 {
 	 ifstream file ( "csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
     string value; 
@@ -57,7 +57,7 @@ records *readCSVEntry(string filename, int predictYear, int prevYears)
 	int indexX = 0;
  
 	list<string>::const_iterator it = values.begin();
-    records *data = new records;
+    //records *data = new records;
  	records *temp = data;
 	records *prev = temp;
 	//Add Check to for if target year doesnt exist in the spectrum
@@ -85,7 +85,8 @@ records *readCSVEntry(string filename, int predictYear, int prevYears)
 				values.pop_front();
 		}
 	}
-	prev->next = NULL;
+	delete prev->next;
+	//prev->next = NULL;
 	
 	normalize(data);
 
@@ -94,7 +95,19 @@ records *readCSVEntry(string filename, int predictYear, int prevYears)
 	return data;
 }
 
-records *readCSV(string filename)
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Read In the CSV File
+ *
+ * @param[in] filename - csv file name
+ * @param[in] *data    - head pointer for records struct.
+ *
+ * @returns pointer to the linked list of records read in from csv file.
+ *
+ *****************************************************************************/
+records *readCSV(string filename, records *data)
 {
 	 ifstream file ( "csv/"+filename ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
     string value; 
@@ -103,10 +116,9 @@ records *readCSV(string filename)
 	//Skip first two lines
 	getline ( file, value );
 	getline ( file, value );
-	
+
     while ( file.good() )
     {
-		
         getline ( file, value, ',' ); // read a string until next comma: http://www.cplusplus.com/reference/string/getline/
 			
 			if (value.find('\n') != string::npos) 
@@ -118,14 +130,12 @@ records *readCSV(string filename)
 			    values.push_back(value);
 			}
     }
-
 	int indexX = 0;
  
 	list<string>::const_iterator it = values.begin();
-    records *data = new records;
+    //records *data = new records;
  	records *temp = data;
 	records *prev = temp;
-	
 	for(indexX = 0; !values.empty(); indexX++)
 	{
 		temp->dates = strtod(values.front().c_str(), NULL);
@@ -145,16 +155,30 @@ records *readCSV(string filename)
 		//for(int indexZ = 0; indexZ < 14; indexZ++)
 		//		values.pop_front();
 	}
+	delete prev->next;
 	prev->next = NULL;
 	
+cout << "NORMAL!!" << endl;
 	normalize(data);
 
+cout << "CLOSE!!" << endl;
 	file.close();
 	//delete data;
+cout << "RETURN!!"<< endl;
 	return data;
 }
 
-
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Split a line read in from csv file by a specified delimeter.
+ *
+ * @param[in] line - line to be split
+ * @param[in] delim - delimeter string
+ * @param[in] values - list of values
+ *
+ *****************************************************************************/
 void split_line(string& line, string delim, list<string>& values)
 {
     size_t pos = 0;
@@ -169,6 +193,15 @@ void split_line(string& line, string delim, list<string>& values)
     }
 }
 
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Normalization Function.
+ *
+ * @param[in] *data - head pointer for records struct.
+ *
+ *****************************************************************************/
 void normalize(records *data)
 {
 	records *temp = data;
@@ -177,6 +210,7 @@ void normalize(records *data)
 	double maxBurnedAcres = temp->burnedAcres;
 	double maxMonths = temp->months[0];
 
+cout << "while #1!!" << endl;
 	while(temp != NULL)
 	{
 		if(minBurnedAcres > temp->burnedAcres)
@@ -191,10 +225,13 @@ void normalize(records *data)
 			if(maxMonths < temp->months[indexX])
 				maxMonths = temp->months[indexX];
 		}
+                //cout << temp->next << endl;
 		temp=temp->next;
 	}
+cout << "hi" << endl;
 	temp = data;
 
+cout << "while #2!!" << endl;
 	while(temp != NULL)
 	{
 		temp->burnedAcres=(temp->burnedAcres-minBurnedAcres)/(maxBurnedAcres-minBurnedAcres);
@@ -207,6 +244,16 @@ void normalize(records *data)
 	}
 }
 
+
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Get the record size
+ *
+ * @param[in] *data - head pointer for records struct.
+ *
+ *****************************************************************************/
 int getRecordsSize( records *data )
 {
   int recordSize = 0;
@@ -217,4 +264,27 @@ int getRecordsSize( records *data )
 
 
   return recordSize;
+}
+
+/**************************************************************************//**
+ * @author Alex Nienhueser
+ *
+ * @par Description:
+ * Free up the records structure
+ *
+ * @param[in] *data - head pointer for records struct.
+ *
+ *****************************************************************************/
+void freeRecords(records *data)
+{
+  if(data->next == NULL)
+  {
+  	return;
+  }
+  freeRecords(data->next);
+  //delete data->next;
+  //data->next = NULL;
+  if(data !=NULL)
+	  delete data;
+  //data = NULL;
 }
