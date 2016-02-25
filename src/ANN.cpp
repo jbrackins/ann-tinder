@@ -152,8 +152,7 @@
  * perceptron.
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
- * @bug with
- *
+ * 
  * @par Modifications and Development Timeline:
  @verbatim
  --------------------------------------------------------------------------------

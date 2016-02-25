@@ -111,7 +111,6 @@ void NeuralNet::add_layer ( int nodes )
 *
 * @param[in] input_records - the input parameters for the ANN
 *
-* @todo - add the first n months of the current year
 *
 *****************************************************************************/
 void NeuralNet::set_first_layer ( records * input_records )

@@ -85,6 +85,11 @@ using namespace std;
  * @returns 0 - Program Ends Gracefully
  * @returns -1 - Program Ends with error.
  *
+ * @bug - As a result of our ANNtrain program being incorrectly implemented, 
+ * the ANNtest program fails to accurately predict fire severity when 
+ * given a data set different from the one used to train the neural 
+ * network.
+ *
  *****************************************************************************/
 int main(int argc, char ** argv)
 {
