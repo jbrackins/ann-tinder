@@ -27,7 +27,7 @@
  *
  ******************************************************************************/
 
-bool setWeights(  std::string fileName, double wieghts[], int arraySize );
-bool readWeights( std::string fileName, double wieghts[], int arraySize );
+bool setWeights(  std::string fileName, double weights[], int arraySize );
+bool readWeights( std::string fileName, double weights[], int arraySize );
 
 #endif
