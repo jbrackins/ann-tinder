@@ -34,10 +34,10 @@ Perceptron::Perceptron ( void )
 {
    // Randomly generate a theta thershold for each perceptron, in the range
    // of 0 to 1 (from Artificial Intelligence Illuminated page 303)
-   //double rand_greater = rand( ) % 100000000;
-   //double rand_smaller = rand( ) % ( (int) rand_greater - 1 );
+   double rand_greater = (rand( ) % 1000) + 1;
+   double rand_smaller = rand( ) % ( (int) rand_greater + 1 );
 
-   //theta = rand_smaller / rand_greater;
+   theta = rand_smaller / rand_greater;
 }
 
 /**************************************************************************//**
@@ -163,7 +163,7 @@ double* Perceptron::get_output ( )
 
 int Perceptron::get_whole_out ( )
 {
-   if ( output > 0.7)
+   if ( output > 0.5)
       return 1;
    return 0;
 }
@@ -248,9 +248,9 @@ void Perceptron::update_output ( )
    // To get a true range of 0 to 1 as our output we will need to round up or
    // down if we are within a certain thershold of 0 or 1. See Artificial
    // Intelligence Illuminated page 303 for reasons why.
-   if (output > 0.9)
+   if (output > 0.95)
       output = 1.0;
-   else if (output < 0.1)
+   else if (output < 0.05)
       output = 0.0;
 }
 
