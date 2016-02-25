@@ -75,7 +75,8 @@
                       way readCSV previously did.
                     * Completed first stable build of neural net
  February 24, 2016  * Error Gradiant calculations correct.
-
+                    * Bug Fixes - Memory Leak Issues.
+                    
  @endverbatim
  *
  ******************************************************************************/
