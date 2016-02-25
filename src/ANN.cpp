@@ -23,6 +23,8 @@
  * @section program_section Program Information
  *
  * @details
+ * <a href="http://julianbrackins.me/projects/tinder/">Project Webpage</a>
+ * 
  * TINDER stands for Tree Intelligence Network for Determining Ember Risk and 
  * is, to our knowledge, probably the first software program to ever have this 
  * name. Any other similarities in name are purely coincidental and are in no 
@@ -57,6 +59,7 @@
  *  
  * @section directory_structure Directory Structure
  @verbatim
+--------------------------------------------------------------------------------
 
  
   ann-tinder/
@@ -102,6 +105,7 @@
                 doxy.conf
 
 
+--------------------------------------------------------------------------------
  @endverbatim
  *
  * @section neural_network_info Neural Network Information
@@ -132,18 +136,27 @@
  * in order to observe how these errors are occuring. It is believed that the 
  * error gradients are being calculated incorrectly, which would lead to 
  * the adjustments of weights being inaccurate.
+ *
  * - <b>What is the impact of network topology (i.e., changing the number of 
  * hidden layer nodes) on training?</b>
- *    - Here is another answer.
+ *    - Decreasing the amount of hidden nodes tends to decrease the error rate, 
+ * whereas increasing the error rate would yield higher error rates. 
+ *
  * - <b>How well does the network generalize from training data to 
  * testing data?</b>
- *    - Here is our final answer.
+ *    - Our network does not generalize training data to testing data well. 
+ * If the neural network is tested on the same data set that was used for 
+ * training, it naturally performs well. However, if tested on a different 
+ * set of data, the neural net fails to predict the fire severity. This is 
+ * likely due to an error with the calculations from the outputs of the 
+ * perceptron.
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
- *
+ * @bug with
  *
  * @par Modifications and Development Timeline:
  @verbatim
+ --------------------------------------------------------------------------------
 
 
  Date              Modification
@@ -178,12 +191,17 @@
                     * Completed CrossValidate program.
 
 
+--------------------------------------------------------------------------------
  @endverbatim
  *
  *
  * @section outline Document Outline
  * The remainder of this document is the documentation of the various methods 
- * and data structures used in developing this project.
+ * and data structures used in developing this project. If for whatever reason 
+ * you are reading our documentation in the .pdf instead of online, PLEASE 
+ * go to <a href="http://julianbrackins.me/projects/tinder/">our project 
+ * webpage</a> because the formatting looks a thousand times better on there 
+ * than the crappy /LATEX-generated document... 
  *
  ******************************************************************************/
 
