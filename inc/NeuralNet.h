@@ -39,6 +39,7 @@ class NeuralNet
       void add_layer ( int nodes );
       void set_first_layer ( records *input_records );
       void set_desired_output ( records *input_records );
+      void update_output ( );
       void connect_layers ( );
       void update_weights ( );
       void update_grads ( );
@@ -48,13 +49,11 @@ class NeuralNet
       void get_weights ( double weights [ ], int size );
       double get_error ( );
       int get_layer_nodes ( int index );
-      std::string get_weights_file ( );
-      std::string getCsvFile ( );
       int getNetSize ( );
+      Prm* ANN_params;
 
    private:
       std::vector <std::vector <Perceptron>> percep_net;
-      Prm* ANN_params;
 };
 
   #endif

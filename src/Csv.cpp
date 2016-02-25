@@ -206,3 +206,15 @@ void normalize(records *data)
 		temp=temp->next;
 	}
 }
+
+int getRecordsSize( records *data )
+{
+  int recordSize = 0;
+  records *temp = data;
+
+  for( recordSize = 0; temp != NULL; recordSize++)
+    temp = temp -> next;
+
+
+  return recordSize;
+}

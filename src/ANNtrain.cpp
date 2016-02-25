@@ -80,8 +80,12 @@ int main(int argc, char ** argv)
   int num_samples = 0;
   int epoch = 0;
   double error_sum = 0;
-  double rms = 0.0;
+  double rms = 1.0;
   double weights [ 10001 ]; //set weight not in weight range
+  int num_records;
+  int start;
+  vector<bool> start_here;
+  int years;
 
   if( argc != 2 )
   {
@@ -94,58 +98,89 @@ int main(int argc, char ** argv)
   // open the Neural Net with the given parameter file
   NeuralNet ANN(argv[1]);
 
-  //Read in a .prm file  
-  //p->readPrm();
+  ANN.connect_layers ( );
 
-  //create the records template so we can read in the CSV file
  // records *head_record = new records( );
 
   //open and read the specified records
-  records *head_record = readCSV( ANN.getCsvFile( ) );
+  records *head_record = readCSV( ANN.ANN_params -> getCsvFile( ) );
+  records *temp = head_record;
 
-  //while ( 0 /*haven't tested all records */ )
+  num_records = getRecordsSize( temp );
+  // input_nodes = ANN.get_layer_nodes ( 0 );
+
+  years = ceil (ANN.ANN_params -> getMonths ( ) / 12.0 );
+  for (int i = 0; i < num_records - years; i++)
   {
-    epoch++;
+    start_here.push_back(false);
+  }
+
+  cout << "Size of start_here = " << start_here.size ( ) << endl;
+
+  // open and set weights values (if present)
+  // make sure we can read weights file from another cpp
+  // check if file exists
+  if (!readWeights (ANN.ANN_params -> getWtsFile ( ), weights,
+                    ANN.getNetSize( )))
+  {
+    cout << "Reading the weights file" << endl;
+    ANN.set_weights ( weights );
+  }
+
+  while ( epoch < 100 /*haven't tested all records */ )
+  {
     records *temp = head_record;
+
+    start = getStart ( start_here, ANN.ANN_params -> getMonths ( ), num_records );
+    start_here [ start ] = true;
+
+    for (int i = 0; i < start; i++ )
+      temp = temp->next;
+    
     // set the csv file input to the neural net input layer
     ANN.set_first_layer ( temp );
     ANN.set_desired_output ( temp );
 
-    ANN.connect_layers ( );
-
-    // open and set weights values (if present)
-    // make sure we can read weights file from another cpp
-    // check if file exists
-    if (!readWeights (ANN.get_weights_file ( ), weights, ANN.getNetSize( )))
-    {
-      ANN.set_weights ( weights );
-    }
-
     // we want to update the desired output of the ANN here
     // should add to neural net get output for output nodes;
     //cout << "attempting to update gradiants" << endl;
+    ANN.update_output ( );
     ANN.update_grads ( ); // update error gradiants
     ANN.update_weights ( ); // update the weights for the neural net
 
     // calculate the error every year based on the sum of the input expect vs input actual
-    error_sum = ANN.get_error ( );
+    error_sum += ANN.get_error ( );
 
     // sum all error of the inputs together
-    num_samples = ANN.get_layer_nodes ( 0 ); // get number of samples used
+    num_samples++; // get number of samples used
 
-    // find the Root squared error from this sum
-    rms = 1.0 / num_samples * error_sum;
-    rms = sqrt(rms);
+    if (isTrue(start_here, num_records - years) )
+    {
+       cout << "incrementing a epoch" << endl;
+       epoch++;
+       for (int i = 0; i < num_records - years; i++)
+       {
+          start_here[i] = false;
+       }
 
-    printTraining ( epoch, "RMS", rms );
+       rms = (1.0 / num_samples) * error_sum;
+       rms = sqrt(rms);
 
+       printTraining ( epoch, "RMS", rms );
+       num_samples = 0;
+       error_sum = 0.0;
+    }
   }
   // print the Training for the epoch and repeat for every year in the csv file
+  cout << "About to write the weights file" << endl;
+  ANN.get_weights ( weights, 10000 );
+  //cout<<weights[0]<<endl;
+  setWeights(ANN.ANN_params -> getWtsFile ( ), weights, ANN.getNetSize( ));
 
   // after we have all the training done, write the weights file
   // add a get weights function
-  ANN.get_weights ( weights, 10000 );
-  setWeights(ANN.get_weights_file ( ), weights, ANN.getNetSize( ));
+  //ANN.get_weights ( weights, 10000 );
+  //setWeights(ANN.get_weights_file ( ), weights, ANN.getNetSize( ));
   // write weights to file
 
   //printInfo( p );
@@ -202,5 +237,29 @@ void testPrintout( )
     err = err * (1.00 - 0.00);
     printTraining( e, eq, err );
   }
+}
+
+bool isTrue ( vector <bool> start_here, int vec_size )
+{
+   for (int i = 0; i < vec_size; i++)
+   {
+      if ( !start_here[i] )
+         return false;
+   }
+
+   return true;
+}
+
+int getStart ( vector <bool> start_here, int months, int num_recs )
+{
+  double divideFloat = months / 12.0;
+  int years = ceil ( divideFloat );
+  int start = (rand ( ) % (num_recs - years));
+
+  while (start_here[start])
+    start = (rand ( ) % (num_recs - years));
+    
+  cout << "Trying position " << start << endl;
+  return start;
 }
 

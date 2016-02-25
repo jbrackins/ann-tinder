@@ -36,6 +36,8 @@
 
 void printTraining( int epoch, std::string equation, double error );
 void testPrintout();
+bool isTrue ( std::vector <bool> start_here, int vec_size );
+int getStart ( std::vector <bool> start_here, int months, int num_recs );
 
 /******************************************************************************
  *

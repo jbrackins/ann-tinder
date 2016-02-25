@@ -110,8 +110,6 @@ void NeuralNet::add_layer ( int nodes )
 *
 * @param[in] input_records - the input parameters for the ANN
 *
-* @todo - add the first n months of the current year
-*
 *****************************************************************************/
 void NeuralNet::set_first_layer ( records * input_records )
 {
@@ -120,20 +118,34 @@ void NeuralNet::set_first_layer ( records * input_records )
 
    // need to add n months of current year
 
+   for (i = ANN_params -> getEndMonth(); i < 12; i++)
+   {
+      percep_net[0][i].set_output ( input_records->months[i] );
+   }
+   input_records = input_records->next;
+
    while ( input_records->next != NULL && i < input_nodes)
    {
-      percep_net[0][i].set_output ( input_records->burnedAcres );
-      i++;
-
       for(int indexY = 0; indexY < 12 && i < input_nodes; indexY++)
       {
          percep_net[0][i].set_output ( input_records->months[indexY] );
          i++;
       }
 
-      input_records = input_records->next;
+      if ( i < input_nodes )
+      {
+        percep_net[0][i].set_output ( input_records->burnedAcres );
+        i++;
+
+        input_records = input_records->next;
+      }
    }
 
+   if (i != input_nodes )
+   {
+      cout << "Wrong number of input nodes set, program ending" << endl;
+      exit ( -1 );
+   }
 }
 
 /**************************************************************************//**
@@ -150,7 +162,6 @@ void NeuralNet::set_desired_output ( records *input_records )
    double burnage = input_records -> burnedAcres;
    int layers = percep_net.size ( );
 
-   cout << burnage << endl;
    // set high if high burned acreage
    if ( burnage > 0.666666 )
    {
@@ -171,6 +182,28 @@ void NeuralNet::set_desired_output ( records *input_records )
       percep_net [ layers - 1 ][ 0 ].set_desired_output ( 0.0 );
       percep_net [ layers - 1 ][ 1 ].set_desired_output ( 1.0 );
       percep_net [ layers - 1 ][ 2 ].set_desired_output ( 0.0 );
+   }
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Update the output layer of the ANN
+*
+******************************************************************************/
+void NeuralNet::update_output ( )
+{
+   int layers = percep_net.size ( );
+   int nodes;
+
+   for ( int i = 1; i < layers; i++ )
+   {
+      nodes = percep_net[i].size ( );
+      for ( int j = 0; j < nodes; j++ )
+      {
+         percep_net[i][j].update_output ( );
+      }
    }
 }
 
@@ -220,8 +253,6 @@ void NeuralNet::update_weights( )
    int nodes;
    double new_weight;
 
-   cout << "updating the weights function" << endl;
-
    curr_layer = layers - 2;
 
    for( int i = curr_layer; i >= 0; i-- )
@@ -229,18 +260,15 @@ void NeuralNet::update_weights( )
       nodes = percep_net[curr_layer].size( );
       next_layer_size = percep_net[curr_layer + 1].size ( );
 
-      for ( int j = 0; j < nodes; j++ )
+      for ( int lft = 0; lft < nodes; lft++ )
       {
-         for ( int k = 0; k < next_layer_size; k++ )
+         for ( int rght = 0; rght < next_layer_size; rght++ )
          {
-            new_weight = percep_net[i + 1][k].get_weight ( j );
-            cout << "LR = " << ANN_params -> getLearningRate() <<
-                    "\tout = " << *(percep_net[i][j].get_output ( )) <<
-                    "\tEG = " << percep_net[i][k].get_error_grad ( ) << endl;
+            new_weight = percep_net[i + 1][rght].get_weight ( lft );
             new_weight += ANN_params -> getLearningRate() *
-                          *(percep_net[i][j].get_output ( )) * 
-                          percep_net[i][k].get_error_grad ( );
-            percep_net[i + 1][k].set_weight(new_weight, j);
+                          *(percep_net[i][lft].get_output ( )) * 
+                          percep_net[i][rght].get_error_grad ( );
+            percep_net[i + 1][rght].set_weight(new_weight, lft);
          }
       }
    }
@@ -270,25 +298,23 @@ void NeuralNet::update_grads ( )
       new_error_grad = percep_net[curr_layer][i].get_desired_output ( ) -
                        *(percep_net[curr_layer][i].get_output ( ));
       update_error_grad ( curr_layer, i, false, new_error_grad );
-      cout << "set EG of node [" << curr_layer << "]["<<i<<"] to " << percep_net[curr_layer][i].get_error_grad ( ) << endl;
    }
 
-   for (curr_layer = layers - 2; curr_layer > 0; curr_layer--)
+   for (curr_layer = layers - 2; curr_layer >= 0; curr_layer--)
    {
-      sum = 0;
       nodes = percep_net[curr_layer].size( );
       next_layer_size = percep_net[curr_layer + 1].size( );
+
       for (int j = 0; j < nodes; j++)
       {
+         sum = 0;
+
          for ( int k = 0; k < next_layer_size; k++ )
          {
-            cout << "Curr weight is " << percep_net[curr_layer + 1][k].get_weight ( j )
-                 << "\tcurr EG is " << percep_net[curr_layer + 1][k].get_error_grad ( ) << endl;
             sum += percep_net[curr_layer + 1][k].get_weight ( j ) *
                    percep_net[curr_layer + 1][k].get_error_grad ( );
          }
 
-         cout << "sum = " << sum << endl;
          new_error_grad = *(percep_net[curr_layer][j].get_output( )) *
                           (1 - *(percep_net[curr_layer][j].get_output ( ))) *
                           sum;
@@ -327,7 +353,6 @@ void NeuralNet::update_error_grad (int layer, int node, bool inside_node,
 
       error_grad = output * (1 - output) * new_error_grad;
       percep_net[layer][node].set_error_grad( error_grad );
-      cout << percep_net[layer][node].get_error_grad ( )<< endl;
    }
 }
 
@@ -347,7 +372,7 @@ void NeuralNet::set_weights ( double weights [ ] )
    int nodes = 0;
    int weights_loc = 0;
 
-   for ( int i = 1; i <= layers; i++ )
+   for ( int i = 1; i < layers; i++ )
    {
       lft_nodes = percep_net [ i - 1].size ( );
       nodes = percep_net [ i ].size ( );
@@ -384,8 +409,6 @@ void NeuralNet::get_weights ( double weights [ ], int size )
    int lft_nodes;
    int nodes;
    int weights_loc = 0;
-
-   cout << "HI" << endl;
 
    for ( int i = 1; i < layers; i++ )
    {
@@ -452,21 +475,10 @@ double NeuralNet::get_error ( )
 ******************************************************************************/
 int NeuralNet::get_layer_nodes ( int index )
 {
-   return ANN_params -> getLayers ( );
-}
+   if ((unsigned int)index < percep_net.size ( ) )
+      return percep_net[index].size ( );
 
-/**************************************************************************//**
-* @author Samuel Carroll
-*
-* @par Description:
-* Returns the weights file name
-*
-* @returns string - name of the weights file
-*
-******************************************************************************/
-string NeuralNet::get_weights_file ( )
-{
-   return ANN_params -> getWtsFile ( );
+   return 0;
 }
 
 /**************************************************************************//**
@@ -475,21 +487,7 @@ string NeuralNet::get_weights_file ( )
 * @par Description:
 * Returns the CSV file to use for input
 *
-* @returns string - returns a string that is the CSV file name
-*
-*****************************************************************************/
-string NeuralNet::getCsvFile ( )
-{
-   return ( ANN_params -> getCsvFile ( ) );
-}
-
-/**************************************************************************//**
-* @author Samuel Carroll
-*
-* @par Description:
-* Returns the CSV file to use for input
-*
-* @returns nodeCount - integer with the number of weights in the ANN 
+* @returns weightCount - integer with the number of weights in the ANN 
 *
 *****************************************************************************/
 int NeuralNet::getNetSize ( )

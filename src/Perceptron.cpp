@@ -63,16 +63,16 @@ Perceptron::~Perceptron ( )
  *****************************************************************************/
 void Perceptron::add_input ( double* new_input )
 {
-   double rand_greater = rand( ) % 100000000;
+   double rand_greater = rand( ) % 1000;
    double rand_smaller = rand( ) % ( (int) rand_greater );
+   double weight_val = (rand_smaller / rand_greater) - 0.5;
 
    // Add a pointer to the output of another perceptron, a pointer is used so
    // we don't need to reconnect the all the perceptrons if one input is
    // updated
    input.push_back(new_input);
-   weights.push_back( (rand_smaller / rand_greater) - 0.5);
 
-   update_output ( );
+   weights.push_back( weight_val );
 }
 
 /**************************************************************************//**
@@ -236,7 +236,7 @@ void Perceptron::update_output ( )
    }
 
    // actually find the output of the perceptron
-   output = 1.0 / ( 1 + exp( x_sub_j ));
+   output = 1.0 / ( 1 + exp( -1 * x_sub_j ));
 
    // To get a true range of 0 to 1 as our output we will need to round up or
    // down if we are within a certain thershold of 0 or 1. See Artificial
