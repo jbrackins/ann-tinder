@@ -38,6 +38,7 @@ class NeuralNet
       ~NeuralNet ( );
       void add_layer ( int nodes );
       void set_first_layer ( records *input_records );
+      void update_output ( );
       void set_desired_output ( records *input_records );
       void connect_layers ( );
       void update_weights ( );
@@ -54,7 +55,7 @@ class NeuralNet
 
    private:
       std::vector <std::vector <Perceptron>> percep_net;
-      Prm* ANN_params;
+      Prm ANN_params;
 };
 
   #endif

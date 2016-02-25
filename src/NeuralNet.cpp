@@ -32,16 +32,16 @@ using namespace std;
 
 NeuralNet::NeuralNet ( string param_file )
 {
-   ANN_params = new Prm ( param_file );
-   ANN_params -> readPrm ( );
+   ANN_params = Prm ( param_file );
+   ANN_params.readPrm ( );
 
    /*if (ANN_params -> valid ( ))
    {*/
       // add all the layers to the ANN and connect them
-      int layers = ANN_params -> getLayers ( );
+      int layers = ANN_params.getLayers ( );
       for ( int i = 0; i <= layers; i++ )
       {
-         add_layer( ANN_params -> getNodeCount ( i ) );
+         add_layer( ANN_params.getNodeCount ( i ) );
       }
 
    /*}
@@ -62,7 +62,8 @@ NeuralNet::NeuralNet ( string param_file )
 *****************************************************************************/
 NeuralNet::~NeuralNet()
 {
-
+   //if ( ANN_params != NULL)
+   //   delete ANN_params;
 }
 
 
@@ -116,7 +117,7 @@ void NeuralNet::add_layer ( int nodes )
 void NeuralNet::set_first_layer ( records * input_records )
 {
    int i = 0;
-   int input_nodes = ANN_params -> getNodeCount( 0 );
+   int input_nodes = ANN_params.getNodeCount( 0 );
 
    // need to add n months of current year
 
@@ -132,6 +133,31 @@ void NeuralNet::set_first_layer ( records * input_records )
       }
 
       input_records = input_records->next;
+   }
+
+}
+
+/**************************************************************************//**
+* @author Samuel Carroll
+*
+* @par Description:
+* Updates the output of each of the perceptrons in the Neural Net
+*
+*****************************************************************************/
+void NeuralNet::update_output ( )
+{
+   int layers = percep_net.size( );
+   int nodes;
+
+   for (int i = 1; i < layers; i++)
+   {
+      nodes = percep_net[i].size ( );
+
+      for (int j = 0; j < nodes; j++)
+      {
+         //cout << "Node [" << i << "][" << j << "]\n";
+         percep_net[i][j].update_output ( );
+      }
    }
 
 }
@@ -234,10 +260,8 @@ void NeuralNet::update_weights( )
          for ( int k = 0; k < next_layer_size; k++ )
          {
             new_weight = percep_net[i + 1][k].get_weight ( j );
-            cout << "LR = " << ANN_params -> getLearningRate() <<
-                    "\tout = " << *(percep_net[i][j].get_output ( )) <<
-                    "\tEG = " << percep_net[i][k].get_error_grad ( ) << endl;
-            new_weight += ANN_params -> getLearningRate() *
+
+            new_weight += ANN_params.getLearningRate() *
                           *(percep_net[i][j].get_output ( )) * 
                           percep_net[i][k].get_error_grad ( );
             percep_net[i + 1][k].set_weight(new_weight, j);
@@ -347,7 +371,7 @@ void NeuralNet::set_weights ( double weights [ ] )
    int nodes = 0;
    int weights_loc = 0;
 
-   for ( int i = 1; i <= layers; i++ )
+   for ( int i = 1; i < layers; i++ )
    {
       lft_nodes = percep_net [ i - 1].size ( );
       nodes = percep_net [ i ].size ( );
@@ -385,7 +409,7 @@ void NeuralNet::get_weights ( double weights [ ], int size )
    int nodes;
    int weights_loc = 0;
 
-   cout << "HI" << endl;
+   //cout << "HI" << endl;
 
    for ( int i = 1; i < layers; i++ )
    {
@@ -452,7 +476,7 @@ double NeuralNet::get_error ( )
 ******************************************************************************/
 int NeuralNet::get_layer_nodes ( int index )
 {
-   return ANN_params -> getLayers ( );
+   return ANN_params.getLayers ( );
 }
 
 /**************************************************************************//**
@@ -466,7 +490,7 @@ int NeuralNet::get_layer_nodes ( int index )
 ******************************************************************************/
 string NeuralNet::get_weights_file ( )
 {
-   return ANN_params -> getWtsFile ( );
+   return ANN_params.getWtsFile ( );
 }
 
 /**************************************************************************//**
@@ -480,7 +504,7 @@ string NeuralNet::get_weights_file ( )
 *****************************************************************************/
 string NeuralNet::getCsvFile ( )
 {
-   return ( ANN_params -> getCsvFile ( ) );
+   return ( ANN_params.getCsvFile ( ) );
 }
 
 /**************************************************************************//**
