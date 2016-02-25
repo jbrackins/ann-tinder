@@ -387,6 +387,7 @@ void NeuralNet::set_weights ( double weights [ ] )
             if ( weights_loc < 10000 )
             {
                percep_net[i][j].set_weight ( weights[ weights_loc ], k );
+               cout << weights [weights_loc] << endl;
                weights_loc++;
             }
          }
@@ -424,7 +425,8 @@ void NeuralNet::get_weights ( double weights [ ], int size )
          {
             if ( weights_loc < 10000 )
             {
-               percep_net[i][j].set_weight ( weights[ weights_loc ], k );
+               weights [ weights_loc ] = percep_net[i][j].get_weight( k );
+//               percep_net[i][j].set_weight ( weights[ weights_loc ], k );
                weights_loc++;
             }
          }

@@ -157,14 +157,11 @@ records *readCSV(string filename, records *data)
 	}
 	delete prev->next;
 	prev->next = NULL;
-	
-cout << "NORMAL!!" << endl;
+
 	normalize(data);
 
-cout << "CLOSE!!" << endl;
 	file.close();
 	//delete data;
-cout << "RETURN!!"<< endl;
 	return data;
 }
 
@@ -210,7 +207,6 @@ void normalize(records *data)
 	double maxBurnedAcres = temp->burnedAcres;
 	double maxMonths = temp->months[0];
 
-cout << "while #1!!" << endl;
 	while(temp != NULL)
 	{
 		if(minBurnedAcres > temp->burnedAcres)
@@ -228,10 +224,8 @@ cout << "while #1!!" << endl;
                 //cout << temp->next << endl;
 		temp=temp->next;
 	}
-cout << "hi" << endl;
 	temp = data;
 
-cout << "while #2!!" << endl;
 	while(temp != NULL)
 	{
 		temp->burnedAcres=(temp->burnedAcres-minBurnedAcres)/(maxBurnedAcres-minBurnedAcres);

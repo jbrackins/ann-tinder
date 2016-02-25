@@ -80,13 +80,11 @@ int main(int argc, char ** argv)
   int num_samples = 0;
   int epoch = 0;
   double error_sum = 0;
-
   double rms = 1.0;
   int num_records;
   int start;
   vector<bool> start_here;
   int years;
-
   double weights [ 10001 ] = { 0.0 }; //set weight not in weight range
 
 
@@ -110,15 +108,11 @@ int main(int argc, char ** argv)
   //open and read the specified records
   records *head_record = new records;
 
-  cout << ANN.ANN_params.getCsvFile ( ) << endl;
   readCSV( ANN.ANN_params.getCsvFile( ), head_record );
-  cout << "Here3" << endl;
   records *temp = head_record;
-  cout << "Here4" << endl;
   num_records = getRecordsSize( temp );
   // input_nodes = ANN.get_layer_nodes ( 0 );
 
-  cout << "Here5" << endl;
   years = ceil (ANN.ANN_params.getMonths ( ) / 12.0 );
   for (int i = 0; i < num_records - years; i++)
   {
@@ -134,7 +128,7 @@ int main(int argc, char ** argv)
     ANN.set_weights ( weights );
   }
 
-  while ( epoch < 100 /*haven't tested all records */ )
+  while ( epoch < 1000 /*haven't tested all records */ )
   {
     temp = head_record;
 
