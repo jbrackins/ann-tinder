@@ -39,7 +39,7 @@ Prm::Prm( )
     ///This flag value will become true upon a successfully
     ///read prm file. Otherwise, this will be false to indicate there has
     ///been an error in reading a parameter file
-    _valid = false;
+    pValid = false;
 }
 
 /**************************************************************************//**
@@ -55,7 +55,7 @@ Prm::Prm( string filename )
 {
     ///Validity of the prm file is false by default, will become true
     ///upon a successfully read prm file.
-    _valid = false;
+    pValid = false;
     setFilename( filename );
 }
 
@@ -234,7 +234,7 @@ int Prm::readPrm( )
     ///Upon successfully reading in all of the parameters, the Prm instance will
     ///have its valid flag set to true, which means the class has all the information
     //necessary for the neural network.
-    _valid = true;
+    pValid = true;
 
     return 0;
 }
@@ -382,7 +382,7 @@ int Prm::writePrm( )
  * @par Description:
  * Verify that the prm file was read in alright
  *
- * @returns _valid - validity of the file
+ * @returns pValid - validity of the file
  *
  *****************************************************************************/
 bool Prm::valid( )
@@ -392,7 +392,7 @@ bool Prm::valid( )
     ///from missing variables.
 
     ///If this method returns TRUE, the file has been read in successfully.
-    return _valid;
+    return pValid;
 }
 
 
@@ -412,14 +412,14 @@ string Prm::getFilename( bool path )
 
     if ( path )
         ///Return the full path to file if path var is TRUE (Default)
-        return _filename;
+        return pFilename;
     else
     {
         ///Else
         ///Get position of the last slash.
         ///The remainder of the path should just be the name of the file
-        size_t pos = _filename.find_last_of("/");
-        string name = _filename.substr (pos + 1);
+        size_t pos = pFilename.find_last_of("/");
+        string name = pFilename.substr (pos + 1);
         return name;
     }
 
@@ -433,21 +433,21 @@ string Prm::getFilename( bool path )
  *
  * @param[in] path - whether or not you get the full path
  *
- * @returns _wts_file - wts file string
+ * @returns pWts_file - wts file string
  *
  *****************************************************************************/
 string Prm::getWtsFile( bool path )
 {
     if ( path )
         ///Return the full path to file if path var is TRUE (Default)
-        return _wts_file;
+        return pWts_file;
     else
     {
         ///Else
         ///Get position of the last slash.
         ///The remainder of the path should just be the name of the file
-        size_t pos  = _wts_file.find_last_of("/");
-        string name = _wts_file.substr (pos + 1);
+        size_t pos  = pWts_file.find_last_of("/");
+        string name = pWts_file.substr (pos + 1);
         return name;
     }
 }
@@ -458,12 +458,12 @@ string Prm::getWtsFile( bool path )
  * @par Description:
  * Get the epochs param
  *
- * @returns _epochs - epochs integer
+ * @returns pEpochs - epochs integer
  *
  *****************************************************************************/
 int Prm::getEpochs()
 {
-    return _epochs;
+    return pEpochs;
 }
 
 /**************************************************************************//**
@@ -472,12 +472,12 @@ int Prm::getEpochs()
  * @par Description:
  * Get the learning rate param
  *
- * @returns _learning_rate - learning rate double
+ * @returns pLearning_rate - learning rate double
  *
  *****************************************************************************/
 double Prm::getLearningRate()
 {
-    return _learning_rate;
+    return pLearning_rate;
 }
 
 /**************************************************************************//**
@@ -486,12 +486,12 @@ double Prm::getLearningRate()
  * @par Description:
  * Get the momentum param
  *
- * @returns _momentum - momentum double
+ * @returns pMomentum - momentum double
  *
  *****************************************************************************/
 double Prm::getMomentum()
 {
-    return _momentum;
+    return pMomentum;
 }
 
 /**************************************************************************//**
@@ -500,12 +500,12 @@ double Prm::getMomentum()
  * @par Description:
  * Get the threshold param
  *
- * @returns _threshold - threshold double
+ * @returns pThreshold - threshold double
  *
  *****************************************************************************/
 double Prm::getThreshold()
 {
-    return _threshold;
+    return pThreshold;
 }
 
 /**************************************************************************//**
@@ -514,12 +514,12 @@ double Prm::getThreshold()
  * @par Description:
  * Get the layers param
  *
- * @returns _layers - layers integer
+ * @returns pLayers - layers integer
  *
  *****************************************************************************/
 int Prm::getLayers()
 {
-    return _layers;
+    return pLayers;
 }
 
 /**************************************************************************//**
@@ -546,8 +546,8 @@ int Prm::getNodeCount( int index )
     ///getNodeCount(1) - Hidden Layer
 
     ///getNodeCount(2) - Output Layer
-    int sz = _node_count.size();
-    if ( _node_count.empty() )
+    int sz = pNode_count.size();
+    if ( pNode_count.empty() )
     {
         return -100;
     }
@@ -557,9 +557,9 @@ int Prm::getNodeCount( int index )
     }
     else if ( index > sz )
     {
-        index = _node_count.back();
+        index = pNode_count.back();
     }
-    return _node_count[index];
+    return pNode_count[index];
 }
 
 /**************************************************************************//**
@@ -570,21 +570,21 @@ int Prm::getNodeCount( int index )
  *
  * @param[in] path - whether or not you get the full path
  *
- * @returns _csv_file - csv file string
+ * @returns pCsv_file - csv file string
  *
  *****************************************************************************/
 string Prm::getCsvFile( bool path )
 {
     if ( path )
         ///Return the full path to file if path var is TRUE (Default)
-        return _csv_file;
+        return pCsv_file;
     else
     {
         ///Else
         ///Get position of the last slash.
         ///The remainder of the path should just be the name of the file
-        size_t pos  = _csv_file.find_last_of("/");
-        string name = _csv_file.substr (pos + 1);
+        size_t pos  = pCsv_file.find_last_of("/");
+        string name = pCsv_file.substr (pos + 1);
         return name;
     }
 }
@@ -595,12 +595,12 @@ string Prm::getCsvFile( bool path )
  * @par Description:
  * Get the years param
  *
- * @returns _years - years integer
+ * @returns pYears - years integer
  *
  *****************************************************************************/
 int Prm::getYears()
 {
-    return _years;
+    return pYears;
 }
 
 /**************************************************************************//**
@@ -609,12 +609,12 @@ int Prm::getYears()
  * @par Description:
  * Get the months param
  *
- * @returns _months - months integer
+ * @returns pMonths - months integer
  *
  *****************************************************************************/
 int Prm::getMonths()
 {
-    return _months;
+    return pMonths;
 }
 
 /**************************************************************************//**
@@ -623,12 +623,12 @@ int Prm::getMonths()
  * @par Description:
  * Get the end month param
  *
- * @returns _end_month - end month integer
+ * @returns pEnd_month - end month integer
  *
  *****************************************************************************/
 int Prm::getEndMonth()
 {
-    return _end_month;
+    return pEnd_month;
 }
 
 /**************************************************************************//**
@@ -637,12 +637,12 @@ int Prm::getEndMonth()
  * @par Description:
  * Get the number of classes param
  *
- * @returns _num_classes - number of classes integer
+ * @returns pNum_classes - number of classes integer
  *
  *****************************************************************************/
 int Prm::getNumClasses()
 {
-    return _num_classes;
+    return pNum_classes;
 }
 
 /**************************************************************************//**
@@ -651,12 +651,12 @@ int Prm::getNumClasses()
  * @par Description:
  * Get the low/med fire severity cutoff param
  *
- * @returns _low_med - low/med integer
+ * @returns pLow_med - low/med integer
  *
  *****************************************************************************/
 int Prm::getLowMed()
 {
-    return _low_med;
+    return pLow_med;
 }
 
 /**************************************************************************//**
@@ -665,12 +665,12 @@ int Prm::getLowMed()
  * @par Description:
  * Get the med/high fire severity cutoff param
  *
- * @returns _med_high - med/high integer
+ * @returns pMed_high - med/high integer
  *
  *****************************************************************************/
 int Prm::getMedHigh()
 {
-    return _med_high;
+    return pMed_high;
 }
 
 /**************************************************************************//**
@@ -691,7 +691,7 @@ int Prm::setFilename( string input )
     {
         return 0;
     }
-    _filename = input;
+    pFilename = input;
     return 1;
 }
 
@@ -724,7 +724,7 @@ int Prm::setWtsFile( string input )
     wts = stripSpaces(wts);
 
     //Set value to private variable
-    Prm::_wts_file = wts;
+    Prm::pWts_file = wts;
     return 1;
 }
 
@@ -775,7 +775,7 @@ int Prm::setEpochs( string input )
 int Prm::setEpochs( int input )
 {
     //Set value to private variable
-    Prm::_epochs = input;
+    Prm::pEpochs = input;
     return 1;
 }
 
@@ -824,7 +824,7 @@ int Prm::setLearningRate( string input )
 int Prm::setLearningRate( double input )
 {
     //Set value to private variable
-    Prm::_learning_rate = input;
+    Prm::pLearning_rate = input;
     return 1;
 }
 
@@ -873,7 +873,7 @@ int Prm::setMomentum( string input )
 int Prm::setMomentum( double input )
 {
     //Set value to private variable
-    Prm::_momentum = input;
+    Prm::pMomentum = input;
     return 1;
 }
 
@@ -924,7 +924,7 @@ int Prm::setThreshold( string input )
 int Prm::setThreshold( double input )
 {
     //Set value to private variable
-    Prm::_threshold = input;
+    Prm::pThreshold = input;
     return 1;
 }
 
@@ -974,7 +974,7 @@ int Prm::setLayers( string input )
 int Prm::setLayers( int input )
 {
     //Set value to private variable
-    Prm::_layers = input;
+    Prm::pLayers = input;
     return 1;
 }
 
@@ -1028,14 +1028,14 @@ int Prm::addNodeCount( int input )
 {
     ///Pushes an individual layer value into the node count vector.
 
-    ///_node_count index values:
+    ///pNode_count index values:
 
     ///0 is the input layer count
 
     ///1 is the hidden layer count
 
     ///2 is the output layer count
-    Prm::_node_count.push_back( input );
+    Prm::pNode_count.push_back( input );
     return 1;
 }
 
@@ -1067,7 +1067,7 @@ int Prm::setCsvFile( string input )
     csv = stripSpaces(csv);
 
     //Set value to private variable
-    Prm::_csv_file = csv;
+    Prm::pCsv_file = csv;
     return 1;
 }
 
@@ -1117,7 +1117,7 @@ int Prm::setYears( string input )
 int Prm::setYears( int input )
 {
     //Set value to private variable
-    Prm::_years = input;
+    Prm::pYears = input;
     return 1;
 }
 
@@ -1166,7 +1166,7 @@ int Prm::setMonths( string input )
 int Prm::setMonths( int input )
 {
     //Set value to private variable
-    Prm::_months = input;
+    Prm::pMonths = input;
     return 1;
 }
 
@@ -1215,7 +1215,7 @@ int Prm::setEndMonth( string input )
 int Prm::setEndMonth( int input )
 {
     //Set value to private variable
-    Prm::_end_month = input;
+    Prm::pEnd_month = input;
     return 1;
 }
 
@@ -1264,7 +1264,7 @@ int Prm::setNumClasses( string input )
 int Prm::setNumClasses( int input )
 {
     //Set value to private variable
-    Prm::_num_classes = input;
+    Prm::pNum_classes = input;
     return 1;
 }
 
@@ -1312,7 +1312,7 @@ int Prm::setLowMed( string input )
  *****************************************************************************/
 int Prm::setLowMed( int input )
 {
-    Prm::_low_med = input;
+    Prm::pLow_med = input;
     return 1;
 }
 
@@ -1361,7 +1361,7 @@ int Prm::setMedHigh( string input )
 int Prm::setMedHigh( int input )
 {
     //Set value to private variable
-    Prm::_med_high = input;
+    Prm::pMed_high = input;
     return 1;
 }
 
@@ -1546,7 +1546,7 @@ int Prm::writeAllNodes()
 
     if ( Prm::file_pointer )
     {
-        int sz = Prm::_node_count.size();
+        int sz = Prm::pNode_count.size();
         for (int i = 0; i < sz; i++)
         {
             Prm::writeNodeCount( i );
@@ -1857,7 +1857,7 @@ void Prm::printLayers( )
 void Prm::printAllNodes( )
 {
     printf("Node Count: ");
-    int sz = Prm::_node_count.size();
+    int sz = Prm::pNode_count.size();
     for (int i = 0; i < sz; i++)
     {
         Prm::printNodeCount( i );

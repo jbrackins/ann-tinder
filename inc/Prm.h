@@ -160,34 +160,35 @@ public:
     std::string stripSpaces( std::string input );
 
 private:
-    std::string      _filename;
+    //.prm filename
+    std::string      pFilename;
 
     //ANN Parameters
-    std::string      _wts_file;       // name of ANN weight file
-    int              _epochs;         // number of training epochs
-    double           _learning_rate;  // learning rate
-    double           _momentum;       // momentum
-    double           _threshold;      // threshold for ANN error
-    int              _layers;         // layers of adjustable weights
-    std::vector<int> _node_count;     // how many nodes in each layer
+    std::string      pWts_file;       // name of ANN weight file
+    int              pEpochs;         // number of training epochs
+    double           pLearning_rate;  // learning rate
+    double           pMomentum;       // momentum
+    double           pThreshold;      // threshold for ANN error
+    int              pLayers;         // layers of adjustable weights
+    std::vector<int> pNode_count;     // how many nodes in each layer
 
     //Training and Testing Data file
-    std::string      _csv_file;       // training and testing data file name
+    std::string      pCsv_file;       // training and testing data file name
 
     //Feature vector info:
-    int              _years;          // years of burned acreage,
-    int              _months;         // months of PDSI data
-    int              _end_month;      // end month of current year
+    int              pYears;          // years of burned acreage,
+    int              pMonths;         // months of PDSI data
+    int              pEnd_month;      // end month of current year
 
     //Output class info
-    int              _num_classes;
+    int              pNum_classes;
 
     //Fire severity parameter
-    int              _low_med;  // Corresponds to low/medium/high cutoffs
-    int              _med_high;
+    int              pLow_med;        // Corresponds to low/medium/high cutoffs
+    int              pMed_high;
 
-    bool             _valid;    //Corresponds to if the prm file was read successfully
-    FILE * file_pointer; //File Pointer
+    bool             _valid;          //Corresponds to if the prm file was read successfully
+    FILE * file_pointer;              //File Pointer
 };
 
 #endif
