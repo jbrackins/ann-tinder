@@ -33,31 +33,31 @@
 *****************************************************************************/
 class NeuralNet
 {
-   public:
-      NeuralNet ( std::string param_file );
-      ~NeuralNet ( );
-      void add_layer ( int nodes );
-      void set_first_layer ( records *input_records );
-      void update_output ( );
-      int get_fin_out ( );
-      void set_desired_output ( records *input_records );
+public:
+    NeuralNet ( std::string param_file );
+    ~NeuralNet ( );
+    void add_layer ( int nodes );
+    void set_first_layer ( records *input_records );
+    void update_output ( );
+    int get_fin_out ( );
+    void set_desired_output ( records *input_records );
 
-      void connect_layers ( );
-      void update_weights ( );
-      void update_grads ( );
-      void update_error_grad (int layer, int node, bool inside_node,
-                              double new_error_grad );
-      void set_weights ( double weights [ ] );
-      void get_weights ( double weights [ ], int size );
-      double get_error ( );
-      int get_layer_nodes ( int index );
-      int getNetSize ( );
-      void resetANN ( );
-      Prm ANN_params;
+    void connect_layers ( );
+    void update_weights ( );
+    void update_grads ( );
+    void update_error_grad (int layer, int node, bool inside_node,
+                            double new_error_grad );
+    void set_weights ( double weights [ ] );
+    void get_weights ( double weights [ ], int size );
+    double get_error ( );
+    int get_layer_nodes ( int index );
+    int getNetSize ( );
+    void resetANN ( );
+    Prm ANN_params;
 
-   private:
-      std::vector <std::vector <Perceptron>> percep_net;
+private:
+    std::vector <std::vector <Perceptron>> percep_net;
 
 };
 
-  #endif
+#endif

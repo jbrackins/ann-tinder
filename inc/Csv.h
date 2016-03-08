@@ -38,11 +38,11 @@
 
 struct records
 {
-	double dates;
-        double iAcres;
-	double burnedAcres;
-	double months[12];
-	records *next;
+    double dates;
+    double iAcres;
+    double burnedAcres;
+    double months[12];
+    records *next;
 };
 
 /******************************************************************************

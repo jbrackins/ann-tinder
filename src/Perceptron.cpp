@@ -32,12 +32,12 @@ using namespace std;
  *****************************************************************************/
 Perceptron::Perceptron ( void )
 {
-   // Randomly generate a theta thershold for each perceptron, in the range
-   // of 0 to 1 (from Artificial Intelligence Illuminated page 303)
-   double rand_greater = (rand( ) % 1000) + 1;
-   double rand_smaller = rand( ) % ( (int) rand_greater + 1 );
+    // Randomly generate a theta thershold for each perceptron, in the range
+    // of 0 to 1 (from Artificial Intelligence Illuminated page 303)
+    double rand_greater = (rand( ) % 1000) + 1;
+    double rand_smaller = rand( ) % ( (int) rand_greater + 1 );
 
-   theta = rand_smaller / rand_greater;
+    theta = rand_smaller / rand_greater;
 }
 
 /**************************************************************************//**
@@ -49,7 +49,7 @@ Perceptron::Perceptron ( void )
  *****************************************************************************/
 Perceptron::~Perceptron ( )
 {
-   // make sure that input and weight vectors are clear
+    // make sure that input and weight vectors are clear
 }
 
 /**************************************************************************//**
@@ -63,16 +63,16 @@ Perceptron::~Perceptron ( )
  *****************************************************************************/
 void Perceptron::add_input ( double* new_input )
 {
-   double rand_greater = (rand( ) % 1000) + 1;
-   double rand_smaller = rand( ) % ( (int) (rand_greater + 1 ));
-   double weight_val = (rand_smaller / rand_greater) /*- 0.5*/;
+    double rand_greater = (rand( ) % 1000) + 1;
+    double rand_smaller = rand( ) % ( (int) (rand_greater + 1 ));
+    double weight_val = (rand_smaller / rand_greater) /*- 0.5*/;
 
-   // Add a pointer to the output of another perceptron, a pointer is used so
-   // we don't need to reconnect the all the perceptrons if one input is
-   // updated
-   input.push_back(new_input);
+    // Add a pointer to the output of another perceptron, a pointer is used so
+    // we don't need to reconnect the all the perceptrons if one input is
+    // updated
+    input.push_back(new_input);
 
-   weights.push_back( weight_val );
+    weights.push_back( weight_val );
 }
 
 /**************************************************************************//**
@@ -86,7 +86,7 @@ void Perceptron::add_input ( double* new_input )
  *****************************************************************************/
 void Perceptron::set_error_grad ( double new_error_grad )
 {
-   error_grad = new_error_grad;
+    error_grad = new_error_grad;
 }
 
 /**************************************************************************//**
@@ -100,7 +100,7 @@ void Perceptron::set_error_grad ( double new_error_grad )
 *****************************************************************************/
 double Perceptron::get_error_grad ( )
 {
-   return error_grad;
+    return error_grad;
 }
 
 /**************************************************************************//**
@@ -109,12 +109,12 @@ double Perceptron::get_error_grad ( )
 * @par Description:
 * Sets the desired output value
 *
-* @param[in] new_desired - the new desired output value 
+* @param[in] new_desired - the new desired output value
 *
 *****************************************************************************/
 void Perceptron::set_desired_output ( double new_desired )
 {
-   desired_output = new_desired;
+    desired_output = new_desired;
 }
 
 /**************************************************************************//**
@@ -123,12 +123,12 @@ void Perceptron::set_desired_output ( double new_desired )
 * @par Description:
 * Get the desired output value
 *
-* @returns desired_output - the desired output value 
+* @returns desired_output - the desired output value
 *
 *****************************************************************************/
 double Perceptron::get_desired_output ( )
 {
-   return desired_output;
+    return desired_output;
 }
 
 /**************************************************************************//**
@@ -142,7 +142,7 @@ double Perceptron::get_desired_output ( )
 *****************************************************************************/
 void Perceptron::set_output ( double new_output )
 {
-   output = new_output;
+    output = new_output;
 }
 
 /**************************************************************************//**
@@ -156,16 +156,16 @@ void Perceptron::set_output ( double new_output )
  *****************************************************************************/
 double* Perceptron::get_output ( )
 {
-   // Return a pointer to the output of a given perceptron, used for connecting
-   // the ANN layers together
-   return &output;
+    // Return a pointer to the output of a given perceptron, used for connecting
+    // the ANN layers together
+    return &output;
 }
 
 int Perceptron::get_whole_out ( )
 {
-   if ( output > 0.5)
-      return 1;
-   return 0;
+    if ( output > 0.5)
+        return 1;
+    return 0;
 }
 
 /**************************************************************************//**
@@ -177,7 +177,7 @@ int Perceptron::get_whole_out ( )
 ******************************************************************************/
 void Perceptron::set_weight (double new_weight, int index)
 {
-   weights[index] = new_weight;
+    weights[index] = new_weight;
 }
 
 /**************************************************************************//**
@@ -191,7 +191,7 @@ void Perceptron::set_weight (double new_weight, int index)
 ******************************************************************************/
 double Perceptron::get_weight (int index)
 {
-   return weights[index];
+    return weights[index];
 }
 
 /**************************************************************************//**
@@ -203,7 +203,7 @@ double Perceptron::get_weight (int index)
 ******************************************************************************/
 void Perceptron::set_theta ( double new_theta )
 {
-   theta = new_theta;
+    theta = new_theta;
 }
 
 /**************************************************************************//**
@@ -217,7 +217,7 @@ void Perceptron::set_theta ( double new_theta )
 ******************************************************************************/
 double Perceptron::get_theta ( )
 {
-   return theta;
+    return theta;
 }
 
 
@@ -230,28 +230,28 @@ double Perceptron::get_theta ( )
  *****************************************************************************/
 void Perceptron::update_output ( )
 {
-   // Get the number of inputs coming into a perceptron to feed into our
-   // sigmoid function
-   int num_input = input.size ( );
-   double x_sub_j = 0;
+    // Get the number of inputs coming into a perceptron to feed into our
+    // sigmoid function
+    int num_input = input.size ( );
+    double x_sub_j = 0;
 
-   // For every input adjust the xj to calculate the sigmoid function of the
-   // perceptron
-   for ( int i = 0; i < num_input; i++)
-   {
-      x_sub_j += ((*(input[i])) * weights [ i ] );
-   }
+    // For every input adjust the xj to calculate the sigmoid function of the
+    // perceptron
+    for ( int i = 0; i < num_input; i++)
+    {
+        x_sub_j += ((*(input[i])) * weights [ i ] );
+    }
 
-   // actually find the output of the perceptron
-   output = 1.0 / ( 1 + exp( -1 * x_sub_j ));
+    // actually find the output of the perceptron
+    output = 1.0 / ( 1 + exp( -1 * x_sub_j ));
 
-   // To get a true range of 0 to 1 as our output we will need to round up or
-   // down if we are within a certain thershold of 0 or 1. See Artificial
-   // Intelligence Illuminated page 303 for reasons why.
-   if (output > 0.95)
-      output = 1.0;
-   else if (output < 0.05)
-      output = 0.0;
+    // To get a true range of 0 to 1 as our output we will need to round up or
+    // down if we are within a certain thershold of 0 or 1. See Artificial
+    // Intelligence Illuminated page 303 for reasons why.
+    if (output > 0.95)
+        output = 1.0;
+    else if (output < 0.05)
+        output = 0.0;
 }
 
 /**************************************************************************//**
@@ -263,6 +263,6 @@ void Perceptron::update_output ( )
  *****************************************************************************/
 void Perceptron::clear_vectors( )
 {
-  input.clear ( );
-  weights.clear ( );
+    input.clear ( );
+    weights.clear ( );
 }

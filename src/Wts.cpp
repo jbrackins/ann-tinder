@@ -32,25 +32,25 @@ using namespace std;
  *****************************************************************************/
 bool readWeights(string fileName, double weights[], int arraySize)
 {
-  string strInput;
-  ifstream file;
-  file.open ("wts/"+fileName);
-  
-  //Check if file is open
-  if (!file)
-  {
-    cout << "Couldn't open file " << fileName << " for weights" << endl;
-    return 1;
-  }
+    string strInput;
+    ifstream file;
+    file.open ("wts/" + fileName);
 
-  //Read from desginated weights file
-  for(int fileCounter = 0; fileCounter < arraySize; fileCounter++)
-  {
-    file>>strInput;
-    weights[fileCounter]=strtod(strInput.c_str(), NULL);
-  }
-  file.close();
-  return 0;
+    //Check if file is open
+    if (!file)
+    {
+        cout << "Couldn't open file " << fileName << " for weights" << endl;
+        return 1;
+    }
+
+    //Read from desginated weights file
+    for (int fileCounter = 0; fileCounter < arraySize; fileCounter++)
+    {
+        file >> strInput;
+        weights[fileCounter] = strtod(strInput.c_str(), NULL);
+    }
+    file.close();
+    return 0;
 }
 
 /**************************************************************************//**
@@ -65,23 +65,23 @@ bool readWeights(string fileName, double weights[], int arraySize)
 
 bool setWeights(string fileName, double weights[], int arraySize)
 {
-  ofstream file;
-  file.open("wts/"+fileName);
-  
-  //Check if file opens
-  if (!file)
-  {
-    cout << "File unsuccessfully open, nothing was written in "<< 
+    ofstream file;
+    file.open("wts/" + fileName);
+
+    //Check if file opens
+    if (!file)
+    {
+        cout << "File unsuccessfully open, nothing was written in " <<
              fileName << endl;
-    return 1;
-  }
+        return 1;
+    }
 
-  //Write to designated weight file.
-  for(int fileCounter = 0; fileCounter < arraySize; fileCounter++)
-  {
-    file<<weights[fileCounter]<< " ";
-  }
+    //Write to designated weight file.
+    for (int fileCounter = 0; fileCounter < arraySize; fileCounter++)
+    {
+        file << weights[fileCounter] << " ";
+    }
 
-  file.close();
-  return 0;
+    file.close();
+    return 0;
 }
