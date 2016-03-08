@@ -369,8 +369,8 @@ string formatResult( int result )
 void testPrintout(  )
 {
     string eq = "RMS";
-    double err = 0.328345;
-    double acc = .91332;
+    //double err = 0.328345;
+    //double acc = .91332;
 
 
     int samp;

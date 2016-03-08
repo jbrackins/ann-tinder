@@ -187,8 +187,8 @@ private:
     int              pLow_med;        // Corresponds to low/medium/high cutoffs
     int              pMed_high;
 
-    bool             _valid;          //Corresponds to if the prm file was read successfully
-    FILE * file_pointer;              //File Pointer
+    bool             pValid;          //Corresponds to if the prm file was read successfully
+    FILE             * file_pointer;  //File Pointer
 };
 
 #endif
