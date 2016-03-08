@@ -36,67 +36,67 @@ using namespace std;
 
 records *readCSVEntry(string filename, int predictYear, int prevYears, records *data)
 {
-  ifstream file ( "csv/"+filename ); // declare file stream
-  string value; 
-  list<string> values;
+    ifstream file ( "csv/" + filename ); // declare file stream
+    string value;
+    list<string> values;
 
-  //Skip first two lines
-  getline ( file, value );
-  getline ( file, value );
-  
-  //Fill list with string in csv
-  while ( file.good() )
-  {
-		
-    getline ( file, value, ',' ); // read a string until next comma
-    if (value.find('\n') != string::npos) 
-    {
-      split_line(value, "\n", values);
-    } 
-    else
-    {
-      values.push_back(value);
-    }
-  }
+    //Skip first two lines
+    getline ( file, value );
+    getline ( file, value );
 
-  int indexX = 0;
- 
-  //Create list iterator
-  list<string>::const_iterator it = values.begin();
-  records *temp = data;
-  records *prev = temp;
-  
-  //Loop through list
-  for(indexX = 0; predictYear >= strtod(values.front().c_str(), NULL) &&
-                !values.empty(); indexX++)
-  {
-    if(predictYear-(strtod(values.front().c_str(), NULL)) <= prevYears)
+    //Fill list with string in csv
+    while ( file.good() )
     {
-        temp->dates = strtod(values.front().c_str(), NULL);
-        values.pop_front();
-        temp->burnedAcres = strtod(values.front().c_str(), NULL);
-        values.pop_front();
 
-        //Fill Months
-        for(int indexY = 0; indexY < 12; indexY++)
+        getline ( file, value, ',' ); // read a string until next comma
+        if (value.find('\n') != string::npos)
         {
-          temp->months[indexY] = strtod(values.front().c_str(), NULL);
-          values.pop_front();
+            split_line(value, "\n", values);
         }
-        prev = temp;
-        temp->next = new records;
-        temp = temp->next;
-	
+        else
+        {
+            values.push_back(value);
+        }
+    }
+
+    int indexX = 0;
+
+    //Create list iterator
+    list<string>::const_iterator it = values.begin();
+    records *temp = data;
+    records *prev = temp;
+
+    //Loop through list
+    for (indexX = 0; predictYear >= strtod(values.front().c_str(), NULL) &&
+            !values.empty(); indexX++)
+    {
+        if (predictYear - (strtod(values.front().c_str(), NULL)) <= prevYears)
+        {
+            temp->dates = strtod(values.front().c_str(), NULL);
+            values.pop_front();
+            temp->burnedAcres = strtod(values.front().c_str(), NULL);
+            values.pop_front();
+
+            //Fill Months
+            for (int indexY = 0; indexY < 12; indexY++)
+            {
+                temp->months[indexY] = strtod(values.front().c_str(), NULL);
+                values.pop_front();
+            }
+            prev = temp;
+            temp->next = new records;
+            temp = temp->next;
+
         }
         else
         {
 
-          for(int indexZ = 0; indexZ < 14; indexZ++)
-            values.pop_front();
+            for (int indexZ = 0; indexZ < 14; indexZ++)
+                values.pop_front();
         }
     }
     delete prev->next;
-    
+
     //Normalize the data read in from the file
     normalize(data);
 
@@ -120,67 +120,67 @@ records *readCSVEntry(string filename, int predictYear, int prevYears, records *
  *****************************************************************************/
 records *readCSV(string filename, records *data)
 {
-  ifstream file ( "csv/"+filename ); // declare file stream: 
-  string value;
-  list<string> values;
+    ifstream file ( "csv/" + filename ); // declare file stream:
+    string value;
+    list<string> values;
 
-  //Skip first two lines
-  getline ( file, value );
-  getline ( file, value );
+    //Skip first two lines
+    getline ( file, value );
+    getline ( file, value );
 
-  //Fill list with string in csv
-  while ( file.good() )
-  {
-    getline ( file, value, ',' ); // read a string until next comma
-    if (value.find('\n') != string::npos) 
+    //Fill list with string in csv
+    while ( file.good() )
     {
-      split_line(value, "\n", values);
-    } 
-    else
-    {
-      values.push_back(value);
+        getline ( file, value, ',' ); // read a string until next comma
+        if (value.find('\n') != string::npos)
+        {
+            split_line(value, "\n", values);
+        }
+        else
+        {
+            values.push_back(value);
+        }
     }
-  }
-  int indexX = 0;
+    int indexX = 0;
 
-  //Create list iterator 
-  list<string>::const_iterator it = values.begin();
+    //Create list iterator
+    list<string>::const_iterator it = values.begin();
 
-  records *temp = data;
-  records *prev = temp;
+    records *temp = data;
+    records *prev = temp;
 
-  //Loop through list
-  for(indexX = 0; !values.empty(); indexX++)
-  {
-    temp->dates = strtod(values.front().c_str(), NULL);
-    values.pop_front();
-    temp->burnedAcres = strtod(values.front().c_str(), NULL);
-    temp->iAcres = temp->burnedAcres;
-    values.pop_front();
-
-    //Fill Months		
-    for(int indexY = 0; indexY < 12; indexY++)
+    //Loop through list
+    for (indexX = 0; !values.empty(); indexX++)
     {
-      temp->months[indexY] = strtod(values.front().c_str(), NULL);
-      values.pop_front();
+        temp->dates = strtod(values.front().c_str(), NULL);
+        values.pop_front();
+        temp->burnedAcres = strtod(values.front().c_str(), NULL);
+        temp->iAcres = temp->burnedAcres;
+        values.pop_front();
+
+        //Fill Months
+        for (int indexY = 0; indexY < 12; indexY++)
+        {
+            temp->months[indexY] = strtod(values.front().c_str(), NULL);
+            values.pop_front();
+        }
+
+        prev = temp;
+        temp->next = new records;
+        temp = temp->next;
+
     }
 
-    prev = temp;
-    temp->next = new records;
-    temp = temp->next;	
+    delete prev->next;
+    prev->next = NULL;
 
-  }
+    //Normalize the data read in from the file
+    normalize(data);
 
-  delete prev->next;
-  prev->next = NULL;
+    //Close the file
+    file.close();
 
-  //Normalize the data read in from the file
-  normalize(data);
-
-  //Close the file
-  file.close();
-  
-  return data;
+    return data;
 }
 
 /**************************************************************************//**
@@ -219,44 +219,44 @@ void split_line(string& line, string delim, list<string>& values)
  *****************************************************************************/
 void normalize(records *data)
 {
-  records *temp = data;
-  double minBurnedAcres = temp->burnedAcres;
-  double minMonths = temp->months[0];
-  double maxBurnedAcres = temp->burnedAcres;
-  double maxMonths = temp->months[0];
+    records *temp = data;
+    double minBurnedAcres = temp->burnedAcres;
+    double minMonths = temp->months[0];
+    double maxBurnedAcres = temp->burnedAcres;
+    double maxMonths = temp->months[0];
 
-  while(temp != NULL)
-  {
-    //Check for highest/lowest burnedAcres
-    if(minBurnedAcres > temp->burnedAcres)
-      minBurnedAcres = temp->burnedAcres;
-    if(maxBurnedAcres < temp->burnedAcres)
-      maxBurnedAcres = temp->burnedAcres;
-
-    //Check for highest/lowest all monthes
-    for(int indexX = 0; indexX < 12; indexX++)
+    while (temp != NULL)
     {
-      if(minMonths > temp->months[indexX])
-        minMonths = temp->months[indexX];
-      if(maxMonths < temp->months[indexX])
-         maxMonths = temp->months[indexX];
+        //Check for highest/lowest burnedAcres
+        if (minBurnedAcres > temp->burnedAcres)
+            minBurnedAcres = temp->burnedAcres;
+        if (maxBurnedAcres < temp->burnedAcres)
+            maxBurnedAcres = temp->burnedAcres;
+
+        //Check for highest/lowest all monthes
+        for (int indexX = 0; indexX < 12; indexX++)
+        {
+            if (minMonths > temp->months[indexX])
+                minMonths = temp->months[indexX];
+            if (maxMonths < temp->months[indexX])
+                maxMonths = temp->months[indexX];
+        }
+
+        temp = temp->next;
     }
+    temp = data;
 
-    temp=temp->next;
-  }
-  temp = data;
-
-  //Nomalize burned acres and months
-  while(temp != NULL)
-  {
-    temp->burnedAcres=(temp->burnedAcres-minBurnedAcres)/(maxBurnedAcres-minBurnedAcres);
-
-    for(int indexX = 0; indexX < 12; indexX++)
+    //Nomalize burned acres and months
+    while (temp != NULL)
     {
-      temp->months[indexX]=(temp->months[indexX]-minMonths)/(maxMonths-minMonths);
+        temp->burnedAcres = (temp->burnedAcres - minBurnedAcres) / (maxBurnedAcres - minBurnedAcres);
+
+        for (int indexX = 0; indexX < 12; indexX++)
+        {
+            temp->months[indexX] = (temp->months[indexX] - minMonths) / (maxMonths - minMonths);
+        }
+        temp = temp->next;
     }
-    temp=temp->next;
-  }
 }
 
 
@@ -271,14 +271,14 @@ void normalize(records *data)
  *****************************************************************************/
 int getRecordsSize( records *data )
 {
-  int recordSize = 0;
-  records *temp = data;
+    int recordSize = 0;
+    records *temp = data;
 
-  for( recordSize = 0; temp != NULL; recordSize++)
-    temp = temp -> next;
+    for ( recordSize = 0; temp != NULL; recordSize++)
+        temp = temp -> next;
 
 
-  return recordSize;
+    return recordSize;
 }
 
 /**************************************************************************//**
@@ -289,19 +289,19 @@ int getRecordsSize( records *data )
  *
  * @param[in] *data - head pointer for records struct.
  *
- * @bug - This method which frees up the linked list of csv data records is 
- * performed recursively. Although this is less efficient than an iterative 
- * approach, for whatever reason every iterative approach to freeing the 
+ * @bug - This method which frees up the linked list of csv data records is
+ * performed recursively. Although this is less efficient than an iterative
+ * approach, for whatever reason every iterative approach to freeing the
  * linked list just resulted in nasty seg faults. - Julian A. Brackins
  *
  *****************************************************************************/
 void freeRecords(records *data)
 {
-  if(data->next == NULL)
-  {
-  	return;
-  }
-  freeRecords(data->next); 
-  if(data !=NULL)
-	  delete data;
+    if (data->next == NULL)
+    {
+        return;
+    }
+    freeRecords(data->next);
+    if (data != NULL)
+        delete data;
 }
