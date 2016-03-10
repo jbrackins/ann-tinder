@@ -63,6 +63,8 @@ Perceptron::~Perceptron ( )
  *****************************************************************************/
 void Perceptron::add_input ( double* new_input )
 {
+//cout << "in the add input function " << endl;
+//cout << "want to set to " << *new_input << endl;
     double rand_greater = (rand( ) % 1000) + 1;
     double rand_smaller = rand( ) % ( (int) (rand_greater + 1 ));
     double weight_val = (rand_smaller / rand_greater) /*- 0.5*/;
@@ -70,7 +72,10 @@ void Perceptron::add_input ( double* new_input )
     // Add a pointer to the output of another perceptron, a pointer is used so
     // we don't need to reconnect the all the perceptrons if one input is
     // updated
+//int temp = input.size ( );
+//cout << "setting the input to " << *new_input << endl;
     input.push_back(new_input);
+//cout << "set the input to " << *input[temp] << endl;
 
     weights.push_back( weight_val );
 }
@@ -140,7 +145,7 @@ double Perceptron::get_desired_output ( )
 * @param[in] new_output - the new output for the input layer of the ANN
 *
 *****************************************************************************/
-void Perceptron::set_output ( double new_output )
+void Perceptron::set_output ( double &new_output )
 {
     output = new_output;
 }
@@ -239,7 +244,10 @@ void Perceptron::update_output ( )
     // perceptron
     for ( int i = 0; i < num_input; i++)
     {
+//cout << "i = " << i << " " << *(input[i]) <<"\t" << weights[i] << endl;
         x_sub_j += ((*(input[i])) * weights [ i ] );
+//if ( i == num_input - 1)
+  //cout << endl;
     }
 
     // actually find the output of the perceptron
@@ -265,4 +273,10 @@ void Perceptron::clear_vectors( )
 {
     input.clear ( );
     weights.clear ( );
+}
+
+void Perceptron::view_input ( int index )
+{
+  //if ( input.size() > 0 )
+    //cout << *input [ index ] << endl;
 }

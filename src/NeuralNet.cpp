@@ -116,33 +116,46 @@ void NeuralNet::set_first_layer ( records * input_records )
 {
     int i = 0;
     int input_nodes = ANN_params.getNodeCount( 0 );
+    int count = 0;
+    int full_years = floor (ANN_params.getMonths ( ) / 12.0 );
+    int start_month = abs(input_nodes - ANN_params.getEndMonth ( ) -
+                         (12 * full_years) - ANN_params.getYears ( ) - 12) %
+                      12;
 
     // need to add n months of current year
-
-    for (i = ANN_params.getEndMonth(); i < 12; i++)
+    for (i = start_month; i < 12 &&
+             count < ANN_params.getMonths ( ); i++)
     {
-        percep_net[0][i].set_output ( input_records->months[i] );
+        percep_net[0][count].set_output ( input_records->months[i] );
+        count++;
     }
+
+    if ( count == ANN_params.getMonths ( ) )
+    {
+        percep_net[0][count].set_output ( input_records->burnedAcres );
+        count++;
+    }
+
     input_records = input_records->next;
 
-    while ( input_records->next != NULL && i < input_nodes)
+    while ( input_records != NULL && count < input_nodes)
     {
-        for (int indexY = 0; indexY < 12 && i < input_nodes; indexY++)
+        for (int indexY = 0; indexY < 12 && count < input_nodes; indexY++)
         {
-            percep_net[0][i].set_output ( input_records->months[indexY] );
-            i++;
+            percep_net[0][count].set_output ( input_records->months[indexY] );
+            count++;
         }
 
-        if ( i < input_nodes )
+        if ( count < input_nodes )
         {
-            percep_net[0][i].set_output ( input_records->burnedAcres );
+            percep_net[0][count].set_output ( input_records->burnedAcres );
             i++;
 
             input_records = input_records->next;
         }
     }
 
-    if (i != input_nodes )
+    if (count != input_nodes )
     {
         cout << "Wrong number of input nodes set, program ending" << endl;
         exit ( -1 );
@@ -164,7 +177,7 @@ void NeuralNet::update_output ( )
     for ( int i = 1; i < layers; i++ )
     {
         nodes = percep_net[i].size ( );
-
+        
         for ( int j = 0; j < nodes; j++ )
         {
             percep_net[i][j].update_output ( );
@@ -281,17 +294,14 @@ void NeuralNet::connect_layers( )
 void NeuralNet::update_weights( )
 {
     int layers = percep_net.size ( );
-    int curr_layer;
     int next_layer_size;
     int nodes;
     double new_weight;
 
-    curr_layer = layers - 2;
-
-    for ( int i = curr_layer; i >= 0; i-- )
+    for ( int i = 0; i < layers - 1; i++ )
     {
-        nodes = percep_net[curr_layer].size( );
-        next_layer_size = percep_net[curr_layer + 1].size ( );
+        nodes = percep_net[i].size( );
+        next_layer_size = percep_net[i + 1].size ( );
 
         for ( int lft = 0; lft < nodes; lft++ )
         {
@@ -300,7 +310,7 @@ void NeuralNet::update_weights( )
                 new_weight = percep_net[i + 1][rght].get_weight ( lft );
                 new_weight += ANN_params.getLearningRate() *
                               *(percep_net[i][lft].get_output ( )) *
-                              percep_net[i][rght].get_error_grad ( );
+                              percep_net[i + 1][rght].get_error_grad ( );
                 percep_net[i + 1][rght].set_weight(new_weight, lft);
             }
         }
@@ -330,7 +340,6 @@ void NeuralNet::update_grads ( )
     for (int i = 0; i < nodes; i++)
     {
 
-
         err_sig = percep_net[curr_layer][i].get_desired_output ( ) -
                   *(percep_net[curr_layer][i].get_output ( ));
 
@@ -341,14 +350,14 @@ void NeuralNet::update_grads ( )
         update_error_grad ( curr_layer, i, false, new_error_grad );
     }
 
-    for (curr_layer = layers - 2; curr_layer >= 0; curr_layer--)
+    for (curr_layer = layers - 2; curr_layer > 0; curr_layer--)
     {
         nodes = percep_net[curr_layer].size( );
         next_layer_size = percep_net[curr_layer + 1].size( );
 
         for (int j = 0; j < nodes; j++)
         {
-            sum = 0;
+            sum = 0.0;
 
             for ( int k = 0; k < next_layer_size; k++ )
             {
@@ -359,11 +368,9 @@ void NeuralNet::update_grads ( )
             new_error_grad = *(percep_net[curr_layer][j].get_output( )) *
                              (1 - * (percep_net[curr_layer][j].get_output ( ))) *
                              sum;
-
             update_error_grad (curr_layer, j, true, new_error_grad);
         }
     }
-
 }
 
 /**************************************************************************//**
@@ -381,8 +388,8 @@ void NeuralNet::update_grads ( )
 void NeuralNet::update_error_grad (int layer, int node, bool inside_node,
                                    double new_error_grad )
 {
-    double error_grad;
-    double output;
+//    double error_grad;
+//    double output;
 
     if ( inside_node == true )
     {
@@ -390,10 +397,10 @@ void NeuralNet::update_error_grad (int layer, int node, bool inside_node,
     }
     else
     {
-        output = *(percep_net[layer][node].get_output( ));
+//        output = *(percep_net[layer][node].get_output( ));
 
-        error_grad = output * (1 - output) * new_error_grad;
-        percep_net[layer][node].set_error_grad( error_grad );
+//        error_grad = output * (1 - output) * new_error_grad;
+        percep_net[layer][node].set_error_grad( new_error_grad );
     }
 }
 

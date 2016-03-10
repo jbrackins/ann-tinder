@@ -115,7 +115,7 @@ int main(int argc, char ** argv)
     num_records = getRecordsSize( temp ); // need this
     // input_nodes = ANN.get_layer_nodes ( 0 );
 
-    years = ceil (ANN.ANN_params.getMonths ( ) / 12.0 ); // need this
+    years = floor (ANN.ANN_params.getMonths ( ) / 12.0 ); // need this
     for (int i = 0; i < num_records - years; i++)
     {
         start_here.push_back(false);
@@ -130,7 +130,7 @@ int main(int argc, char ** argv)
         ANN.set_weights ( weights ); // change to warning
     }
 
-    while ( epoch < ANN.ANN_params.getEpochs ( ) )
+    while ( epoch < /*2*/ANN.ANN_params.getEpochs ( )/**/ )
     {
         temp = head_record;// need this
 
@@ -143,13 +143,13 @@ int main(int argc, char ** argv)
 
         // set the csv file input to the neural net input layer
         ANN.set_first_layer ( temp ); // need this
+
         for (int i = 0; i < years; i++ )
             temp = temp->next;
         ANN.set_desired_output ( temp );
 
         // we want to update the desired output of the ANN here
-        // should add to neural net get output for output nodes;
-        //cout << "attempting to update gradiants" << endl;
+        // should add to neural net get output for output nodes
         ANN.update_output ( ); // need this
         ANN.update_grads ( ); // update error gradiants
         ANN.update_weights ( ); // update the weights for the neural net
@@ -171,7 +171,7 @@ int main(int argc, char ** argv)
             rms = (1.0 / num_samples) * error_sum;
             rms = sqrt(rms);
 
-            if (epoch % 10 == 0)
+            //if (epoch % 10 == 0)
                 printTraining ( epoch, "RMS", rms );
             num_samples = 0;
             error_sum = 0.0;
@@ -284,7 +284,7 @@ bool isTrue ( vector <bool> start_here, int vec_size )
 int getStart ( vector <bool> start_here, int months, int num_recs )
 {
     double divideFloat = months / 12.0;
-    int years = ceil ( divideFloat );
+    int years = floor ( divideFloat );
     int start = (rand ( ) % (num_recs - years));
 
     while (start_here[start])
