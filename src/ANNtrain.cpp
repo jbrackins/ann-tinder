@@ -275,10 +275,10 @@ bool isTrue ( vector <bool> start_here, int vec_size )
 
 
 /**************************************************************************//**
- * @author <ADD AUTHOR>
+ * @author Samuel Carroll
  *
  * @par Description:
- * <ADD DESCRIPTION>
+ * This function will determine a viable starting location for the Neural Net
  *
  * @returns start position
  *

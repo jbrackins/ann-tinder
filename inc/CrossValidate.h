@@ -50,6 +50,7 @@ std::string formatResult( int result );
 void testPrintout( );
 int get_actual_output ( double burnAcre, int high, int low );
 bool hasFalse ( std::vector<bool> chk_vector );
+int getStart ( vector <bool> start_here, int months, int num_recs );
 
 /******************************************************************************
  *

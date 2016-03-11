@@ -84,6 +84,7 @@ int main(int argc, char ** argv)
 
     int num_records;
     vector <bool> left_out;
+    vector<bool> start_here;
     int years;
     int fin_out;
     int act_out;
@@ -91,6 +92,14 @@ int main(int argc, char ** argv)
     int leave_out = 0;
     int sample;
     int epoch;
+    double rms = 0.0;
+    int error_sum = 0;
+    int num_samples = 0;
+    double total_years = 0.0;
+    double good_years = 0.0;
+    int start;
+
+    srand ( time( 0 ) );
 
     NeuralNet ANN = NeuralNet(argv[1]);
 
@@ -101,6 +110,10 @@ int main(int argc, char ** argv)
     num_records = getRecordsSize( temp );
 
     years = floor (ANN.ANN_params.getMonths ( ) / 12.0 );
+    for (int i = 0; i < num_records - years; i++)
+    {
+        start_here.push_back(false);
+    }
 
     for (int i = 0; i < num_records - years; i++)
         left_out.push_back(false);
@@ -113,14 +126,19 @@ int main(int argc, char ** argv)
 
         while ( epoch < ANN.ANN_params.getEpochs ( ) )
         {
-//investigate this loop yo! start index
+
             for (curr_year = 0; curr_year < num_records - years; curr_year++ )
             {
                 temp = head_record;
 
-                if ( leave_out != curr_year )
+                start = getStart ( start_here, ANN.ANN_params.getMonths ( ),
+                                   num_records );
+
+                start_here [ start ] = true;
+
+                if ( leave_out != start )
                 {
-                    for ( int i = 0; i < curr_year; i++)
+                    for ( int i = 0; i < start; i++)
                         temp = temp->next;
 
                     ANN.set_first_layer ( temp );
@@ -134,11 +152,24 @@ int main(int argc, char ** argv)
                     ANN.update_grads ( ); // update error gradiants
                     ANN.update_weights ( ); // update the weights for the neural net
                     // loop through and train
+
+                    error_sum += ANN.get_error ( );
+                    num_samples++;
                 }
             }
 
 
             epoch++;
+            rms = (1.0 / num_samples) * error_sum;
+            rms = sqrt(rms);
+
+            for (int i = 0; i < num_records - years; i++)
+            {
+                start_here[i] = false;
+            }
+
+            num_samples = 0;
+            error_sum = 0.0;
         }
 
         temp = head_record;
@@ -150,6 +181,7 @@ int main(int argc, char ** argv)
         for (int i = 0; i < years; i++ )
             temp = temp->next;
 
+        ANN.set_desired_output ( temp );
         ANN.update_output ( );
 
         sample = temp -> dates; // get the year we tested
@@ -159,16 +191,23 @@ int main(int argc, char ** argv)
         act_out = get_actual_output ( (int)temp -> iAcres, ANN.ANN_params.getMedHigh( ),
                                       ANN.ANN_params.getLowMed ( ) );
 
+        // calculate rms for output year
+
 // actually caluclate the error
-        printCrossValidate ( sample, (int)temp -> iAcres, act_out, fin_out, 3.14);
+        printCrossValidate ( sample, (int)temp -> iAcres, act_out, fin_out, rms);
+
+        if ( act_out == fin_out )
+            good_years++;
 
         left_out[leave_out] = true;
         leave_out++;
         ANN.resetANN( );
-        // reset ANN
+        epoch = 0;
+        rms = 0.0;
+        total_years++;
     }
 
-    //printInfo( p );
+    printSummary( good_years / total_years );
 
     //testPrintout();
 
@@ -268,9 +307,9 @@ void printSummary( double accuracy )
  *
  * @param[in] result - A given value, either actual or predicted
  *
- * @returns "LOW" - value passed in was 100
- * @returns "MED" - value passed in was 010
- * @returns "Hi " - value passed in was 001
+ * @returns "LOW" - value passed in was 1
+ * @returns "MED" - value passed in was 10
+ * @returns "Hi " - value passed in was 100
  * @returns "ERR" - value passed in was invalid (anything other than above)
  *
  *****************************************************************************/
@@ -283,13 +322,13 @@ string formatResult( int result )
 
 
     ///100 = LOW
-    if (result == 100 )
+    if (result == 1 )
         return "LOW";
     ///010 = MED
     else if (result == 10 )
         return "MED";
     ///001 = HI
-    else if (result == 1 )
+    else if (result == 100 )
         return "HI ";
     ///Invalid otherwise
     else
@@ -402,4 +441,25 @@ bool hasFalse ( std::vector<bool> chk_vector )
     }
 
     return false;
+}
+
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * This function will determine a viable starting location for the Neural Net
+ *
+ * @returns start position
+ *
+ *****************************************************************************/
+int getStart ( vector <bool> start_here, int months, int num_recs )
+{
+    double divideFloat = months / 12.0;
+    int years = floor ( divideFloat );
+    int start = (rand ( ) % (num_recs - years));
+
+    while (start_here[start])
+        start = (rand ( ) % (num_recs - years));
+
+    return start;
 }
