@@ -183,6 +183,9 @@ int Perceptron::get_whole_out ( )
 * @par Description:
 * Sets the weight for a specific input node
 *
+* @param[in] double new_weight - the new value to set for the weight
+* @param[in] int index - the weight index we want to return
+*
 ******************************************************************************/
 void Perceptron::set_weight (double new_weight, int index)
 {
@@ -194,6 +197,8 @@ void Perceptron::set_weight (double new_weight, int index)
 *
 * @par Description:
 * Gets the weight for a specific input node
+*
+* @param[in] int index - the index into weights we want to return
 *
 * @return weight - return a given weight for the indexed input node.
 *
@@ -248,15 +253,11 @@ void Perceptron::update_output ( )
     // perceptron
     for ( int i = 0; i < num_input; i++)
     {
-//cout << "in = " << i << " " << *(input[i]) <<"\twgt = " << weights[i] << endl;
         x_sub_j += ((*(input[i])) * weights [ i ] );
-//if ( i == num_input - 1)
-  //cout << endl;
     }
 
     // actually find the output of the perceptron
     output = 1.0 / ( 1 + exp( -1 * x_sub_j ));
-//cout <<"\nCalc out = " << output << "\n******" << endl;
 
     // To get a true range of 0 to 1 as our output we will need to round up or
     // down if we are within a certain thershold of 0 or 1. See Artificial

@@ -253,10 +253,13 @@ void testPrintout( )
 
 
 /**************************************************************************//**
- * @author <ADD AUTHOR>
+ * @author Samuel Carroll
  *
  * @par Description:
- * <ADD DESCRIPTION>
+ * tests if a vector of booleans is set to all true
+ *
+ * @param vector<bool> start_here - vector we are checking
+ * @param int vec_size - size of the vector
  *
  * @returns true  -
  * @returns false -
@@ -279,6 +282,10 @@ bool isTrue ( vector <bool> start_here, int vec_size )
  *
  * @par Description:
  * This function will determine a viable starting location for the Neural Net
+ *
+ * @param vector<bool> start_here - vector with start points used in training
+ * @param int months - number of months used as input
+ * @param int num_recs - number of years in our dataset
  *
  * @returns start position
  *

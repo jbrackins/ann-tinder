@@ -127,14 +127,12 @@ void NeuralNet::set_first_layer ( records * input_records )
              count < ANN_params.getMonths ( ); i++)
     {
         percep_net[0][count].set_output ( input_records->months[i] );
-//cout << "Set input[" << count << "] = " << *(percep_net[0][count].get_output())<< endl;
         count++;
     }
 
     if ( count == ANN_params.getMonths ( ) )
     {
         percep_net[0][count].set_output ( input_records->burnedAcres );
-//cout << "Set input[" << count << "] = " << *(percep_net[0][count].get_output())<< endl;
         count++;
     }
 
@@ -145,14 +143,12 @@ void NeuralNet::set_first_layer ( records * input_records )
         for (int indexY = 0; indexY < 12 && count < input_nodes; indexY++)
         {
             percep_net[0][count].set_output ( input_records->months[indexY] );
-//cout << "Set input[" << count << "] = " << *(percep_net[0][count].get_output())<< endl;
             count++;
         }
 
         if ( count < input_nodes )
         {
             percep_net[0][count].set_output ( input_records->burnedAcres );
-//cout << "Set input[" << count << "] = " << *(percep_net[0][count].get_output())<< endl;
             i++;
 
             input_records = input_records->next;
@@ -184,7 +180,6 @@ void NeuralNet::update_output ( )
         
         for ( int j = 0; j < nodes; j++ )
         {
-//cout << "******\nUpdating node [" << i << "]["<< j << "]\n";
             percep_net[i][j].update_output ( );
         }
     }
@@ -203,16 +198,9 @@ int NeuralNet::get_fin_out ( )
 {
     int layers = percep_net.size ( );
     int fin_out;
-    /*double hi_out = 100 * (percep_net[layers - 1][0].get_whole_out ( ));
-    double med_out = 10 * (percep_net[layers - 1][1].get_whole_out ( ));
-    double low_out = (percep_net[layers - 1][2].get_whole_out ( ));*/
     double hi_out = *(percep_net[layers - 1][0].get_output ( ));
     double med_out = *(percep_net[layers - 1][1].get_output ( ));
     double low_out = *(percep_net[layers - 1][2].get_output ( ));
-
-//cout << "hi = " << hi_out << endl;
-//cout << "mi = " << med_out << endl;
-//cout << "lo = " << low_out << endl;
 
     if (hi_out > med_out && hi_out > low_out)
         fin_out = 100;
@@ -220,8 +208,6 @@ int NeuralNet::get_fin_out ( )
         fin_out = 10;
     else
         fin_out = 1;
-
-//    fin_out = hi_out + med_out + low_out;
 
     return fin_out;
 }

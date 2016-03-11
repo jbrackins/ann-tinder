@@ -99,6 +99,7 @@ int main(int argc, char ** argv)
     double good_years = 0.0;
     int start;
 
+    // initialize the neural net here
     srand ( time( 0 ) );
 
     NeuralNet ANN = NeuralNet(argv[1]);
@@ -120,6 +121,7 @@ int main(int argc, char ** argv)
 
     printHeader( );
 
+    // starting the cross validation here
     while (hasFalse (left_out ) )
     {
         ANN.connect_layers ( );
@@ -187,13 +189,12 @@ int main(int argc, char ** argv)
         sample = temp -> dates; // get the year we tested
 
         fin_out = ANN.get_fin_out ( );
-// check out the get actual output function
         act_out = get_actual_output ( (int)temp -> iAcres, ANN.ANN_params.getMedHigh( ),
                                       ANN.ANN_params.getLowMed ( ) );
 
         // calculate rms for output year
 
-// actually caluclate the error
+        // prints the output
         printCrossValidate ( sample, (int)temp -> iAcres, act_out, fin_out, rms);
 
         if ( act_out == fin_out )
@@ -448,6 +449,10 @@ bool hasFalse ( std::vector<bool> chk_vector )
  *
  * @par Description:
  * This function will determine a viable starting location for the Neural Net
+ * 
+ * @param vector<bool> start_here - the vector with the used starting points
+ * @param int months - the months in the year
+ * @param num_recs - the number of years we have in total
  *
  * @returns start position
  *

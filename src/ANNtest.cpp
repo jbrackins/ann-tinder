@@ -337,7 +337,7 @@ string formatResult( int result )
     ///actual or predicted, and displays it in a readable manner.
     ///The conversions are as follows:
 
-    ///100 = LOW
+    ///100 = HI
     if (result == 100 )
     {
         return "HI ";
@@ -347,7 +347,7 @@ string formatResult( int result )
     {
         return "MED";
     }
-    ///001 = HI
+    ///1 = LOW
     else if (result == 1 )
     {
         return "LOW";
@@ -408,6 +408,10 @@ void testPrintout(  )
  *
  * @par Description:
  * Test the output of our program
+ *
+ * @param[in] double burnAcre - number of burned acres
+ * @param[in] int high - the last number of medium fire severity
+ * @param[in] int low - the last number of low fire severity
  *
  * @returns 100 - if we have a burn acreage in the high range
  * @returns 10 - if we have a burn acreage in the medium range
