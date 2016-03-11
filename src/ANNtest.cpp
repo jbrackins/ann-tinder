@@ -137,20 +137,30 @@ int main(int argc, char ** argv)
     records *temp = head_record;
     num_records = getRecordsSize( temp );
 
-    years = ceil (ANN.ANN_params.getMonths ( ) / 12.0 );
+    years = floor (ANN.ANN_params.getMonths ( ) / 12.0 );
 
     if (!readWeights (ANN.ANN_params.getWtsFile ( ), weights,
-                      ANN.getNetSize( ))) // have this
+                      ANN.getNetSize( )))
     {
-        ANN.set_weights ( weights ); // change to warning
+        ANN.set_weights ( weights );
 
         printHeader( );
+
         while (start < num_records - years )
         {
             success = 0;
+
+            temp = head_record;
+            for (int i = 0; i < start && temp != NULL; i++ )
+            {
+                temp = temp -> next;
+            }
+
             ANN.set_first_layer ( temp );
+
             for ( int i = 0; i < years; i++)
                 temp = temp->next;
+
             ANN.update_output ( );
 
             sample = temp -> dates; // get the year we tested
@@ -188,13 +198,6 @@ int main(int argc, char ** argv)
             {
                 trueLow++;
             }
-
-            temp = head_record;
-            for (int i = 0; i < start && temp->next != NULL; i++ )
-            {
-                temp = temp -> next;
-            }
-
         }
 
         printSummary ( (double)predLow / trueLow, (double)predMed / trueMed,

@@ -63,19 +63,14 @@ Perceptron::~Perceptron ( )
  *****************************************************************************/
 void Perceptron::add_input ( double* new_input )
 {
-//cout << "in the add input function " << endl;
-//cout << "want to set to " << *new_input << endl;
     double rand_greater = (rand( ) % 1000) + 1;
     double rand_smaller = rand( ) % ( (int) (rand_greater + 1 ));
-    double weight_val = (rand_smaller / rand_greater) /*- 0.5*/;
+    double weight_val = (rand_smaller / rand_greater) - 0.5;
 
     // Add a pointer to the output of another perceptron, a pointer is used so
     // we don't need to reconnect the all the perceptrons if one input is
     // updated
-//int temp = input.size ( );
-//cout << "setting the input to " << *new_input << endl;
     input.push_back(new_input);
-//cout << "set the input to " << *input[temp] << endl;
 
     weights.push_back( weight_val );
 }
@@ -166,9 +161,18 @@ double* Perceptron::get_output ( )
     return &output;
 }
 
+/**************************************************************************//**
+ * @author Samuel Carroll
+ *
+ * @par Description:
+ * Get Whole Valued Output Function.
+ *
+ * @returns int - return output rounded to the nearest whole number
+ *
+ *****************************************************************************/
 int Perceptron::get_whole_out ( )
 {
-    if ( output > 0.5)
+    if ( output >= 0.5)
         return 1;
     return 0;
 }
@@ -244,7 +248,7 @@ void Perceptron::update_output ( )
     // perceptron
     for ( int i = 0; i < num_input; i++)
     {
-//cout << "i = " << i << " " << *(input[i]) <<"\t" << weights[i] << endl;
+//cout << "in = " << i << " " << *(input[i]) <<"\twgt = " << weights[i] << endl;
         x_sub_j += ((*(input[i])) * weights [ i ] );
 //if ( i == num_input - 1)
   //cout << endl;
@@ -252,6 +256,7 @@ void Perceptron::update_output ( )
 
     // actually find the output of the perceptron
     output = 1.0 / ( 1 + exp( -1 * x_sub_j ));
+//cout <<"\nCalc out = " << output << "\n******" << endl;
 
     // To get a true range of 0 to 1 as our output we will need to round up or
     // down if we are within a certain thershold of 0 or 1. See Artificial
@@ -273,10 +278,4 @@ void Perceptron::clear_vectors( )
 {
     input.clear ( );
     weights.clear ( );
-}
-
-void Perceptron::view_input ( int index )
-{
-  //if ( input.size() > 0 )
-    //cout << *input [ index ] << endl;
 }

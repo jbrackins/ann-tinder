@@ -100,7 +100,7 @@ int main(int argc, char ** argv)
     records *temp = head_record;
     num_records = getRecordsSize( temp );
 
-    years = ceil (ANN.ANN_params.getMonths ( ) / 12.0 );
+    years = floor (ANN.ANN_params.getMonths ( ) / 12.0 );
 
     for (int i = 0; i < num_records - years; i++)
         left_out.push_back(false);
@@ -113,14 +113,18 @@ int main(int argc, char ** argv)
 
         while ( epoch < ANN.ANN_params.getEpochs ( ) )
         {
+//investigate this loop yo! start index
             for (curr_year = 0; curr_year < num_records - years; curr_year++ )
             {
                 temp = head_record;
+
                 if ( leave_out != curr_year )
                 {
                     for ( int i = 0; i < curr_year; i++)
                         temp = temp->next;
+
                     ANN.set_first_layer ( temp );
+
                     for ( int i = 0; i < years; i++)
                         temp = temp->next;
 
@@ -132,6 +136,8 @@ int main(int argc, char ** argv)
                     // loop through and train
                 }
             }
+
+
             epoch++;
         }
 
@@ -140,16 +146,20 @@ int main(int argc, char ** argv)
             temp = temp->next;
 
         ANN.set_first_layer ( temp );
+
         for (int i = 0; i < years; i++ )
             temp = temp->next;
+
         ANN.update_output ( );
 
         sample = temp -> dates; // get the year we tested
 
         fin_out = ANN.get_fin_out ( );
+// check out the get actual output function
         act_out = get_actual_output ( (int)temp -> iAcres, ANN.ANN_params.getMedHigh( ),
                                       ANN.ANN_params.getLowMed ( ) );
 
+// actually caluclate the error
         printCrossValidate ( sample, (int)temp -> iAcres, act_out, fin_out, 3.14);
 
         left_out[leave_out] = true;

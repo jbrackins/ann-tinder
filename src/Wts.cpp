@@ -34,6 +34,7 @@ bool readWeights(string fileName, double weights[], int arraySize)
 {
     string strInput;
     ifstream file;
+    int fileCounter;
     file.open ("wts/" + fileName);
 
     //Check if file is open
@@ -44,12 +45,19 @@ bool readWeights(string fileName, double weights[], int arraySize)
     }
 
     //Read from desginated weights file
-    for (int fileCounter = 0; fileCounter < arraySize; fileCounter++)
+    for (fileCounter = 0; fileCounter < arraySize && file >> strInput; fileCounter++)
     {
-        file >> strInput;
         weights[fileCounter] = strtod(strInput.c_str(), NULL);
     }
+
     file.close();
+
+    if ( fileCounter != arraySize)
+    {
+        cout << "Too few weights read in, program ending" << endl;
+        exit ( -1 );
+    }
+
     return 0;
 }
 

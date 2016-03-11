@@ -90,6 +90,7 @@ int main(int argc, char ** argv)
     vector<bool> start_here;
     int years;
     double weights [ 10001 ] = { 0.0 }; //set weight not in weight range
+    bool acceptableRMS = false;
 
 
     if ( argc != 2 )
@@ -100,13 +101,12 @@ int main(int argc, char ** argv)
 
 
     srand ( time( 0 ) );
-    //Prm * p = new Prm( argv[1] );
     // open the Neural Net with the given parameter file
 
     NeuralNet ANN = NeuralNet(argv[1]); // need this
     ANN.connect_layers ( ); // need this
 
-
+cout << "Threshold is " << ANN.ANN_params.getThreshold ( ) << endl;
     //open and read the specified records
     records *head_record = new records; // need this
 
@@ -130,7 +130,7 @@ int main(int argc, char ** argv)
         ANN.set_weights ( weights ); // change to warning
     }
 
-    while ( epoch < /*2*/ANN.ANN_params.getEpochs ( )/**/ )
+    while ( epoch < ANN.ANN_params.getEpochs ( ) && !acceptableRMS )
     {
         temp = head_record;// need this
 
@@ -171,10 +171,12 @@ int main(int argc, char ** argv)
             rms = (1.0 / num_samples) * error_sum;
             rms = sqrt(rms);
 
-            //if (epoch % 10 == 0)
+            if (epoch % 10 == 0)
                 printTraining ( epoch, "RMS", rms );
             num_samples = 0;
             error_sum = 0.0;
+            if ( rms <= ANN.ANN_params.getThreshold ( ) )
+              acceptableRMS = true;
         }
     }
     // print the Training for the epoch and repeat for every year in the csv file
