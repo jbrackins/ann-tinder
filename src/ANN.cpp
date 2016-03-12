@@ -198,21 +198,16 @@
                     * Moderate to severe crying.
                     * Completed ANNtest program.
                     * Completed CrossValidate program.
-
  March 7, 2016      * Fix spacing issues.
                     * Begin Debuging Neural Net.
 					* Fix naming issues.
-					
  March 8, 2016      * Debuging Neural Net - Input layer initialization error.
- 
  March 9, 2016      * Fix Output layer calculation error.
-					* Fix new weight calculation error.
-					
- March 10, 2016      * Fix test calculation error for low, medium, and high.
-					 * Begin debuging on cross-validation
-					 
- March 10, 2016      * Fix cross-validation
-					 * Finish documention
+					* Fix new weight calculation error.					
+ March 10, 2016     * Fix test calculation error for low, medium, and high.
+					* Begin debuging on cross-validation
+                    * Fix cross-validation
+					* Finish documention
   
   
 --------------------------------------------------------------------------------
