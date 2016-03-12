@@ -74,9 +74,6 @@ using namespace std;
  * @returns 0 - Program Ends Gracefully.
  * @returns -1 - Program Ends because YOU GOOFED UP
  *
- * @bug - ANNtrain does not properly converge to a low error rate. This is
- * likely due to a mistake in how the error gradients are being
- * calculated.
  *
  *****************************************************************************/
 int main(int argc, char ** argv)
@@ -106,7 +103,6 @@ int main(int argc, char ** argv)
     NeuralNet ANN = NeuralNet(argv[1]); // need this
     ANN.connect_layers ( ); // need this
 
-cout << "Threshold is " << ANN.ANN_params.getThreshold ( ) << endl;
     //open and read the specified records
     records *head_record = new records; // need this
 
@@ -181,7 +177,6 @@ cout << "Threshold is " << ANN.ANN_params.getThreshold ( ) << endl;
     }
     // print the Training for the epoch and repeat for every year in the csv file
     ANN.get_weights ( weights, 10000 );
-    //cout<<weights[0]<<endl;
     setWeights(ANN.ANN_params.getWtsFile ( ), weights, ANN.getNetSize( ));
 
     // after we have all the training done, write the weights file
