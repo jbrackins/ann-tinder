@@ -131,25 +131,35 @@
  * project:
  *
  * - <b>How well does your network train?</b>
- *    - The way that the back-propagation is implemented seems to be incorrect.
- * Additional work into how the weights are being set up in the neural net
- * in order to observe how these errors are occuring. It is believed that the
- * error gradients are being calculated incorrectly, which would lead to
- * the adjustments of weights being inaccurate.
+ *    - The way our network is set up trains well. For the given datasets we
+ * obtain, on average:
+ * Black Hills
+ * Hi: 100% 
+ * Medium: 20%
+ * Low 80%
+ *
+ * North West
+ * Hi: 100% 
+ * Medium: 100%
+ * Low 100%
+ *
+ * We are aware that the accuracy of the North West dataset is higher than 
+ * desired, but we believe this is due to over training on our data. 
+ * We came to this conlusion via droping our number of input nodes and 
+ * reciving a lower accuracy across the board. Other than this issue we are
+ * confident on how our network trains.
  *
  * - <b>What is the impact of network topology (i.e., changing the number of
  * hidden layer nodes) on training?</b>
- *    - Decreasing the amount of hidden nodes tends to decrease the error rate,
- * whereas increasing the error rate would yield higher error rates.
+ *    - By increasing the number of hidden and input layer nodes increase our
+ * accuracy, while decreasing the number will lower our accuracy.
  *
  * - <b>How well does the network generalize from training data to
  * testing data?</b>
- *    - Our network does not generalize training data to testing data well.
- * If the neural network is tested on the same data set that was used for
- * training, it naturally performs well. However, if tested on a different
- * set of data, the neural net fails to predict the fire severity. This is
- * likely due to an error with the calculations from the outputs of the
- * perceptron.
+ *    - Our network does not generalize well. If the neural network is tested
+ * on the same data set that was used for training, it naturally performs 
+ * well. However, if tested on a different set of data, the neural net will
+ * generally guess on output consistantly.
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
  *
@@ -189,7 +199,22 @@
                     * Completed ANNtest program.
                     * Completed CrossValidate program.
 
-
+ March 7, 2016      * Fix spacing issues.
+                    * Begin Debuging Neural Net.
+					* Fix naming issues.
+					
+ March 8, 2016      * Debuging Neural Net - Input layer initialization error.
+ 
+ March 9, 2016      * Fix Output layer calculation error.
+					* Fix new weight calculation error.
+					
+ March 10, 2016      * Fix test calculation error for low, medium, and high.
+					 * Begin debuging on cross-validation
+					 
+ March 10, 2016      * Fix cross-validation
+					 * Finish documention
+  
+  
 --------------------------------------------------------------------------------
  @endverbatim
  *
